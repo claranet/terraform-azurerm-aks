@@ -1,7 +1,7 @@
 # Azure AKS
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/)
 
-This terraform module create an [Azure AKS](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and assiociated [Azure Application Gatewau](https://azure.microsoft.com/fr-fr/services/application-gateway/) as ingress controller. It also deploys needed [Azure subnets](https://docs.microsoft.com/fr-fr/azure/virtual-network/virtual-network-manage-subnet).
+This terraform module create an [Azure AKS](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and associated [Azure Application Gateway](https://azure.microsoft.com/fr-fr/services/application-gateway/) as ingress controller.
 
 Inside the cluster, velero, kured and cert-manager are also installed.
 
