@@ -201,3 +201,43 @@ variable "appgw_ingress_controller_settings" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_cert_manager" {
+  description = "Enable cert-manager on AKS cluster"
+  type        = bool
+  default     = true
+}
+variable "cert_manager_settings" {
+  description = "Settings for cert-manager helm chart"
+  type        = map(string)
+  default     = {}
+}
+
+variable "enable_kured" {
+  description = "Enable kured daemon on AKS cluster"
+  type        = bool
+  default     = true
+}
+variable "kured_settings" {
+  description = "Settings for kured helm chart"
+  type        = map(string)
+  default     = {}
+}
+
+variable "enable_velero" {
+  description = "Enable velero on AKS cluster"
+  type        = bool
+  default     = true
+}
+
+variable "velero_storage_settings" {
+  description = "Settings for Storage account and blob container for Velero"
+  type        = map(any)
+  default     = {}
+}
+
+variable "velero_settings" {
+  description = "Settings for Velero helm chart"
+  type        = map(string)
+  default     = {}
+}

@@ -37,4 +37,5 @@ TODO
 
 ## Related documentation
 
+- Kured documentation: [github.com/weaveworks/kured](https://github.com/weaveworks/kured)
 
