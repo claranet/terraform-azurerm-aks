@@ -4,8 +4,8 @@ resource "kubernetes_storage_class" "managed-standard-retain" {
   metadata {
     name = "standard-hdd-retain"
   }
-  reclaim_policy         = "Retain"
-  parameters             = {
+  reclaim_policy = "Retain"
+  parameters = {
     storageaccounttype = "Standard_LRS"
     kind               = "Managed"
   }
@@ -17,8 +17,8 @@ resource "kubernetes_storage_class" "managed-premium-retain" {
   metadata {
     name = "managed-premium-retain"
   }
-  reclaim_policy         = "Retain"
-  parameters             = {
+  reclaim_policy = "Retain"
+  parameters = {
     storageaccounttype = "Premium_LRS"
     kind               = "Managed"
   }
@@ -29,7 +29,7 @@ resource "kubernetes_storage_class" "managed-premium-delete" {
   metadata {
     name = "managed-premium-delete"
   }
-  parameters          = {
+  parameters = {
     storageaccounttype = "Premium_LRS"
     kind               = "Managed"
   }

@@ -81,7 +81,7 @@ variable "vnet_id" {
 
 variable "service_principal" {
   description = "Service principal used by AKS to interract with Azure API"
-  type        = object({
+  type = object({
     client_id     = string,
     client_secret = string,
     object_id     = string
@@ -90,13 +90,13 @@ variable "service_principal" {
 
 variable "addons" {
   description = "Kubernetes addons to enable /disable"
-  type        = object({
+  type = object({
     dashboard              = bool,
     oms_agent              = bool,
     oms_agent_workspace_id = string,
     policy                 = bool
   })
-  default     = {
+  default = {
     dashboard              = false,
     oms_agent              = true,
     oms_agent_workspace_id = null,
@@ -106,11 +106,11 @@ variable "addons" {
 
 variable "linux_profile" {
   description = "Username and ssh key for accessing AKS Linux nodes with ssh."
-  type        = object({
+  type = object({
     username = string,
     ssh_key  = string
   })
-  default     = null
+  default = null
 }
 
 variable "service_cidr" {
@@ -149,7 +149,7 @@ variable "managed_identities" {
 
 variable "diagnostics" {
   description = "Enable diagnostics logs on AKS (default true)"
-  type        = object({
+  type = object({
     enabled       = bool,
     destination   = string,
     eventhub_name = string,
@@ -166,12 +166,12 @@ variable "diag_custom_name" {
 
 variable "service_accounts" {
   description = "Optionnal list of service accounts to create and their roles."
-  type        = list(object({
+  type = list(object({
     name      = string,
     namespace = string,
     role      = string
   }))
-  default     = []
+  default = []
 }
 
 #

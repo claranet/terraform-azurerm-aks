@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "agic" {
   metadata {
-    name   = "system-agic"
+    name = "system-agic"
     labels = {
       deployed-by = "Terraform"
     }
@@ -49,21 +49,18 @@ resource "helm_release" "agic" {
 }
 
 resource "random_string" "aks-config" {
-  count   = lookup(local.appgw_ingress_settings, "appgw.shared", "false" ) == true ? 1 : 0
   length  = 10
   special = false
 }
 
 resource "null_resource" "install_crd" {
-  count = lookup(local.appgw_ingress_settings, "appgw.shared", "false") == true ? 1 : 0
-
   // Get AKS Credentials
   provisioner "local-exec" {
-    command = "az aks get-credentials --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.aks-config.0.result}"
+    command = "az aks get-credentials --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.aks-config.result}"
   }
 
   provisioner "local-exec" {
-    command     = "KUBECONFIG=/tmp/${random_string.aks-config.0.result} kubectl apply -f https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/crds/AzureIngressProhibitedTarget.yaml"
+    command     = "KUBECONFIG=/tmp/${random_string.aks-config.result} kubectl apply -f https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/crds/AzureIngressProhibitedTarget.yaml"
     interpreter = ["bash", "-c"]
   }
 }

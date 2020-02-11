@@ -45,12 +45,12 @@ locals {
 
 
   nodes_pools_with_defaults = [for ap in var.nodes_pools : merge(local.default_agent_profile, ap)]
-  nodes_pools               = [for ap in local.nodes_pools_with_defaults : ap.os_type == "Linux" ? merge(local.default_linux_node_profile, ap) : merge(local.default_windows_node_profile, ap)
+  nodes_pools = [for ap in local.nodes_pools_with_defaults : ap.os_type == "Linux" ? merge(local.default_linux_node_profile, ap) : merge(local.default_windows_node_profile, ap)
   ]
 
 
   # Diagnostic settings
-  diag_kube_logs    = [
+  diag_kube_logs = [
     "kube-apiserver",
     "kube-audit",
     "kube-controller-manager",
@@ -62,13 +62,13 @@ locals {
   ]
 
   diag_resource_list = var.diagnostics.enabled ? split("/", var.diagnostics.destination) : []
-  parsed_diag        = var.diagnostics.enabled ? {
+  parsed_diag = var.diagnostics.enabled ? {
     log_analytics_id   = contains(local.diag_resource_list, "microsoft.operationalinsights") ? var.diagnostics.destination : null
     storage_account_id = contains(local.diag_resource_list, "Microsoft.Storage") ? var.diagnostics.destination : null
     event_hub_auth_id  = contains(local.diag_resource_list, "Microsoft.EventHub") ? var.diagnostics.destination : null
     metric             = contains(var.diagnostics.metrics, "all") ? local.diag_kube_metrics : var.diagnostics.metrics
     log                = contains(var.diagnostics.logs, "all") ? local.diag_kube_logs : var.diagnostics.metrics
-  } : {
+    } : {
     log_analytics_id   = null
     storage_account_id = null
     event_hub_auth_id  = null

@@ -37,11 +37,11 @@ module "appgw" {
     request_timeout       = 1
     probe_name            = "dummy"
   }]
-  appgw_backend_pools         = [{
+  appgw_backend_pools = [{
     name  = "dummy"
     fqdns = ["dummy"]
   }]
-  appgw_probes                = [{
+  appgw_probes = [{
     host                                      = "dummy"
     interval                                  = 30
     minimum_servers                           = 0
@@ -53,7 +53,7 @@ module "appgw" {
     unhealthy_threshold                       = 3
     match_status_code                         = ["200"]
   }]
-  appgw_routings              = [{
+  appgw_routings = [{
     name                       = "dummy"
     rule_type                  = "Basic"
     http_listener_name         = "dummy"
@@ -61,18 +61,18 @@ module "appgw" {
     backend_http_settings_name = "dummy"
 
   }]
-  appgw_http_listeners        = [{
+  appgw_http_listeners = [{
     name                           = "dummy"
     frontend_ip_configuration_name = "dummy"
     frontend_port_name             = "dummy"
     protocol                       = "Http"
     host_name                      = "dummy"
   }]
-  frontend_port_settings      = [{
+  frontend_port_settings = [{
     name = "dummy"
     port = 80
   }]
-  ssl_certificates_configs    = []
+  ssl_certificates_configs = []
 
   app_gateway_tags = local.tags
   ip_tags          = local.tags
