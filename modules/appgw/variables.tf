@@ -164,3 +164,29 @@ variable "rule_set_type" {
 variable "rule_set_version" {
   default = "3.0"
 }
+
+variable "appgw_ingress_settings" {
+  description = "Application Gateway Ingress Controller settings"
+  type        = map(string)
+  default     = {}
+}
+
+variable "aks_aad_pod_identity_id" {
+  description = "AAD Identity id used by AKS"
+  type        = string
+}
+
+variable "aks_aad_pod_identity_client_id" {
+  description = "AAD Identity client_id used by AKS"
+  type        = string
+}
+
+variable "aks_aad_pod_identity_principal_id" {
+  description = "AAD Identity principal_id used by AKS"
+  type        = string
+}
+
+variable "aks_name" {
+  description = "Name of the AKS Cluster attached to this APPGW"
+  type        = string
+}

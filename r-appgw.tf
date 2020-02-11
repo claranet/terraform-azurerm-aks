@@ -41,7 +41,18 @@ module "appgw" {
     name  = "dummy"
     fqdns = ["dummy"]
   }]
-  appgw_probes                = []
+  appgw_probes                = [{
+    host                                      = "dummy"
+    interval                                  = 30
+    minimum_servers                           = 0
+    name                                      = "dummy"
+    path                                      = "/"
+    pick_host_name_from_backend_http_settings = false
+    protocol                                  = "Http"
+    timeout                                   = 30
+    unhealthy_threshold                       = 3
+    match_status_code                         = ["200"]
+  }]
   appgw_routings              = [{
     name                       = "dummy"
     rule_type                  = "Basic"
@@ -66,4 +77,9 @@ module "appgw" {
   app_gateway_tags = local.tags
   ip_tags          = local.tags
 
+  aks_aad_pod_identity_id           = azurerm_user_assigned_identity.aad_pod_identity.id
+  aks_aad_pod_identity_client_id    = azurerm_user_assigned_identity.aad_pod_identity.client_id
+  aks_aad_pod_identity_principal_id = azurerm_user_assigned_identity.aad_pod_identity.principal_id
+  appgw_ingress_settings            = var.appgw_ingress_controller_settings
+  aks_name                          = azurerm_kubernetes_cluster.aks.name
 }

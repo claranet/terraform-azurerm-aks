@@ -194,3 +194,10 @@ variable "appgw_policy_name" {
   type        = string
   default     = "AppGwSslPolicy20170401S"
 }
+
+
+variable "appgw_ingress_controller_settings" {
+  description = "Application Gateway Ingress Controller settings"
+  type        = map(string)
+  default     = {}
+}

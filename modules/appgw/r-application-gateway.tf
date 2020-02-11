@@ -33,33 +33,40 @@ resource "azurerm_application_gateway" "app_gateway" {
     subnet_id = var.app_gateway_subnet_id
   }
 
-  waf_configuration {
-    enabled                  = var.enabled_waf
-    file_upload_limit_mb     = var.file_upload_limit_mb
-    firewall_mode            = var.firewall_mode
-    max_request_body_size_kb = var.max_request_body_size_kb
-    request_body_check       = var.request_body_check
-    rule_set_type            = var.rule_set_type
-    rule_set_version         = var.rule_set_version
+  /*
+    Azure seems to don't take care of enabled = false and throw an error
+    about wrong SKU to use with WAF. So we dynamically disable it
+  */
+  dynamic "waf_configuration" {
+    for_each = var.enabled_waf ? ["fake"] : []
+    content {
+      enabled                  = var.enabled_waf
+      file_upload_limit_mb     = coalesce(var.file_upload_limit_mb, 100)
+      firewall_mode            = coalesce(var.firewall_mode, "Prevention")
+      max_request_body_size_kb = coalesce(var.max_request_body_size_kb, 128)
+      request_body_check       = var.request_body_check
+      rule_set_type            = var.rule_set_type
+      rule_set_version         = var.rule_set_version
 
-    dynamic "disabled_rule_group" {
-      for_each = var.disabled_rule_group_settings
-      content {
-        rule_group_name = lookup(disabled_rule_group.value, "rule_group_name")
-        rules           = lookup(disabled_rule_group.value, "rules")
+      dynamic "disabled_rule_group" {
+        for_each = var.disabled_rule_group_settings
+        content {
+          rule_group_name = lookup(disabled_rule_group.value, "rule_group_name")
+          rules           = lookup(disabled_rule_group.value, "rules")
+        }
+      }
+
+      dynamic "exclusion" {
+        for_each = var.waf_exclusion_settings
+        content {
+          match_variable          = lookup(exclusion.value, "match_variable")
+          selector                = lookup(exclusion.value, "selector")
+          selector_match_operator = lookup(exclusion.value, "selector_match_operator")
+        }
       }
     }
-
-    dynamic "exclusion" {
-      for_each = var.waf_exclusion_settings
-      content {
-        match_variable          = lookup(exclusion.value, "match_variable")
-        selector                = lookup(exclusion.value, "selector")
-        selector_match_operator = lookup(exclusion.value, "selector_match_operator")
-      }
-    }
-
   }
+
 
   ssl_policy {
     policy_type = "Predefined"
@@ -82,7 +89,7 @@ resource "azurerm_application_gateway" "app_gateway" {
       pick_host_name_from_backend_address = lookup(backend_http_settings.value, "pick_host_name_from_backend_address", true)
       host_name                           = lookup(backend_http_settings.value, "host_name", null)
       port                                = lookup(backend_http_settings.value, "port", 443)
-      protocol                            = "Https"
+      protocol                            = lookup(backend_http_settings.value, "protocol", "Https")
       request_timeout                     = lookup(backend_http_settings.value, "request_timeout", 20)
       trusted_root_certificate_names      = lookup(backend_http_settings.value, "trusted_root_certificate_names", [])
     }
@@ -214,7 +221,7 @@ resource "azurerm_application_gateway" "app_gateway" {
       interval            = 30
       name                = lookup(probe.value, "name")
       path                = lookup(probe.value, "path", "/")
-      protocol            = "Https"
+      protocol            = lookup(probe.value, "protocol", "Https")
       timeout             = 30
       unhealthy_threshold = 3
       match {
@@ -263,4 +270,21 @@ resource "azurerm_application_gateway" "app_gateway" {
   }
 
   tags = var.app_gateway_tags
+
+  // Ignore most changes as they should be managed by AKS ingress controller
+  lifecycle {
+    ignore_changes = [
+      backend_address_pool,
+      backend_http_settings,
+      frontend_port,
+      http_listener,
+      probe,
+      request_routing_rule,
+      url_path_map,
+      ssl_certificate,
+      redirect_configuration,
+      autoscale_configuration,
+      tags
+    ]
+  }
 }
