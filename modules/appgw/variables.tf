@@ -16,7 +16,7 @@ variable "ip_label" {}
 
 variable "ip_sku" {
   type    = string
-  default = "Basic"
+  default = "Standard"
 }
 
 variable "ip_allocation_method" {
