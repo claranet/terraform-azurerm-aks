@@ -1,4 +1,4 @@
-# Azure AKS
+# Azure Kubernetes Service
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/)
 
 This terraform module create an [Azure AKS](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and associated [Azure Application Gateway](https://azure.microsoft.com/fr-fr/services/application-gateway/) as ingress controller.
@@ -47,18 +47,18 @@ module "rg" {
 }
 
 module "azure-virtual-network" {
-   source  = "claranet/vnet/azurerm"
-   version = "x.x.x"
+  source  = "claranet/vnet/azurerm"
+  version = "x.x.x"
 
-   environment    = var.environment
-   location       = module.azure-region.location
-   location_short = module.azure-region.location_short
-   client_name    = var.client_name
-   stack          = var.stack
+  environment    = var.environment
+  location       = module.azure-region.location
+  location_short = module.azure-region.location_short
+  client_name    = var.client_name
+  stack          = var.stack
 
-   resource_group_name = module.rg.resource_group_name
+  resource_group_name = module.rg.resource_group_name
 
-   vnet_cidr = ["10.0.0.0/19"]
+  vnet_cidr = ["10.0.0.0/19"]
 
 }
 
@@ -77,88 +77,125 @@ module "azure-network-subnet" {
   subnet_cidr_list = ["10.0.0.0/20", "10.0.20.0/24"]
 
   service_endpoints = ["Microsoft.Storage"]
+  #  network_security_group_count = "1"
+  #  network_security_group_ids = var.network_security_group_ids
+
 }
 
 module "aks" {
-    source  = "claranet/aks/azurerm"
-    version = "x.x.x"
+  source  = "claranet/aks/azurerm"
+  version = "x.x.x"
 
-    client_name = var.client_name
-    environment = var.environment
-    stack       = var.stack
+  client_name = var.client_name
+  environment = var.environment
+  stack       = var.stack
 
-    resource_group_name = module.rg.resource_group_name
-    location            = module.azure-region.location
-    location_short      = module.azure-region.location_short
+  resource_group_name = module.rg.resource_group_name
+  location            = module.azure-region.location
+  location_short      = module.azure-region.location_short
 
-    service_cidr       = "10.0.16.0/22"
-    kubernetes_version = "1.14.8"
+  service_cidr       = "10.0.16.0/22"
+  kubernetes_version = "1.14.8"
 
-    service_principal =  {
-      object_id     = "aks_sp_object_id"
-      client_id     =  "aks_sp_client_id"
-      client_secret = "aks_sp_client_secret"
+  service_principal = {
+    object_id     = azuread_service_principal.aks-sp.object_id
+    client_id     = azuread_service_principal.aks-sp.application_id
+    client_secret = random_password.aks-sp.result
+  }
+
+  vnet_id         = module.azure-virtual-network.virtual_network_id
+  nodes_subnet_id = module.azure-network-subnet.subnet_ids[0]
+  nodes_pools = [
+    {
+      name            = "pool1"
+      count           = 1
+      vm_size         = "Standard_D1_v2"
+      os_type         = "Linux"
+      os_disk_size_gb = 30
+      vnet_subnet_id  = module.azure-network-subnet.subnet_ids[0]
+    },
+    {
+      name               = "bigpool1"
+      count              = 3
+      vm_size            = "Standard_F8S_v2"
+      os_type            = "Linux"
+      os_disk_size_gb    = 30
+      vnet_subnet_id     = module.azure-network-subnet.subnet_ids[0]
+      enable_autoscaling = true
+      min_count          = 3
+      max_count          = 9
     }
 
-    vnet_id         = module.azure-virtual-network.virtual_network_id
-    nodes_subnet_id = module.azure-network-subnet.subnet_ids[0]
-    nodes_pools     = [
-        {
-         name            = "pool1"
-         count           = 1
-         vm_size         = "Standard_D1_v2"
-         os_type         = "Linux"
-         os_disk_size_gb = 30
-         vnet_subnet_id  = module.azure-network-subnet.subnet_ids[0]
-        },
-        {
-         name               = "bigpool1"
-         count              = 3
-         vm_size            = "Standard_FS8_v2"
-         os_type            = "Linux"
-         os_disk_size_gb    = 30
-         vnet_subnet_id     = module.azure-network-subnet.subnet_ids[0]
-         enable_autoscaling = true
-         min_count          = 3
-         max_count          = 9
-         
-        }
-    ]
+  ]
 
-    linux_profile = {
-        username = "user"
-        ssh_key  = file("~/.ssh/id_rsa.pub")
-    }
+  linux_profile = {
+    username = "user"
+    ssh_key  = file("~/.ssh/id_rsa.pub")
+  }
 
-   addons = {
-     dashboard              = false,
-     oms_agent              = true,
-     oms_agent_workspace_id = azurerm_log_analytics_workspace.aks-workspace.id
-     policy                 = false
-   }
+  addons = {
+    dashboard              = false,
+    oms_agent              = true,
+    oms_agent_workspace_id = module.global_run.log_analytics_workspace_id
+    policy                 = false
+  }
 
   diagnostics = {
     enabled       = true
-    destination   = azurerm_log_analytics_workspace.aks-workspace.id
+    destination   = module.global_run.log_analytics_workspace_id
     eventhub_name = null
     logs          = ["all"]
     metrics       = ["all"]
   }
 
-  appgw_subnet_id = module.azure-network-subnet.subnet_ids[1]
+  appgw_subnet_id   = module.azure-network-subnet.subnet_ids[1]
 
-  appgw_ingress_controller_settings = { verbosityLevel = "5", "appgw.shared" = "true" }
-  cert_manager_settings             = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default" , "webhook.nodeSelector.agentpool" = "default" }
+  appgw_ingress_controller_settings = { "verbosityLevel" = "5", "appgw.shared" = "true" }
+  cert_manager_settings             = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
   velero_storage_settings           = { allowed_cidrs = local.allowed_cidrs }
 
 }
 
-resource "azurerm_log_analytics_workspace" "aks-workspace" {
-  name                = "MyGreatWorkSpace"
-  location            = module.azure-region.location
+module "global_run" {
+  source = "claranet/run-common/azurerm"
+
+  client_name    = var.client_name
+  location       = module.azure-region.location
+  location_short = module.azure-region.location_short
+  environment    = var.environment
+  stack          = var.stack
+
   resource_group_name = module.rg.resource_group_name
-  sku                 = "PerGB2018"
-  retention_in_days   = 30
+
+  tenant_id = var.azure_tenant_id
+
+}
+provider "azuread" {}
+
+resource "azuread_application" "aks-sp" {
+  name = "MySPName"
+}
+
+resource "azuread_service_principal" "aks-sp" {
+  application_id = azuread_application.aks-sp.id
+}
+
+resource "random_password" "aks-sp" {
+  length  = 32
+  special = true
+}
+
+resource "azuread_service_principal_password" "aks-sp" {
+  service_principal_id = azuread_service_principal.aks-sp.id
+  value                = random_password.aks-sp.result
+}
+
+data "azurerm_subscription" "current" {}
+
+resource "azurerm_role_assignment" "aks-sp-contributor" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Contributor"
+  principal_id         = azuread_service_principal.aks-sp.object_id
 }
 ```
 
