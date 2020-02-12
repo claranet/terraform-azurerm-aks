@@ -1,7 +1,7 @@
 # Azure Kubernetes Service
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/)
 
-This terraform module create an [Azure AKS](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and associated [Azure Application Gateway](https://azure.microsoft.com/fr-fr/services/application-gateway/) as ingress controller.
+This terraform module create an [Azure Kubernetes Service](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and associated [Azure Application Gateway](https://azure.microsoft.com/fr-fr/services/application-gateway/) as ingress controller.
 
 Inside the cluster, velero, kured and cert-manager are also installed.
 
@@ -257,7 +257,7 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 
 ## Related documentation
 
-- Azure AKS documentation : [docs.microsoft.com/en-us/azure/aks/](https://docs.microsoft.com/en-us/azure/aks/)
+- Azure Kubernetes Service documentation : [docs.microsoft.com/en-us/azure/aks/](https://docs.microsoft.com/en-us/azure/aks/)
 - Terraform AKS resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html)
 - Terraform AKS Node pool resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html)
 - Terraform Kubernetes provider documentation: [www.terraform.io/docs/providers/kubernetes/index.html](https://www.terraform.io/docs/providers/kubernetes/index.html)
