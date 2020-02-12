@@ -5,10 +5,11 @@ AZURE_TENANT_ID = ${data.azurerm_subscription.current.tenant_id}
 AZURE_CLIENT_ID = ${var.service_principal.client_id}
 AZURE_CLIENT_SECRET = ${var.service_principal.client_secret}
 AZURE_RESOURCE_GROUP = ${azurerm_kubernetes_cluster.aks.node_resource_group}
+AZURE_CLOUD_NAME = AzurePublicCloud
 EOF
 
   storage_defaults_settings = {
-    name                     = "${local.aks_name}-velero"
+    name                     = lower(substr(replace("velero${var.stack}${var.client_name}${var.location_short}${var.environment}", "/[._\\- ]/", ""), 0, 24))
     resource_group_name      = var.resource_group_name
     location                 = var.location
     account_tier             = "Premium"
@@ -34,11 +35,18 @@ EOF
     "metrics.enabled"                                           = "false"
     "rbac.create"                                               = "true"
     "schedules.daily.schedule"                                  = "0 23 * * *"
-    "schedules.daily.template.includedNamespaces.0"             = "*"
+    "schedules.daily.template.includedNamespaces"               = "{'*'}"
     "schedules.daily.template.snapshotVolumes"                  = "true"
     "schedules.daily.template.ttl"                              = "240h"
     "serviceAccount.server.create"                              = "true"
     "snapshotsEnabled"                                          = "true"
+    "initContainers[0].name"                                    = "velero-plugin-for-azure"
+    "initContainers[0].image"                                   = "velero/velero-plugin-for-microsoft-azure:v1.0.0"
+    "initContainers[0].volumeMounts[0].mountPath"               = "/target"
+    "initContainers[0].volumeMounts[0].name"                    = "plugins"
+    "image.repository"                                          = "velero/velero"
+    "image.tag"                                                 = "v1.2.0"
+    "image.pullPolicy"                                          = "IfNotPresent"
   }
 
 

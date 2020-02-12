@@ -11,6 +11,7 @@ Inside the cluster, velero, kured and cert-manager are also installed.
   * [Azurerm Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.42
   * [Helm terraform provider](https://registry.terraform.io/providers/hashicorp/helm/1.0.0) >= 1.0.0
   * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+  * A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the nodes subnet
   
 ## Terraform version compatibility
 

@@ -1,6 +1,6 @@
 locals {
   kured_default_values = {
-    "image.repository"         = "weaveworks/kured"
+    "image.repository" = "weaveworks/kured"
     # To change when 1.3.0 will be released
     "image.tag"                = "master-f6e4062"
     "image.pullPolicy"         = "IfNotPresent"
