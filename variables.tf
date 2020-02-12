@@ -241,3 +241,9 @@ variable "velero_settings" {
   type        = map(string)
   default     = {}
 }
+
+variable "aadpodidentity_values" {
+  description = "(Optional) Settings for Add Pod identity helm Chart"
+  type        = map(string)
+  default     = {}
+}
