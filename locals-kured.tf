@@ -1,5 +1,5 @@
 locals {
-  kured_default_settings = {
+  kured_default_values = {
     "image.repository"         = "weaveworks/kured"
     # To change when 1.3.0 will be released
     "image.tag"                = "master-f6e4062"
@@ -14,5 +14,5 @@ locals {
     "autolock.enabled"         = "false"
   }
 
-  kured_settings = merge(local.kured_default_settings, var.kured_settings)
+  kured_values = merge(local.kured_default_values, var.kured_settings)
 }

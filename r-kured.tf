@@ -7,7 +7,7 @@ resource "helm_release" "kured" {
   # Forced to kube-system due to Chart specificity
 
   dynamic "set" {
-    for_each = local.kured_settings
+    for_each = local.kured_values
     iterator = setting
     content {
       name  = setting.key

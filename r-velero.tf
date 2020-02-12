@@ -51,10 +51,10 @@ resource "helm_release" "velero" {
   chart      = "velero"
   repository = "stable"
   namespace  = kubernetes_namespace.velero.0.metadata.0.name
-  version    = local.velero_settings.version
+  version    = local.velero_values.version
 
   dynamic "set" {
-    for_each = local.velero_settings
+    for_each = local.velero_values
     iterator = setting
     content {
       name  = setting.key
