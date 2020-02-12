@@ -1,6 +1,9 @@
 resource "kubernetes_namespace" "add_pod_identity" {
   metadata {
     name = "system-aadpodid"
+    labels = {
+      deployed-by = "Terraform"
+    }
   }
 }
 

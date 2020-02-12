@@ -36,11 +36,8 @@ locals {
   default_node_pool = merge(local.default_agent_profile, var.default_node_pool)
 
   tags = {
-    env           = var.environment
-    stack         = var.stack
-    dd_monitoring = "enabled"
-    dd_kubernetes = "enabled"
-
+    env   = var.environment
+    stack = var.stack
   }
 
 
@@ -50,16 +47,8 @@ locals {
 
 
   # Diagnostic settings
-  diag_kube_logs = [
-    "kube-apiserver",
-    "kube-audit",
-    "kube-controller-manager",
-    "kube-scheduler",
-    "cluster-autoscaler",
-  ]
-  diag_kube_metrics = [
-    "AllMetrics",
-  ]
+  diag_kube_logs    = data.azurerm_monitor_diagnostic_categories.aks-diag-categories.logs
+  diag_kube_metrics = data.azurerm_monitor_diagnostic_categories.aks-diag-categories.metrics
 
   diag_resource_list = var.diagnostics.enabled ? split("/", var.diagnostics.destination) : []
   parsed_diag = var.diagnostics.enabled ? {

@@ -48,7 +48,7 @@ resource "helm_release" "agic" {
   }
 }
 
-resource "random_string" "aks-config" {
+resource "random_string" "kube-config-file-name" {
   length  = 10
   special = false
 }
@@ -56,11 +56,11 @@ resource "random_string" "aks-config" {
 resource "null_resource" "install_crd" {
   // Get AKS Credentials
   provisioner "local-exec" {
-    command = "az aks get-credentials --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.aks-config.result}"
+    command = "az aks get-credentials --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.kube-config-file-name.result}"
   }
 
   provisioner "local-exec" {
-    command     = "KUBECONFIG=/tmp/${random_string.aks-config.result} kubectl apply -f https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/crds/AzureIngressProhibitedTarget.yaml"
+    command     = "KUBECONFIG=/tmp/${random_string.kube-config-file-name.result} kubectl apply -f https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/crds/AzureIngressProhibitedTarget.yaml"
     interpreter = ["bash", "-c"]
   }
 }

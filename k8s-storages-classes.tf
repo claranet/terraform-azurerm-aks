@@ -11,6 +11,19 @@ resource "kubernetes_storage_class" "managed-standard-retain" {
   }
 }
 
+resource "kubernetes_storage_class" "managed-standard-delete" {
+  storage_provisioner    = "kubernetes.io/azure-disk"
+  allow_volume_expansion = true
+  metadata {
+    name = "standard-hdd-delete"
+  }
+  reclaim_policy = "Delete"
+  parameters = {
+    storageaccounttype = "Standard_LRS"
+    kind               = "Managed"
+  }
+}
+
 resource "kubernetes_storage_class" "managed-premium-retain" {
   storage_provisioner    = "kubernetes.io/azure-disk"
   allow_volume_expansion = true
@@ -29,13 +42,9 @@ resource "kubernetes_storage_class" "managed-premium-delete" {
   metadata {
     name = "managed-premium-delete"
   }
+  reclaim_policy = "Delete"
   parameters = {
     storageaccounttype = "Premium_LRS"
     kind               = "Managed"
   }
 }
-
-/*
-We don't create managed-standard-delete because it's the default storage class
-provided with Azure Kubernetes Service.
-*/
