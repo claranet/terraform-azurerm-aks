@@ -6,8 +6,6 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  version = "~> 1.0.0"
-
   kubernetes {
     config_path = "/dev/null"
 
