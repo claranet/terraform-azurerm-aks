@@ -31,7 +31,7 @@ data "helm_repository" "agic" {
 data "azurerm_subscription" "current" {}
 
 resource "helm_release" "agic" {
-  depends_on = [azurerm_role_assignment.agic, azurerm_role_assignment.agic-rg]
+  depends_on = [azurerm_role_assignment.agic, azurerm_role_assignment.agic-rg, null_resource.install_crd]
   name       = "ingress-azure"
   repository = data.helm_repository.agic.metadata.0.name
   chart      = "ingress-azure"
@@ -53,6 +53,7 @@ resource "random_string" "kube-config-file-name" {
   special = false
 }
 
+// FIXME https://github.com/Azure/application-gateway-kubernetes-ingress/issues/720
 resource "null_resource" "install_crd" {
   // Get AKS Credentials
   provisioner "local-exec" {

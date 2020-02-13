@@ -28,7 +28,7 @@ resource "azurerm_storage_account" "velero" {
   account_replication_type = local.velero_storage.account_replication_type
   account_kind             = "BlockBlobStorage"
 
-  tags = local.velero_storage.tags
+  tags = merge(local.default_tags, local.velero_storage.tags)
 
   network_rules {
     default_action             = "Deny"

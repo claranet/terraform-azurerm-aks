@@ -1,5 +1,5 @@
 locals {
-  appgw_ingress_default_settings = {
+  appgw_ingress_default_values = {
     "appgw.resourceGroup"        = azurerm_application_gateway.app_gateway.resource_group_name,
     "appgw.subscriptionId"       = data.azurerm_subscription.current.subscription_id,
     "appgw.usePrivateIP"         = "false",
@@ -11,5 +11,5 @@ locals {
     "verbosityLevel"             = "1"
   }
 
-  appgw_ingress_settings = merge(local.appgw_ingress_default_settings, var.appgw_ingress_settings)
+  appgw_ingress_settings = merge(local.appgw_ingress_default_values, var.appgw_ingress_values)
 }

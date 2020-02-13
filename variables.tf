@@ -189,7 +189,7 @@ variable "appgw_subnet_id" {
   type        = string
 }
 
-variable "appgw_ingress_controller_settings" {
+variable "appgw_ingress_controller_values" {
   description = "(Optional) Application Gateway Ingress Controller settings"
   type        = map(string)
   default     = {}

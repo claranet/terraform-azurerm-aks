@@ -148,7 +148,7 @@ module "aks" {
 
   appgw_subnet_id   = module.azure-network-subnet.subnet_ids[1]
 
-  appgw_ingress_controller_settings = { "verbosityLevel" = "5", "appgw.shared" = "true" }
+  appgw_ingress_controller_values   = { "verbosityLevel" = "5", "appgw.shared" = "true" }
   cert_manager_settings             = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
   velero_storage_settings           = { allowed_cidrs = local.allowed_cidrs }
 

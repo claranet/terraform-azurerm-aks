@@ -40,6 +40,6 @@ module "appgw" {
   aks_aad_pod_identity_id           = azurerm_user_assigned_identity.aad_pod_identity.id
   aks_aad_pod_identity_client_id    = azurerm_user_assigned_identity.aad_pod_identity.client_id
   aks_aad_pod_identity_principal_id = azurerm_user_assigned_identity.aad_pod_identity.principal_id
-  appgw_ingress_settings            = var.appgw_ingress_controller_settings
+  appgw_ingress_values              = var.appgw_ingress_controller_values
   aks_name                          = azurerm_kubernetes_cluster.aks.name
 }

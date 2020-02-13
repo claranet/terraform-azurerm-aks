@@ -287,4 +287,5 @@ resource "azurerm_application_gateway" "app_gateway" {
       tags
     ]
   }
+
 }

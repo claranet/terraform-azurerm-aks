@@ -165,7 +165,7 @@ variable "rule_set_version" {
   default = "3.0"
 }
 
-variable "appgw_ingress_settings" {
+variable "appgw_ingress_values" {
   description = "Application Gateway Ingress Controller settings"
   type        = map(string)
   default     = {}
