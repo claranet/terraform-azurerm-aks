@@ -1,7 +1,7 @@
 resource "kubernetes_namespace" "cert-manager" {
   count = var.enable_cert_manager ? 1 : 0
   metadata {
-    name = local.cert_manager_values.namespace
+    name = var.cert_manager_namespace
     labels = {
       deployed-by = "Terraform"
     }
@@ -14,7 +14,7 @@ resource "helm_release" "cert-manager" {
   chart      = "cert-manager"
   repository = data.helm_repository.jetstack.metadata.0.name
   namespace  = kubernetes_namespace.cert-manager.0.metadata.0.name
-  version    = local.cert_manager_values.chart_version
+  version    = var.cert_manager_chart_version
   dynamic "set" {
     for_each = local.cert_manager_values
     iterator = setting

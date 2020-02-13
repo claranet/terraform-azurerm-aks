@@ -1,7 +1,5 @@
 locals {
   aadpodidentity_default_values = {
-    chart_version                = "1.5.5"
-    namespace                    = "system-aadpodid"
     "nmi.nodeSelector.agentpool" = "default",
     "mic.nodeSelector.agentpool" = "default",
     "azureIdentity.enabled"      = "true",

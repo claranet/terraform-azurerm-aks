@@ -206,6 +206,18 @@ variable "cert_manager_settings" {
   default     = {}
 }
 
+variable "cert_manager_namespace" {
+  description = "(Optional) Kubernetes namespace in which to deploy Cert Manager"
+  type        = string
+  default     = "system-cert-manager"
+}
+
+variable "cert_manager_chart_version" {
+  description = "(Optional) Cert Manager helm chart version to use"
+  type        = string
+  default     = "v0.13.0"
+}
+
 variable "enable_kured" {
   description = "(Optional) Enable kured daemon on AKS cluster"
   type        = bool
@@ -229,16 +241,40 @@ variable "velero_storage_settings" {
   default     = {}
 }
 
-variable "velero_settings" {
+variable "velero_values" {
   description = "(Optional) Settings for Velero helm chart"
   type        = map(string)
   default     = {}
+}
+
+variable "velero_namespace" {
+  description = "(Optional) Kubernetes namespace in which to deploy Velero"
+  type        = string
+  default     = "system-velero"
+}
+
+variable "velero_chart_version" {
+  description = "(Optional) Velero helm chart version to use"
+  type        = string
+  default     = "2.7.3"
 }
 
 variable "aadpodidentity_values" {
   description = "(Optional) Settings for Add Pod identity helm Chart"
   type        = map(string)
   default     = {}
+}
+
+variable "aadpodidentity_namespace" {
+  description = "(Optional) Kubernetes namespace in which to deploy AAD Pod Identity"
+  type        = string
+  default     = "system-aadpodid"
+}
+
+variable "aadpodidentity_chart_version" {
+  description = "(Optional) AAD Pod Identity helm chart version to use"
+  type        = string
+  default     = "1.5.5"
 }
 
 variable "appgw_settings" {

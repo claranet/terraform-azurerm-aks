@@ -199,22 +199,25 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 
 ## Inputs
 
-
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
+| aadpodidentity\_chart\_version | (Optional) AAD Pod Identity helm chart version to use | `string` | `"1.5.5"` | no |
+| aadpodidentity\_namespace | (Optional) Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | (Optional) Settings for Add Pod identity helm Chart | `map(string)` | `{}` | no |
 | addons | (Optional) Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
 | api\_server\_authorized\_ip\_ranges | (Optional) Ip ranges allowed to interract with Kubernetes API. Default no restrictions | `list(string)` | `[]` | no |
-| appgw\_ingress\_controller\_settings | (Optional) Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
+| appgw\_ingress\_controller\_values | (Optional) Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
 | appgw\_settings | (Optional) Application gateway configuration settings. Default dummy configuration | `map(any)` | `{}` | no |
 | appgw\_subnet\_id | Application gateway subnet id | `string` | n/a | yes |
+| cert\_manager\_chart\_version | (Optional) Cert Manager helm chart version to use | `string` | `"v0.13.0"` | no |
+| cert\_manager\_namespace | (Optional) Kubernetes namespace in which to deploy Cert Manager | `string` | `"system-cert-manager"` | no |
 | cert\_manager\_settings | (Optional) Settings for cert-manager helm chart | `map(string)` | `{}` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | container\_registries | (Optional) List of Azure Container Registries ids where AKS needs pull access. | `list(string)` | `[]` | no |
 | custom\_aks\_name | (Optional) Custom aks name | `string` | `""` | no |
 | custom\_appgw\_name | (Optional) Custom name for aks ingress application gateway | `string` | `""` | no |
 | default\_node\_pool | (Optional) Default node pool configuration | `map(any)` | `{}` | no |
-| diag\_custom\_name | (Optionnal) Custom name for Azure Diagnostics for AKS. | `string` | null | no |
+| diag\_custom\_name | (Optionnal) Custom name for Azure Diagnostics for AKS. | `string` | n/a | no |
 | diagnostics | Enable diagnostics logs on AKS | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })</pre> | n/a | yes |
 | docker\_bridge\_cidr | (Optional) IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
 | enable\_cert\_manager | (Optional) Enable cert-manager on AKS cluster | `bool` | `true` | no |
@@ -229,7 +232,8 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 | location | Azure region to use | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use | `any` | n/a | yes |
 | managed\_identities | (Optional) List of managed identities where the AKS service principal should have access. | `list(string)` | `[]` | no |
-| node\_resource\_group | (Optional) Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | null | no |
+| name\_prefix | (Optional) prefix used in naming | `string` | `""` | no |
+| node\_resource\_group | (Optional) Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | n/a | no |
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
@@ -238,8 +242,10 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 | service\_principal | Service principal used by AKS to interract with Azure API | <pre>object({<br>    client_id     = string,<br>    client_secret = string,<br>    object_id     = string<br>  })</pre> | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
 | storage\_contributor | (Optional) List of storage accounts ids where the AKS service principal should have access. | `list(string)` | `[]` | no |
-| velero\_settings | (Optional) Settings for Velero helm chart | `map(string)` | `{}` | no |
+| velero\_chart\_version | (Optional) Velero helm chart version to use | `string` | `"2.7.3"` | no |
+| velero\_namespace | (Optional) Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
 | velero\_storage\_settings | (Optional) Settings for Storage account and blob container for Velero | `map(any)` | `{}` | no |
+| velero\_values | (Optional) Settings for Velero helm chart | `map(string)` | `{}` | no |
 | vnet\_id | Id of the vnet used for AKS | `string` | n/a | yes |
 
 ## Outputs
@@ -254,6 +260,7 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 | aks\_nodes\_pools\_names | Names of AKS nodes pools |
 | aks\_nodes\_rg | Name of the resource group in which AKS nodes are deployed |
 | application\_gateway\_id | Id of the application gateway used by AKS |
+
 
 ## Related documentation
 

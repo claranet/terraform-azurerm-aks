@@ -19,9 +19,8 @@ EOF
     container_name           = "velero"
   }
 
+
   velero_default_values = {
-    chart_version                                               = "2.7.3"
-    namespace                                                   = "system-velero"
     "configuration.backupStorageLocation.bucket"                = azurerm_storage_container.velero.0.name
     "configuration.backupStorageLocation.config.resourceGroup"  = azurerm_storage_account.velero.0.resource_group_name
     "configuration.backupStorageLocation.config.storageAccount" = azurerm_storage_account.velero.0.name
@@ -53,5 +52,5 @@ EOF
 
   velero_credentials = local.credentials
   velero_storage     = merge(local.storage_defaults_settings, var.velero_storage_settings)
-  velero_values      = merge(local.velero_default_values, var.velero_settings)
+  velero_values      = merge(local.velero_default_values, var.velero_values)
 }
