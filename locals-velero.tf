@@ -9,7 +9,7 @@ AZURE_CLOUD_NAME = AzurePublicCloud
 EOF
 
   storage_defaults_settings = {
-    name                     = lower(substr(replace("velero${var.stack}${var.client_name}${var.location_short}${var.environment}", "/[._\\- ]/", ""), 0, 24))
+    name                     = lower(substr(replace("velero${local.name_prefix}${var.stack}${var.client_name}${var.location_short}${var.environment}", "/[._\\- ]/", ""), 0, 24))
     resource_group_name      = var.resource_group_name
     location                 = var.location
     account_tier             = "Premium"

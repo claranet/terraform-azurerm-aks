@@ -246,3 +246,9 @@ variable "appgw_settings" {
   type        = map(any)
   default     = {}
 }
+
+variable "name_prefix" {
+  description = "(Optional) prefix used in naming"
+  type        = string
+  default     = ""
+}

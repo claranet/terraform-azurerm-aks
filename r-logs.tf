@@ -1,6 +1,6 @@
 resource "azurerm_monitor_diagnostic_setting" "aks" {
   count                          = var.diagnostics.enabled ? 1 : 0
-  name                           = var.diag_custom_name == null ? "${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-aks-diag" : var.diag_custom_name
+  name                           = var.diag_custom_name == null ? "${local.name_prefix}${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-aks-diag" : var.diag_custom_name
   target_resource_id             = azurerm_kubernetes_cluster.aks.id
   log_analytics_workspace_id     = local.parsed_diag.log_analytics_id
   eventhub_authorization_rule_id = local.parsed_diag.event_hub_auth_id
