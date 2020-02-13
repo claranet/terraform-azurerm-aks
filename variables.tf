@@ -42,7 +42,7 @@ variable "resource_group_name" {
 variable "kubernetes_version" {
   description = "Version of Kubernetes to deploy"
   type        = string
-
+  default     = "1.15.7"
 }
 
 variable "api_server_authorized_ip_ranges" {
