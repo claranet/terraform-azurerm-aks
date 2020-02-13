@@ -1,13 +1,16 @@
 module "appgw" {
   source = "./modules/appgw"
 
-  stack       = var.stack
-  environment = var.environment
-  location    = var.location
+  stack          = var.stack
+  environment    = var.environment
+  location       = var.location
+  location_short = var.location_short
+  client_name    = var.client_name
 
   name                  = local.appgw_name
   rg_name               = var.resource_group_name
   app_gateway_subnet_id = var.appgw_subnet_id
+  diagnostics           = var.diagnostics
 
   ip_name                        = local.appgw_settings.ip_name
   ip_label                       = local.appgw_settings.ip_label

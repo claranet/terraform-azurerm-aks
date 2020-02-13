@@ -1,4 +1,12 @@
 # Common inputs
+variable "location_short" {
+  description = "Short name of Azure regions to use"
+}
+
+variable "client_name" {
+  description = "Client name/account used in naming"
+  type        = string
+}
 
 variable "location" {}
 
@@ -189,4 +197,27 @@ variable "aks_aad_pod_identity_principal_id" {
 variable "aks_name" {
   description = "Name of the AKS Cluster attached to this APPGW"
   type        = string
+}
+
+variable "diagnostics" {
+  description = "Enable diagnostics logs on AKS"
+  type = object({
+    enabled       = bool,
+    destination   = string,
+    eventhub_name = string,
+    logs          = list(string),
+    metrics       = list(string)
+  })
+}
+
+variable "name_prefix" {
+  description = "(Optional) prefix used in naming"
+  type        = string
+  default     = ""
+}
+
+variable "diag_custom_name" {
+  description = "(Optionnal) Custom name for Azure Diagnostics for AKS."
+  type        = string
+  default     = null
 }
