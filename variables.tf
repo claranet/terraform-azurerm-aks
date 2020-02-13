@@ -189,13 +189,6 @@ variable "appgw_subnet_id" {
   type        = string
 }
 
-variable "appgw_policy_name" {
-  description = "(Optionnal) Name of the ssl policy to apply on the application gateway"
-  type        = string
-  default     = "AppGwSslPolicy20170401S"
-}
-
-
 variable "appgw_ingress_controller_settings" {
   description = "(Optional) Application Gateway Ingress Controller settings"
   type        = map(string)
@@ -245,5 +238,11 @@ variable "velero_settings" {
 variable "aadpodidentity_values" {
   description = "(Optional) Settings for Add Pod identity helm Chart"
   type        = map(string)
+  default     = {}
+}
+
+variable "appgw_settings" {
+  description = "(Optional) Application gateway configuration settings. Default dummy configuration"
+  type        = map(any)
   default     = {}
 }

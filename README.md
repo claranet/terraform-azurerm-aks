@@ -77,8 +77,6 @@ module "azure-network-subnet" {
   subnet_cidr_list = ["10.0.0.0/20", "10.0.20.0/24"]
 
   service_endpoints = ["Microsoft.Storage"]
-  #  network_security_group_count = "1"
-  #  network_security_group_ids = var.network_security_group_ids
 
 }
 
@@ -115,15 +113,15 @@ module "aks" {
       vnet_subnet_id  = module.azure-network-subnet.subnet_ids[0]
     },
     {
-      name               = "bigpool1"
-      count              = 3
-      vm_size            = "Standard_F8S_v2"
-      os_type            = "Linux"
-      os_disk_size_gb    = 30
-      vnet_subnet_id     = module.azure-network-subnet.subnet_ids[0]
-      enable_autoscaling = true
-      min_count          = 3
-      max_count          = 9
+      name                = "bigpool1"
+      count               = 3
+      vm_size             = "Standard_F8s_v2"
+      os_type             = "Linux"
+      os_disk_size_gb     = 30
+      vnet_subnet_id      = module.azure-network-subnet.subnet_ids[0]
+      enable_auto_scaling = true
+      min_count           = 3
+      max_count           = 9
     }
 
   ]
@@ -201,12 +199,14 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 
 ## Inputs
 
+
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| addons | (Optional) Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })<br></pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}<br></pre> | no |
+| aadpodidentity\_values | (Optional) Settings for Add Pod identity helm Chart | `map(string)` | `{}` | no |
+| addons | (Optional) Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
 | api\_server\_authorized\_ip\_ranges | (Optional) Ip ranges allowed to interract with Kubernetes API. Default no restrictions | `list(string)` | `[]` | no |
 | appgw\_ingress\_controller\_settings | (Optional) Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
-| appgw\_policy\_name | (Optionnal) Name of the ssl policy to apply on the application gateway | `string` | `"AppGwSslPolicy20170401S"` | no |
+| appgw\_settings | (Optional) Application gateway configuration settings. Default dummy configuration | `map(any)` | `{}` | no |
 | appgw\_subnet\_id | Application gateway subnet id | `string` | n/a | yes |
 | cert\_manager\_settings | (Optional) Settings for cert-manager helm chart | `map(string)` | `{}` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
@@ -214,8 +214,8 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 | custom\_aks\_name | (Optional) Custom aks name | `string` | `""` | no |
 | custom\_appgw\_name | (Optional) Custom name for aks ingress application gateway | `string` | `""` | no |
 | default\_node\_pool | (Optional) Default node pool configuration | `map(any)` | `{}` | no |
-| diag\_custom\_name | (Optionnal) Custom name for Azure Diagnostics for AKS. | `string` | n/a | no |
-| diagnostics | Enable diagnostics logs on AKS | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })<br></pre> | n/a | yes |
+| diag\_custom\_name | (Optionnal) Custom name for Azure Diagnostics for AKS. | `string` | null | no |
+| diagnostics | Enable diagnostics logs on AKS | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })</pre> | n/a | yes |
 | docker\_bridge\_cidr | (Optional) IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
 | enable\_cert\_manager | (Optional) Enable cert-manager on AKS cluster | `bool` | `true` | no |
 | enable\_kured | (Optional) Enable kured daemon on AKS cluster | `bool` | `true` | no |
@@ -225,17 +225,17 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 | extra\_tags | (Optional) Extra tags to add | `map(string)` | `{}` | no |
 | kubernetes\_version | Version of Kubernetes to deploy | `string` | n/a | yes |
 | kured\_settings | (Optional) Settings for kured helm chart | `map(string)` | `{}` | no |
-| linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })<br></pre> | n/a | yes |
+| linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | n/a | yes |
 | location | Azure region to use | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use | `any` | n/a | yes |
 | managed\_identities | (Optional) List of managed identities where the AKS service principal should have access. | `list(string)` | `[]` | no |
-| node\_resource\_group | (Optional) Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | n/a | no |
+| node\_resource\_group | (Optional) Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | null | no |
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
-| service\_accounts | (Optionnal) List of service accounts to create and their roles. | <pre>list(object({<br>    name      = string,<br>    namespace = string,<br>    role      = string<br>  }))<br></pre> | `[]` | no |
+| service\_accounts | (Optionnal) List of service accounts to create and their roles. | <pre>list(object({<br>    name      = string,<br>    namespace = string,<br>    role      = string<br>  }))</pre> | `[]` | no |
 | service\_cidr | CIDR of service subnet. If subnet has UDR make sure this is routed correctly | `any` | n/a | yes |
-| service\_principal | Service principal used by AKS to interract with Azure API | <pre>object({<br>    client_id     = string,<br>    client_secret = string,<br>    object_id     = string<br>  })<br></pre> | n/a | yes |
+| service\_principal | Service principal used by AKS to interract with Azure API | <pre>object({<br>    client_id     = string,<br>    client_secret = string,<br>    object_id     = string<br>  })</pre> | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
 | storage\_contributor | (Optional) List of storage accounts ids where the AKS service principal should have access. | `list(string)` | `[]` | no |
 | velero\_settings | (Optional) Settings for Velero helm chart | `map(string)` | `{}` | no |

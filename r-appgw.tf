@@ -5,77 +5,37 @@ module "appgw" {
   environment = var.environment
   location    = var.location
 
-  name    = local.appgw_name
-  rg_name = var.resource_group_name
+  name                  = local.appgw_name
+  rg_name               = var.resource_group_name
+  app_gateway_subnet_id = var.appgw_subnet_id
 
-  ip_name                        = "${local.appgw_name}-pip"
-  ip_label                       = "${local.appgw_name}-pip"
-  ip_sku                         = "Standard"
-  ip_allocation_method           = "Static"
-  frontend_ip_configuration_name = "${local.appgw_name}-frontipconfig"
-  gateway_ip_configuration_name  = "${local.appgw_name}-ipconfig"
-  app_gateway_subnet_id          = var.appgw_subnet_id
+  ip_name                        = local.appgw_settings.ip_name
+  ip_label                       = local.appgw_settings.ip_label
+  ip_sku                         = local.appgw_settings.ip_sku
+  ip_allocation_method           = local.appgw_settings.ip_allocation_method
+  frontend_ip_configuration_name = local.appgw_settings.frontend_ip_configuration_name
+  gateway_ip_configuration_name  = local.appgw_settings.gateway_ip_configuration_name
 
-  sku_name     = "Standard_v2"
-  sku_tier     = "Standard_v2"
-  sku_capacity = 2
+  sku_name     = local.appgw_settings.sku_name
+  sku_tier     = local.appgw_settings.sku_tier
+  sku_capacity = local.appgw_settings.sku_capacity
 
-  zones = ["1", "2", "3"]
+  zones = local.appgw_settings.zones
 
-  policy_name = var.appgw_policy_name
+  policy_name = local.appgw_settings.policy_name
 
-  enabled_waf = false
+  enabled_waf = local.appgw_settings.enabled_waf
 
-  // Dummy values to create the appgw.
-  //Then the configuration will be managed by AKS
-  appgw_backend_http_settings = [{
-    name                  = "dummy"
-    cookie_based_affinity = "Disabled"
-    path                  = "/"
-    port                  = 80
-    protocol              = "Http"
-    request_timeout       = 1
-    probe_name            = "dummy"
-  }]
-  appgw_backend_pools = [{
-    name  = "dummy"
-    fqdns = ["dummy"]
-  }]
-  appgw_probes = [{
-    host                                      = "dummy"
-    interval                                  = 30
-    minimum_servers                           = 0
-    name                                      = "dummy"
-    path                                      = "/"
-    pick_host_name_from_backend_http_settings = false
-    protocol                                  = "Http"
-    timeout                                   = 30
-    unhealthy_threshold                       = 3
-    match_status_code                         = ["200"]
-  }]
-  appgw_routings = [{
-    name                       = "dummy"
-    rule_type                  = "Basic"
-    http_listener_name         = "dummy"
-    backend_address_pool_name  = "dummy"
-    backend_http_settings_name = "dummy"
+  appgw_backend_http_settings = local.appgw_settings.appgw_backend_http_settings
+  appgw_backend_pools         = local.appgw_settings.appgw_backend_pools
+  appgw_probes                = local.appgw_settings.appgw_probes
+  appgw_routings              = local.appgw_settings.appgw_routings
+  appgw_http_listeners        = local.appgw_settings.appgw_http_listeners
+  frontend_port_settings      = local.appgw_settings.frontend_port_settings
+  ssl_certificates_configs    = local.appgw_settings.ssl_certificates_configs
 
-  }]
-  appgw_http_listeners = [{
-    name                           = "dummy"
-    frontend_ip_configuration_name = "dummy"
-    frontend_port_name             = "dummy"
-    protocol                       = "Http"
-    host_name                      = "dummy"
-  }]
-  frontend_port_settings = [{
-    name = "dummy"
-    port = 80
-  }]
-  ssl_certificates_configs = []
-
-  app_gateway_tags = local.tags
-  ip_tags          = local.tags
+  app_gateway_tags = local.appgw_settings.app_gateway_tags
+  ip_tags          = local.appgw_settings.ip_tags
 
   aks_aad_pod_identity_id           = azurerm_user_assigned_identity.aad_pod_identity.id
   aks_aad_pod_identity_client_id    = azurerm_user_assigned_identity.aad_pod_identity.client_id

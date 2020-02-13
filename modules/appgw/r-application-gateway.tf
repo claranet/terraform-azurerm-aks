@@ -218,12 +218,12 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.appgw_probes
     content {
       host                = lookup(probe.value, "host")
-      interval            = 30
+      interval            = lookup(probe.value, "interval", 30)
       name                = lookup(probe.value, "name")
       path                = lookup(probe.value, "path", "/")
       protocol            = lookup(probe.value, "protocol", "Https")
-      timeout             = 30
-      unhealthy_threshold = 3
+      timeout             = lookup(probe.value, "timeout", 30)
+      unhealthy_threshold = lookup(probe.value, "unhealthy_threshold", 3)
       match {
         body        = lookup(probe.value, "match_body", "")
         status_code = lookup(probe.value, "match_status_code", "")
@@ -262,10 +262,10 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.appgw_redirect_configuration
     content {
       name                 = lookup(redirect_configuration.value, "name")
-      redirect_type        = "Permanent"
+      redirect_type        = lookup(redirect_configuration.value, "redirect_type", "Permanent")
       target_listener_name = lookup(redirect_configuration.value, "target_listener_name")
-      include_path         = "true"
-      include_query_string = "true"
+      include_path         = lookup(redirect_configuration.value, "include_path", "true")
+      include_query_string = lookup(redirect_configuration.value, "include_query_string", "true")
     }
   }
 
