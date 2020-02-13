@@ -15,9 +15,9 @@ locals {
     zones                          = ["1", "2", "3"]
     policy_name                    = "AppGwSslPolicy20170401S"
     enabled_waf                    = false
-    app_gateway_tags               = local.tags
-    ip_tags                        = local.tags
-    appgw_backend_http_settings = [{
+    app_gateway_tags               = local.default_tags
+    ip_tags                        = local.default_tags
+    appgw_backend_http_settings    = [{
       name                  = "dummy"
       cookie_based_affinity = "Disabled"
       path                  = "/"
@@ -26,11 +26,11 @@ locals {
       request_timeout       = 1
       probe_name            = "dummy"
     }]
-    appgw_backend_pools = [{
+    appgw_backend_pools            = [{
       name  = "dummy"
       fqdns = ["dummy"]
     }]
-    appgw_probes = [{
+    appgw_probes                   = [{
       host                                      = "dummy"
       interval                                  = 30
       minimum_servers                           = 0

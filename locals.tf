@@ -35,7 +35,7 @@ locals {
 
   default_node_pool = merge(local.default_agent_profile, var.default_node_pool)
 
-  tags = {
+  default_tags = {
     env   = var.environment
     stack = var.stack
   }

@@ -73,7 +73,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     ignore_changes = [agent_pool_profile]
   }
 
-  tags = merge(local.tags, var.extra_tags)
+  tags = merge(local.default_tags, var.extra_tags)
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
