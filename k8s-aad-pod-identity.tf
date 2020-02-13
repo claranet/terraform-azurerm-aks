@@ -7,11 +7,6 @@ resource "kubernetes_namespace" "add_pod_identity" {
   }
 }
 
-data "helm_repository" "add_pod_identity" {
-  name = "aad-pod-identity"
-  url  = "https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"
-}
-
 resource "helm_release" "aad_pod_identity" {
   name       = "aad-pod-identity"
   repository = data.helm_repository.add_pod_identity.metadata.0.name
