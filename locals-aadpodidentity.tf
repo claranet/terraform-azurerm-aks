@@ -1,5 +1,7 @@
 locals {
   aadpodidentity_default_values = {
+    chart_version                = "1.5.5"
+    namespace                    = "system-aadpodid"
     "nmi.nodeSelector.agentpool" = "default",
     "mic.nodeSelector.agentpool" = "default",
     "azureIdentity.enabled"      = "true",
@@ -9,5 +11,5 @@ locals {
     "nmi.micNamespace"           = kubernetes_namespace.add_pod_identity.metadata.0.name
   }
 
-  aadpodidetntiy_values = merge(local.aadpodidentity_default_values, var.aadpodidentity_values)
+  aadpodidentity_values = merge(local.aadpodidentity_default_values, var.aadpodidentity_values)
 }

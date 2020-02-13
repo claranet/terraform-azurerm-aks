@@ -1,7 +1,7 @@
 resource "kubernetes_namespace" "velero" {
   count = var.enable_velero ? 1 : 0
   metadata {
-    name = "system-velero"
+    name = local.velero_values.namespace
     labels = {
       deployed-by = "Terraform"
     }
@@ -51,7 +51,7 @@ resource "helm_release" "velero" {
   chart      = "velero"
   repository = data.helm_repository.vmware-tanzu.metadata.0.name
   namespace  = kubernetes_namespace.velero.0.metadata.0.name
-  version    = local.velero_values.version
+  version    = local.velero_values.chart_version
 
   dynamic "set" {
     for_each = local.velero_values
