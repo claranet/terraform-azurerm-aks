@@ -57,7 +57,7 @@ resource "random_string" "kube-config-file-name" {
 resource "null_resource" "install_crd" {
   // Get AKS Credentials
   provisioner "local-exec" {
-    command = "az aks get-credentials --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.kube-config-file-name.result}"
+    command = "az aks get-credentials --subscription ${data.azurerm_subscription.current.subscription_id} --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.kube-config-file-name.result}"
   }
 
   provisioner "local-exec" {

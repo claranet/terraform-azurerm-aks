@@ -27,14 +27,20 @@ resource "azurerm_storage_account" "velero" {
   account_tier             = local.velero_storage.account_tier
   account_replication_type = local.velero_storage.account_replication_type
   account_kind             = "BlockBlobStorage"
+  tags                     = merge(local.default_tags, local.velero_storage.tags)
 
-  tags = merge(local.default_tags, local.velero_storage.tags)
-
-  network_rules {
-    default_action             = "Deny"
-    virtual_network_subnet_ids = [var.nodes_subnet_id]
-    ip_rules                   = local.velero_storage.allowed_cidrs
+  lifecycle {
+    ignore_changes = [network_rules]
   }
+}
+
+resource "azurerm_storage_account_network_rules" "velero" {
+  count                      = var.enable_velero ? 1 : 0
+  storage_account_name       = azurerm_storage_account.velero.0.name
+  resource_group_name        = azurerm_storage_account.velero.0.resource_group_name
+  default_action             = "Deny"
+  virtual_network_subnet_ids = [var.nodes_subnet_id]
+  ip_rules                   = local.velero_storage.allowed_cidrs
 }
 
 resource "azurerm_storage_container" "velero" {
