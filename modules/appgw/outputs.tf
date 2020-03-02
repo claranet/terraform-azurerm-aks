@@ -1,19 +1,19 @@
 output "application_gateway_id" {
   description = "Application gateway Id"
-  value       = azurerm_application_gateway.app_gateway.id
+  value       = var.enable_agic ? azurerm_application_gateway.app_gateway.0.id : ""
 }
 
 output "application_gateway_name" {
   description = "Application gateway name"
-  value       = azurerm_application_gateway.app_gateway.name
+  value       = var.enable_agic ? azurerm_application_gateway.app_gateway.0.name : ""
 }
 
 output "public_ip_id" {
   description = "Application gateway public ip Id"
-  value       = azurerm_public_ip.ip.id
+  value       = var.enable_agic ? azurerm_public_ip.ip.0.id : ""
 }
 
 output "public_ip_name" {
   description = "Application gateway public ip name"
-  value       = azurerm_public_ip.ip.name
+  value       = var.enable_agic ? azurerm_public_ip.ip.0.name : ""
 }

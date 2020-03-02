@@ -1,4 +1,5 @@
 resource "azurerm_application_gateway" "app_gateway" {
+  count               = var.enable_agic ? 1 : 0
   location            = var.location
   name                = var.name
   resource_group_name = var.rg_name
@@ -17,7 +18,7 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   frontend_ip_configuration {
     name                 = var.frontend_ip_configuration_name
-    public_ip_address_id = azurerm_public_ip.ip.id
+    public_ip_address_id = azurerm_public_ip.ip.0.id
   }
 
   dynamic "frontend_port" {

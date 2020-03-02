@@ -1,3 +1,4 @@
 data "azurerm_monitor_diagnostic_categories" "aks-diag-categories" {
-  resource_id = azurerm_application_gateway.app_gateway.id
+  count       = var.enable_agic ? 1 : 0
+  resource_id = azurerm_application_gateway.app_gateway.0.id
 }

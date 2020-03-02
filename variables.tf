@@ -291,3 +291,9 @@ variable "name_prefix" {
   type        = string
   default     = ""
 }
+
+variable "enable_agic" {
+  description = "(Optional) Enable application ingres controller"
+  type        = bool
+  default     = true
+}

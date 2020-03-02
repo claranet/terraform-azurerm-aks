@@ -1,6 +1,8 @@
 module "appgw" {
   source = "./modules/appgw"
 
+  enable_agic = var.enable_agic
+
   stack          = var.stack
   environment    = var.environment
   location       = var.location
