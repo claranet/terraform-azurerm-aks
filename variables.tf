@@ -67,7 +67,7 @@ variable "enable_pod_security_policy" {
 variable "default_node_pool" {
   description = <<EOD
 Default node pool configuration. <br />
-map(object({ <br />
+<pre>map(object({ <br />
     name                  = Name of the pool. Default is default.<br />
     count                 = Number of nodes to add in the pool. Default is 1<br />
     vm_size               = VM Size. Default is Standard_D2_V3<br />
@@ -82,7 +82,7 @@ map(object({ <br />
     max_pods              = Maximum number of pod per host in the node pool. Default to 30<br />
     os_disk_size_gb       = Size in GB of nodes os disk. Default to 32<br />
     enable_node_public_ip = Allocate public IP to each node in pool or not. Default is False<br />
-}))<br />
+}))<br /></pre>
 EOD
 
   type    = map(any)
