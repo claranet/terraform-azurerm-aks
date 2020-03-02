@@ -217,7 +217,7 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 | custom\_aks\_name | Custom AKS name | `string` | `""` | no |
 | custom\_appgw\_name | Custom name for AKS ingress application gateway | `string` | `""` | no |
 | default\_node\_pool | Default node pool configuration. <br /> <pre>map(object({ <br />     name                  = string<br />     count                 = number<br />     vm\_size               = string<br />     os\_type               = string<br />     availability\_zones    = list(number)<br />     enable\_auto\_scaling   = bool<br />     min\_count             = number<br />     max\_count             = number<br />     type                  = string<br />     node\_taints           = list(string)<br />     vnet\_subnet\_id        = string<br />     max\_pods              = number<br />     os\_disk\_size\_gb       = number<br />     enable\_node\_public\_ip = bool<br /> }))<br /></pre> | `map(any)` | `{}` | no |
-| diag\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | n/a | yes |
+| diag\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | n/a | no |
 | diagnostics | Enable and configure diagnostics logs on AKS. | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })</pre> | n/a | yes |
 | docker\_bridge\_cidr | IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
 | enable\_agic | Enable application ingres controller | `bool` | `true` | no |
@@ -234,8 +234,8 @@ resource "azurerm_role_assignment" "aks-sp-contributor" {
 | location\_short | Short name of Azure regions to use | `string` | n/a | yes |
 | managed\_identities | List of managed identities where the AKS service principal should have access. | `list(string)` | `[]` | no |
 | name\_prefix | prefix used in naming | `string` | `""` | no |
-| node\_resource\_group | Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | n/a | yes |
-| nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
+| node\_resource\_group | Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | n/a | no |
+| nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | no |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
 | service\_cidr | CIDR of service subnet. If subnet has UDR make sure this is routed correctly | `string` | n/a | yes |
