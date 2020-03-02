@@ -61,6 +61,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     dns_service_ip     = cidrhost(var.service_cidr, 10)
     docker_bridge_cidr = var.docker_bridge_cidr
     service_cidr       = var.service_cidr
+    load_balancer_sku  = "standard"
 
   }
 
@@ -89,4 +90,5 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   min_count             = local.nodes_pools[count.index].min_count
   max_count             = local.nodes_pools[count.index].max_count
   enable_node_public_ip = local.nodes_pools[count.index].enable_node_public_ip
+  availability_zones    = local.nodes_pools[count.index].availability_zones
 }

@@ -18,6 +18,7 @@ locals {
     max_pods              = 30
     os_disk_size_gb       = 32
     enable_node_public_ip = false
+    availability_zones    = [1, 2, 3]
   }
 
   # Defaults for Linux profile
