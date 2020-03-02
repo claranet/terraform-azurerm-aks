@@ -211,19 +211,19 @@ variable "diagnostics" {
 }
 
 variable "name_prefix" {
-  description = "(Optional) prefix used in naming"
+  description = "prefix used in naming"
   type        = string
   default     = ""
 }
 
 variable "diag_custom_name" {
-  description = "(Optional) Custom name for Azure Diagnostics for AKS."
+  description = "Custom name for Azure Diagnostics for AKS."
   type        = string
   default     = null
 }
 
 variable "enable_agic" {
-  description = "(Optional) Enable application gateway ingress controller"
+  description = "Enable application gateway ingress controller"
   type        = bool
   default     = true
 }

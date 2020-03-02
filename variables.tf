@@ -24,13 +24,13 @@ variable "stack" {
 }
 
 variable "custom_aks_name" {
-  description = "(Optional) Custom AKS name"
+  description = "Custom AKS name"
   type        = string
   default     = ""
 }
 
 variable "extra_tags" {
-  description = "(Optional) Extra tags to add"
+  description = "Extra tags to add"
   type        = map(string)
   default     = {}
 }
@@ -47,27 +47,46 @@ variable "kubernetes_version" {
 }
 
 variable "api_server_authorized_ip_ranges" {
-  description = "(Optional) Ip ranges allowed to interract with Kubernetes API. Default no restrictions"
+  description = "Ip ranges allowed to interract with Kubernetes API. Default no restrictions"
   type        = list(string)
   default     = []
 }
 
 variable "node_resource_group" {
-  description = "(Optional) Name of the resource group in which to put AKS nodes. If null default to MC_<AKS RG Name>"
+  description = "Name of the resource group in which to put AKS nodes. If null default to MC_<AKS RG Name>"
   type        = string
   default     = null
 }
 
 variable "enable_pod_security_policy" {
-  description = "(Optional) Enable pod security policy or not. https://docs.microsoft.com/fr-fr/azure/AKS/use-pod-security-policies"
+  description = "Enable pod security policy or not. https://docs.microsoft.com/fr-fr/azure/AKS/use-pod-security-policies"
   type        = bool
   default     = false
 }
 
 variable "default_node_pool" {
-  description = "(Optional) Default node pool configuration"
-  type        = map(any)
-  default     = {}
+  description = <<EOD
+Default node pool configuration. <br />
+map(object({ <br />
+    name                  = Name of the pool. Default is default.<br />
+    count                 = Number of nodes to add in the pool. Default is 1<br />
+    vm_size               = VM Size. Default is Standard_D2_V3<br />
+    os_type               = Os Type (Linux | Windows). Default is Linux<br />
+    availability_zones    = Availability zone to use. Default [1, 2, 3]<br />
+    enable_auto_scaling   = Enable or not AutoScaling. Default to false<br />
+    min_count             = Minimum nodes to have in pool. Used only when autoscaling is True. Default is null<br />
+    max_count             = Maximum nodes to have in pool. Used only when autoscaling is True. Default is null<br />
+    type                  = Type of nodes. (AvailabilitySet | VirtualMachineScaleSets) Default is Virtual MachineScaleSets<br />
+    node_taints           = A list of Kubernetes taints which should be applied to nodes in the agent pool (e.g key=value:NoSchedule). Default is null<br />
+    vnet_subnet_id        = Subnet to use with the node pool. Default is nodes_subnet_id variable result.<br />
+    max_pods              = Maximum number of pod per host in the node pool. Default to 30<br />
+    os_disk_size_gb       = Size in GB of nodes os disk. Default to 32<br />
+    enable_node_public_ip = Allocate public IP to each node in pool or not. Default is False<br />
+}))<br />
+EOD
+
+  type    = map(any)
+  default = {}
 }
 
 variable "nodes_subnet_id" {
@@ -90,7 +109,7 @@ variable "service_principal" {
 }
 
 variable "addons" {
-  description = "(Optional) Kubernetes addons to enable /disable"
+  description = "Kubernetes addons to enable /disable"
   type = object({
     dashboard              = bool,
     oms_agent              = bool,
@@ -121,7 +140,7 @@ variable "service_cidr" {
 }
 
 variable "docker_bridge_cidr" {
-  description = "(Optional) IP address for docker with Network CIDR."
+  description = "IP address for docker with Network CIDR."
   type        = string
   default     = "172.16.0.1/16"
 }
@@ -133,19 +152,19 @@ variable "nodes_pools" {
 }
 
 variable "container_registries" {
-  description = "(Optional) List of Azure Container Registries ids where AKS needs pull access."
+  description = "List of Azure Container Registries ids where AKS needs pull access."
   type        = list(string)
   default     = []
 }
 
 variable "storage_contributor" {
-  description = "(Optional) List of storage accounts ids where the AKS service principal should have access."
+  description = "List of storage accounts ids where the AKS service principal should have access."
   type        = list(string)
   default     = []
 }
 
 variable "managed_identities" {
-  description = "(Optional) List of managed identities where the AKS service principal should have access."
+  description = "List of managed identities where the AKS service principal should have access."
   type        = list(string)
   default     = []
 }
@@ -162,13 +181,13 @@ variable "diagnostics" {
 }
 
 variable "diag_custom_name" {
-  description = "(Optional) Custom name for Azure Diagnostics for AKS."
+  description = "Custom name for Azure Diagnostics for AKS."
   type        = string
   default     = null
 }
 
 variable "service_accounts" {
-  description = "(Optional) List of service accounts to create and their roles."
+  description = "List of service accounts to create and their roles."
   type = list(object({
     name      = string,
     namespace = string,
@@ -182,7 +201,7 @@ variable "service_accounts" {
 #
 
 variable "custom_appgw_name" {
-  description = "(Optional) Custom name for AKS ingress application gateway"
+  description = "Custom name for AKS ingress application gateway"
   type        = string
   default     = ""
 }
@@ -193,107 +212,107 @@ variable "appgw_subnet_id" {
 }
 
 variable "appgw_ingress_controller_values" {
-  description = "(Optional) Application Gateway Ingress Controller settings"
+  description = "Application Gateway Ingress Controller settings"
   type        = map(string)
   default     = {}
 }
 
 variable "enable_cert_manager" {
-  description = "(Optional) Enable cert-manager on AKS cluster"
+  description = "Enable cert-manager on AKS cluster"
   type        = bool
   default     = true
 }
 variable "cert_manager_settings" {
-  description = "(Optional) Settings for cert-manager helm chart"
+  description = "Settings for cert-manager helm chart"
   type        = map(string)
   default     = {}
 }
 
 variable "cert_manager_namespace" {
-  description = "(Optional) Kubernetes namespace in which to deploy Cert Manager"
+  description = "Kubernetes namespace in which to deploy Cert Manager"
   type        = string
   default     = "system-cert-manager"
 }
 
 variable "cert_manager_chart_version" {
-  description = "(Optional) Cert Manager helm chart version to use"
+  description = "Cert Manager helm chart version to use"
   type        = string
   default     = "v0.13.0"
 }
 
 variable "enable_kured" {
-  description = "(Optional) Enable kured daemon on AKS cluster"
+  description = "Enable kured daemon on AKS cluster"
   type        = bool
   default     = true
 }
 variable "kured_settings" {
-  description = "(Optional) Settings for kured helm chart"
+  description = "Settings for kured helm chart"
   type        = map(string)
   default     = {}
 }
 
 variable "enable_velero" {
-  description = "(Optional) Enable velero on AKS cluster"
+  description = "Enable velero on AKS cluster"
   type        = bool
   default     = true
 }
 
 variable "velero_storage_settings" {
-  description = "(Optional) Settings for Storage account and blob container for Velero"
+  description = "Settings for Storage account and blob container for Velero"
   type        = map(any)
   default     = {}
 }
 
 variable "velero_values" {
-  description = "(Optional) Settings for Velero helm chart"
+  description = "Settings for Velero helm chart"
   type        = map(string)
   default     = {}
 }
 
 variable "velero_namespace" {
-  description = "(Optional) Kubernetes namespace in which to deploy Velero"
+  description = "Kubernetes namespace in which to deploy Velero"
   type        = string
   default     = "system-velero"
 }
 
 variable "velero_chart_version" {
-  description = "(Optional) Velero helm chart version to use"
+  description = "Velero helm chart version to use"
   type        = string
   default     = "2.7.3"
 }
 
 variable "aadpodidentity_values" {
-  description = "(Optional) Settings for AAD Pod identity helm Chart"
+  description = "Settings for AAD Pod identity helm Chart"
   type        = map(string)
   default     = {}
 }
 
 variable "aadpodidentity_namespace" {
-  description = "(Optional) Kubernetes namespace in which to deploy AAD Pod Identity"
+  description = "Kubernetes namespace in which to deploy AAD Pod Identity"
   type        = string
   default     = "system-aadpodid"
 }
 
 variable "aadpodidentity_chart_version" {
-  description = "(Optional) AAD Pod Identity helm chart version to use"
+  description = "AAD Pod Identity helm chart version to use"
   type        = string
   default     = "1.5.5"
 }
 
 variable "appgw_settings" {
-  description = "(Optional) Application gateway configuration settings. Default dummy configuration"
+  description = "Application gateway configuration settings. Default dummy configuration"
   type        = map(any)
   default     = {}
 }
 
 variable "name_prefix" {
-  description = "(Optional) prefix used in naming"
+  description = "prefix used in naming"
   type        = string
   default     = ""
 }
 
 variable "enable_agic" {
-  description = "(Optional) Enable application ingres controller"
+  description = "Enable application ingres controller"
   type        = bool
   default     = true
 }
