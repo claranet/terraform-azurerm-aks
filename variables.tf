@@ -68,20 +68,20 @@ variable "default_node_pool" {
   description = <<EOD
 Default node pool configuration. <br />
 <pre>map(object({ <br />
-    name                  = Name of the pool. Default is default.<br />
-    count                 = Number of nodes to add in the pool. Default is 1<br />
-    vm_size               = VM Size. Default is Standard_D2_V3<br />
-    os_type               = Os Type (Linux | Windows). Default is Linux<br />
-    availability_zones    = Availability zone to use. Default [1, 2, 3]<br />
-    enable_auto_scaling   = Enable or not AutoScaling. Default to false<br />
-    min_count             = Minimum nodes to have in pool. Used only when autoscaling is True. Default is null<br />
-    max_count             = Maximum nodes to have in pool. Used only when autoscaling is True. Default is null<br />
-    type                  = Type of nodes. (AvailabilitySet | VirtualMachineScaleSets) Default is Virtual MachineScaleSets<br />
-    node_taints           = A list of Kubernetes taints which should be applied to nodes in the agent pool (e.g key=value:NoSchedule). Default is null<br />
-    vnet_subnet_id        = Subnet to use with the node pool. Default is nodes_subnet_id variable result.<br />
-    max_pods              = Maximum number of pod per host in the node pool. Default to 30<br />
-    os_disk_size_gb       = Size in GB of nodes os disk. Default to 32<br />
-    enable_node_public_ip = Allocate public IP to each node in pool or not. Default is False<br />
+    name                  = string<br />
+    count                 = number<br />
+    vm_size               = string<br />
+    os_type               = string<br />
+    availability_zones    = list(number)<br />
+    enable_auto_scaling   = bool<br />
+    min_count             = number<br />
+    max_count             = number<br />
+    type                  = string<br />
+    node_taints           = list(string)<br />
+    vnet_subnet_id        = string<br />
+    max_pods              = number<br />
+    os_disk_size_gb       = number<br />
+    enable_node_public_ip = bool<br />
 }))<br /></pre>
 EOD
 
