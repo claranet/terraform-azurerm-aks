@@ -5,6 +5,7 @@ variable "location" {
 
 variable "location_short" {
   description = "Short name of Azure regions to use"
+  type        = string
 }
 
 variable "client_name" {
@@ -23,7 +24,7 @@ variable "stack" {
 }
 
 variable "custom_aks_name" {
-  description = "(Optional) Custom aks name"
+  description = "(Optional) Custom AKS name"
   type        = string
   default     = ""
 }
@@ -58,7 +59,7 @@ variable "node_resource_group" {
 }
 
 variable "enable_pod_security_policy" {
-  description = "(Optional) Enable pod security policy or not. https://docs.microsoft.com/fr-fr/azure/aks/use-pod-security-policies"
+  description = "(Optional) Enable pod security policy or not. https://docs.microsoft.com/fr-fr/azure/AKS/use-pod-security-policies"
   type        = bool
   default     = false
 }
@@ -115,6 +116,8 @@ variable "linux_profile" {
 
 variable "service_cidr" {
   description = "CIDR of service subnet. If subnet has UDR make sure this is routed correctly"
+  type        = string
+
 }
 
 variable "docker_bridge_cidr" {
@@ -148,8 +151,8 @@ variable "managed_identities" {
 }
 
 variable "diagnostics" {
-  description = "Enable diagnostics logs on AKS"
-  type = object({
+  description = "Enable and configure diagnostics logs on AKS."
+  type        = object({
     enabled       = bool,
     destination   = string,
     eventhub_name = string,
@@ -159,19 +162,19 @@ variable "diagnostics" {
 }
 
 variable "diag_custom_name" {
-  description = "(Optionnal) Custom name for Azure Diagnostics for AKS."
+  description = "(Optional) Custom name for Azure Diagnostics for AKS."
   type        = string
   default     = null
 }
 
 variable "service_accounts" {
-  description = "(Optionnal) List of service accounts to create and their roles."
-  type = list(object({
+  description = "(Optional) List of service accounts to create and their roles."
+  type        = list(object({
     name      = string,
     namespace = string,
     role      = string
   }))
-  default = []
+  default     = []
 }
 
 #
@@ -179,7 +182,7 @@ variable "service_accounts" {
 #
 
 variable "custom_appgw_name" {
-  description = "(Optional) Custom name for aks ingress application gateway"
+  description = "(Optional) Custom name for AKS ingress application gateway"
   type        = string
   default     = ""
 }
@@ -260,7 +263,7 @@ variable "velero_chart_version" {
 }
 
 variable "aadpodidentity_values" {
-  description = "(Optional) Settings for Add Pod identity helm Chart"
+  description = "(Optional) Settings for AAD Pod identity helm Chart"
   type        = map(string)
   default     = {}
 }
