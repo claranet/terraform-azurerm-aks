@@ -8,7 +8,7 @@ locals {
     count                 = 1
     vm_size               = "Standard_D2_v3"
     os_type               = "Linux"
-    availability_zones    = null
+    availability_zones    = [1, 2, 3]
     enable_auto_scaling   = false
     min_count             = null
     max_count             = null
@@ -18,7 +18,6 @@ locals {
     max_pods              = 30
     os_disk_size_gb       = 32
     enable_node_public_ip = false
-    availability_zones    = [1, 2, 3]
   }
 
   # Defaults for Linux profile
