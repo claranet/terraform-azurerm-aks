@@ -152,7 +152,7 @@ variable "managed_identities" {
 
 variable "diagnostics" {
   description = "Enable and configure diagnostics logs on AKS."
-  type        = object({
+  type = object({
     enabled       = bool,
     destination   = string,
     eventhub_name = string,
@@ -169,12 +169,12 @@ variable "diag_custom_name" {
 
 variable "service_accounts" {
   description = "(Optional) List of service accounts to create and their roles."
-  type        = list(object({
+  type = list(object({
     name      = string,
     namespace = string,
     role      = string
   }))
-  default     = []
+  default = []
 }
 
 #
