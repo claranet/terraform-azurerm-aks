@@ -8,7 +8,7 @@ Inside the cluster, velero, kured and cert-manager are also installed.
 
 ## Requirements and limitations
 
-  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/1.43.0) >= 1.43
+  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.0.0) >= 2.0.0
   * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/1.0.0) >= 1.0.0
   * [Kubernetes Terraform provider](https://registry.terraform.io/providers/hashicorp/kubernetes/1.11.1) >= 1.11.1
   * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -16,10 +16,11 @@ Inside the cluster, velero, kured and cert-manager are also installed.
   
 ## Terraform version compatibility
 
-| Module version | Terraform version |
-| -------------- | ----------------- |
-| >= 2.x.x       | 0.12.x            |
-| < 2.x.x        | 0.11.x            |
+| Module version | Terraform version | AzureRM Version |
+| -------------- | ----------------- | --------------- |
+| >= 3.x.x       | 0.12.x            | >= 2.0.0        |
+| >= 2.x.x       | 0.12.x            | < 2.0.0         |
+| < 2.x.x        | 0.11.x            | < 2.0.0         |
 
 ## Usage
 
@@ -93,7 +94,7 @@ module "aks" {
   location_short      = module.azure-region.location_short
 
   service_cidr       = "10.0.16.0/22"
-  kubernetes_version = "1.14.8"
+  kubernetes_version = "1.15.7"
 
   service_principal = {
     object_id     = azuread_service_principal.aks-sp.object_id

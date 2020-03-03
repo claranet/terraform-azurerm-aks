@@ -69,11 +69,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     enabled = true
   }
 
-  # To remove when azurerm v2.0 will be out.
-  lifecycle {
-    ignore_changes = [agent_pool_profile]
-  }
-
   tags = merge(local.default_tags, var.extra_tags)
 }
 
