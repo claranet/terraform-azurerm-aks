@@ -51,6 +51,7 @@ resource "azurerm_storage_container" "velero" {
 }
 
 resource "helm_release" "velero" {
+  count = var.enable_velero ? 1 : 0
   depends_on = [kubernetes_secret.velero, kubernetes_namespace.velero, azurerm_storage_account.velero,
   azurerm_storage_container.velero]
   name       = "velero"

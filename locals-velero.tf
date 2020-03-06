@@ -21,14 +21,14 @@ EOF
 
 
   velero_default_values = {
-    "configuration.backupStorageLocation.bucket"                = azurerm_storage_container.velero.0.name
-    "configuration.backupStorageLocation.config.resourceGroup"  = azurerm_storage_account.velero.0.resource_group_name
-    "configuration.backupStorageLocation.config.storageAccount" = azurerm_storage_account.velero.0.name
+    "configuration.backupStorageLocation.bucket"                = var.enable_velero ? azurerm_storage_container.velero.0.name : ""
+    "configuration.backupStorageLocation.config.resourceGroup"  = var.enable_velero ? azurerm_storage_account.velero.0.resource_group_name : ""
+    "configuration.backupStorageLocation.config.storageAccount" = var.enable_velero ? azurerm_storage_account.velero.0.name : ""
     "configuration.backupStorageLocation.name"                  = "azure"
     "configuration.provider"                                    = "azure"
-    "configuration.volumeSnapshotLocation.config.resourceGroup" = azurerm_kubernetes_cluster.aks.node_resource_group
+    "configuration.volumeSnapshotLocation.config.resourceGroup" = var.enable_velero ? azurerm_kubernetes_cluster.aks.node_resource_group : ""
     "configuration.volumeSnapshotLocation.name"                 = "azure"
-    "credentials.existingSecret"                                = kubernetes_secret.velero.0.metadata.0.name
+    "credentials.existingSecret"                                = var.enable_velero ? kubernetes_secret.velero.0.metadata.0.name : ""
     "credentials.useSecret"                                     = "true"
     "deployRestic"                                              = "false"
     "env.AZURE_CREDENTIALS_FILE"                                = "/credentials"

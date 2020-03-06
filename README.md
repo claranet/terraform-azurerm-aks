@@ -176,7 +176,7 @@ resource "azuread_application" "aks-sp" {
 }
 
 resource "azuread_service_principal" "aks-sp" {
-  application_id = azuread_application.aks-sp.id
+  application_id = azuread_application.aks-sp.application_id
 }
 
 resource "random_password" "aks-sp" {
@@ -187,6 +187,8 @@ resource "random_password" "aks-sp" {
 resource "azuread_service_principal_password" "aks-sp" {
   service_principal_id = azuread_service_principal.aks-sp.id
   value                = random_password.aks-sp.result
+  end_date             = "2050-01-01T01:02:03Z"
+
 }
 
 data "azurerm_subscription" "current" {}

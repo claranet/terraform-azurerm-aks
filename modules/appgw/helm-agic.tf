@@ -39,7 +39,7 @@ data "azurerm_subscription" "current" {
 
 resource "helm_release" "agic" {
   count      = var.enable_agic ? 1 : 0
-  depends_on = [azurerm_role_assignment.agic, azurerm_role_assignment.agic-rg, null_resource.install_crd]
+  depends_on = [null_resource.install_crd, azurerm_role_assignment.agic, azurerm_role_assignment.agic-rg]
   name       = "ingress-azure"
   repository = data.helm_repository.agic.0.metadata.0.name
   chart      = "ingress-azure"
@@ -67,7 +67,7 @@ resource "null_resource" "install_crd" {
   count = var.enable_agic ? 1 : 0
   // Get AKS Credentials
   provisioner "local-exec" {
-    command = "az aks get-credentials --subscription ${data.azurerm_subscription.current.0.subscription_id} --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.kube-config-file-name.0.result}"
+    command = "az aks get-credentials --subscription ${data.azurerm_subscription.current.0.subscription_id} --resource-group ${var.rg_name} --name ${var.aks_name} --admin -f /tmp/${random_string.kube-config-file-name.0.result} --overwrite-existing"
   }
 
   provisioner "local-exec" {
