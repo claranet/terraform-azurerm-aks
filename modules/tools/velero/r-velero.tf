@@ -5,7 +5,7 @@ data "azurerm_subscription" "current" {
 resource "kubernetes_namespace" "velero" {
   count = var.enable_velero ? 1 : 0
   metadata {
-    name   = var.velero_namespace
+    name = var.velero_namespace
     labels = {
       deployed-by = "Terraform"
     }
@@ -18,7 +18,7 @@ resource "kubernetes_secret" "velero" {
     name      = "cloud-credentials"
     namespace = kubernetes_namespace.velero.0.metadata.0.name
   }
-  data  = {
+  data = {
     cloud = local.velero_credentials
   }
 }
@@ -55,9 +55,9 @@ resource "azurerm_storage_container" "velero" {
 }
 
 resource "helm_release" "velero" {
-  count      = var.enable_velero ? 1 : 0
+  count = var.enable_velero ? 1 : 0
   depends_on = [kubernetes_secret.velero, kubernetes_namespace.velero, azurerm_storage_account.velero,
-    azurerm_storage_container.velero]
+  azurerm_storage_container.velero]
   name       = "velero"
   chart      = "velero"
   repository = "https://vmware-tanzu.github.io/helm-charts"

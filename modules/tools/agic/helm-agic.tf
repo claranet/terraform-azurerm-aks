@@ -1,7 +1,7 @@
 resource "kubernetes_namespace" "agic" {
   count = var.enable_agic ? 1 : 0
   metadata {
-    name   = "system-agic"
+    name = "system-agic"
     labels = {
       deployed-by = "Terraform"
     }
@@ -24,7 +24,7 @@ resource "azurerm_role_assignment" "agic-rg" {
 
 
 resource "helm_release" "agic" {
-  count      = var.enable_agic ? 1 : 0
+  count = var.enable_agic ? 1 : 0
   #  depends_on = [null_resource.install_crd, azurerm_role_assignment.agic, azurerm_role_assignment.agic-rg,
   #    azurerm_application_gateway.app_gateway]
   name       = "ingress-azure"

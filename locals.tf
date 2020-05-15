@@ -58,7 +58,7 @@ locals {
     event_hub_auth_id  = contains(local.diag_resource_list, "Microsoft.EventHub") ? var.diagnostics.destination : null
     metric             = contains(var.diagnostics.metrics, "all") ? local.diag_kube_metrics : var.diagnostics.metrics
     log                = contains(var.diagnostics.logs, "all") ? local.diag_kube_logs : var.diagnostics.metrics
-  } : {
+    } : {
     log_analytics_id   = null
     storage_account_id = null
     event_hub_auth_id  = null

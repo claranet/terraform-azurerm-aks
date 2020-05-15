@@ -92,7 +92,7 @@ variable "velero_chart_version" {
 
 variable "service_principal" {
   description = "Service principal used by AKS to interract with Azure API"
-  type        = object({
+  type = object({
     client_id     = string,
     client_secret = string,
     object_id     = string

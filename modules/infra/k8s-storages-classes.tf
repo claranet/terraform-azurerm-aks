@@ -4,8 +4,8 @@ resource "kubernetes_storage_class" "managed-standard-retain" {
   metadata {
     name = "standard-hdd-retain"
   }
-  reclaim_policy         = "Retain"
-  parameters             = {
+  reclaim_policy = "Retain"
+  parameters = {
     storageaccounttype = "Standard_LRS"
     kind               = "Managed"
   }

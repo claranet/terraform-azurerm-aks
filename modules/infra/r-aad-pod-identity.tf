@@ -4,7 +4,7 @@ data "azurerm_resource_group" "aks_nodes_rg" {
 
 resource "kubernetes_namespace" "add_pod_identity" {
   metadata {
-    name   = var.aadpodidentity_namespace
+    name = var.aadpodidentity_namespace
     labels = {
       deployed-by = "Terraform"
     }
