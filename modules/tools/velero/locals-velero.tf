@@ -1,12 +1,14 @@
 locals {
   credentials = <<EOF
-AZURE_SUBSCRIPTION_ID = ${data.azurerm_subscription.current.subscription_id}
-AZURE_TENANT_ID = ${data.azurerm_subscription.current.tenant_id}
+AZURE_SUBSCRIPTION_ID = ${data.azurerm_subscription.current.0.subscription_id}
+AZURE_TENANT_ID = ${data.azurerm_subscription.current.0.tenant_id}
 AZURE_CLIENT_ID = ${var.service_principal.client_id}
 AZURE_CLIENT_SECRET = ${var.service_principal.client_secret}
-AZURE_RESOURCE_GROUP = ${azurerm_kubernetes_cluster.aks.node_resource_group}
+AZURE_RESOURCE_GROUP = ${var.aks_nodes_resource_group_name}
 AZURE_CLOUD_NAME = AzurePublicCloud
 EOF
+
+  name_prefix = var.name_prefix != "" ? replace(var.name_prefix, "/[a-z0-9]/", "$0-") : ""
 
   storage_defaults_settings = {
     name                     = lower(substr(replace("velero${local.name_prefix}${var.stack}${var.client_name}${var.location_short}${var.environment}", "/[._\\- ]/", ""), 0, 24))
@@ -26,7 +28,7 @@ EOF
     "configuration.backupStorageLocation.config.storageAccount" = var.enable_velero ? azurerm_storage_account.velero.0.name : ""
     "configuration.backupStorageLocation.name"                  = "azure"
     "configuration.provider"                                    = "azure"
-    "configuration.volumeSnapshotLocation.config.resourceGroup" = var.enable_velero ? azurerm_kubernetes_cluster.aks.node_resource_group : ""
+    "configuration.volumeSnapshotLocation.config.resourceGroup" = var.enable_velero ? var.aks_nodes_resource_group_name : ""
     "configuration.volumeSnapshotLocation.name"                 = "azure"
     "credentials.existingSecret"                                = var.enable_velero ? kubernetes_secret.velero.0.metadata.0.name : ""
     "credentials.useSecret"                                     = "true"

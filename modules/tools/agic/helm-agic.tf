@@ -1,19 +1,19 @@
 resource "kubernetes_namespace" "agic" {
   count = var.enable_agic ? 1 : 0
   metadata {
-    name = "system-agic"
+    name   = "system-agic"
     labels = {
       deployed-by = "Terraform"
     }
   }
 }
 
-resource "azurerm_role_assignment" "agic" {
-  count                = var.enable_agic ? 1 : 0
-  principal_id         = var.aks_aad_pod_identity_principal_id
-  scope                = azurerm_application_gateway.app_gateway.0.id
-  role_definition_name = "Contributor"
-}
+#resource "azurerm_role_assignment" "agic" {
+#  count                = var.enable_agic ? 1 : 0
+#  principal_id         = var.aks_aad_pod_identity_principal_id
+#  scope                = azurerm_application_gateway.app_gateway.0.id
+#  role_definition_name = "Contributor"
+#}
 
 data "azurerm_resource_group" "appgw-rg" {
   count = var.enable_agic ? 1 : 0
@@ -27,23 +27,19 @@ resource "azurerm_role_assignment" "agic-rg" {
   role_definition_name = "Reader"
 }
 
-data "helm_repository" "agic" {
-  count = var.enable_agic ? 1 : 0
-  name  = "agic"
-  url   = "https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"
-}
-
 data "azurerm_subscription" "current" {
   count = var.enable_agic ? 1 : 0
 }
 
 resource "helm_release" "agic" {
   count      = var.enable_agic ? 1 : 0
-  depends_on = [null_resource.install_crd, azurerm_role_assignment.agic, azurerm_role_assignment.agic-rg]
+  #  depends_on = [null_resource.install_crd, azurerm_role_assignment.agic, azurerm_role_assignment.agic-rg,
+  #    azurerm_application_gateway.app_gateway]
   name       = "ingress-azure"
-  repository = data.helm_repository.agic.0.metadata.0.name
+  repository = "https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"
   chart      = "ingress-azure"
   namespace  = kubernetes_namespace.agic.0.metadata.0.name
+  version    = "1.0.0"
 
 
   dynamic "set" {

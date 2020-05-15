@@ -1,4 +1,5 @@
 provider "kubernetes" {
+  alias            = "aks-module"
   load_config_file = false
 
   host                   = azurerm_kubernetes_cluster.aks.kube_config.0.host
@@ -8,6 +9,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
+  alias = "aks-module"
   kubernetes {
     load_config_file = false
 

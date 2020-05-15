@@ -1,8 +1,7 @@
 locals {
   kured_default_values = {
-    "image.repository" = "weaveworks/kured"
-    # FIXME To change when 1.3.0 will be released
-    "image.tag"                = "master-f6e4062"
+    "image.repository"         = "weaveworks/kured"
+    "image.tag"                = "1.3.0"
     "image.pullPolicy"         = "IfNotPresent"
     "extraArgs.reboot-days"    = "mon"
     "extraArgs.start-time"     = "3am"

@@ -190,6 +190,12 @@ variable "diag_custom_name" {
 # APPGW
 #
 
+variable "enable_agic" {
+  description = "Enable Application gateway ingress controller"
+  type        = bool
+  default     = true
+}
+
 variable "custom_appgw_name" {
   description = "Custom name for AKS ingress application gateway"
   type        = string
@@ -204,6 +210,12 @@ variable "appgw_subnet_id" {
 variable "appgw_ingress_controller_values" {
   description = "Application Gateway Ingress Controller settings"
   type        = map(string)
+  default     = {}
+}
+
+variable "appgw_settings" {
+  description = "Application gateway configuration settings. Default dummy configuration"
+  type        = map(any)
   default     = {}
 }
 
@@ -366,20 +378,8 @@ variable "aadpodidentity_chart_version" {
   default     = "1.5.5"
 }
 
-variable "appgw_settings" {
-  description = "Application gateway configuration settings. Default dummy configuration"
-  type        = map(any)
-  default     = {}
-}
-
 variable "name_prefix" {
   description = "prefix used in naming"
   type        = string
   default     = ""
-}
-
-variable "enable_agic" {
-  description = "Enable application ingres controller"
-  type        = bool
-  default     = true
 }

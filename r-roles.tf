@@ -6,12 +6,6 @@ data "azurerm_resource_group" "nodes_rg" {
   name = azurerm_kubernetes_cluster.aks.node_resource_group
 }
 
-resource "azurerm_user_assigned_identity" "aad_pod_identity" {
-  location            = azurerm_kubernetes_cluster.aks.location
-  name                = "aad-pod-identity"
-  resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
-}
-
 resource "azurerm_role_assignment" "cluster_admin" {
   principal_id         = var.service_principal.object_id
   scope                = data.azurerm_resource_group.main_rg.id
@@ -43,8 +37,3 @@ resource "azurerm_role_assignment" "msi" {
   scope        = var.managed_identities[count.index]
 }
 
-resource "azurerm_role_assignment" "aad_pod_identity_msi" {
-  scope                = data.azurerm_resource_group.nodes_rg.id
-  principal_id         = azurerm_user_assigned_identity.aad_pod_identity.principal_id
-  role_definition_name = "Managed Identity Operator"
-}

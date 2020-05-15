@@ -35,22 +35,22 @@ output "aks_kube_config" {
   sensitive   = true
 }
 
-output "application_gateway_id" {
-  description = "Id of the application gateway used by AKS"
-  value       = module.appgw.application_gateway_id
-}
-
-output "application_gateway_name" {
-  description = "Name of the application gateway used by AKS"
-  value       = module.appgw.application_gateway_name
-}
-
-output "public_ip_id" {
-  description = "Id of the public ip used by AKS application gateway"
-  value       = module.appgw.public_ip_id
-}
-
-output "public_ip_name" {
-  value       = module.appgw.public_ip_name
-  description = "Name of the public ip used by AKS application gateway"
-}
+#output "application_gateway_id" {
+#  description = "Id of the application gateway used by AKS"
+#  value       = module.appgw.application_gateway_id
+#}
+#
+#output "application_gateway_name" {
+#  description = "Name of the application gateway used by AKS"
+#  value       = module.appgw.application_gateway_name
+#}
+#
+#output "public_ip_id" {
+#  description = "Id of the public ip used by AKS application gateway"
+#  value       = module.appgw.public_ip_id
+#}
+#
+#output "public_ip_name" {
+#  value       = module.appgw.public_ip_name
+#  description = "Name of the public ip used by AKS application gateway"
+#}
