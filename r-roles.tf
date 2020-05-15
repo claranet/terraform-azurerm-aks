@@ -1,14 +1,6 @@
-data "azurerm_resource_group" "main_rg" {
-  name = var.resource_group_name
-}
-
-data "azurerm_resource_group" "nodes_rg" {
-  name = azurerm_kubernetes_cluster.aks.node_resource_group
-}
-
 resource "azurerm_role_assignment" "cluster_admin" {
   principal_id         = var.service_principal.object_id
-  scope                = data.azurerm_resource_group.main_rg.id
+  scope                = var.resource_group_id
   role_definition_name = "Azure Kubernetes Service Cluster Admin Role"
 }
 

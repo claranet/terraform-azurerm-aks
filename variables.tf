@@ -40,6 +40,11 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "resource_group_id" {
+  description = "Id of the AKS resource group"
+  type        = string
+}
+
 variable "kubernetes_version" {
   description = "Version of Kubernetes to deploy"
   type        = string

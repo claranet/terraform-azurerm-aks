@@ -1,7 +1,3 @@
-data "azurerm_resource_group" "main_rg" {
-  name = var.resource_group_name
-}
-
 data "azurerm_resource_group" "aks_nodes_rg" {
   name = var.aks_resource_group_name
 }
@@ -42,3 +38,4 @@ resource "azurerm_role_assignment" "aad_pod_identity_msi" {
   principal_id         = azurerm_user_assigned_identity.aad_pod_identity.principal_id
   role_definition_name = "Managed Identity Operator"
 }
+

@@ -10,8 +10,9 @@ variable "client_name" {
 
 variable "location" {}
 
-variable "rg_name" {}
+variable "resource_group_name" {}
 
+variable "resource_group_id" {}
 # Network inputs
 
 variable "ip_name" {}
