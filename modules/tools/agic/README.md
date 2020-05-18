@@ -18,6 +18,25 @@ which set some terraform variables in the environment needed by this module.
 More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
 
 ```hcl
+module "rg" {
+  source  = "claranet/rg/azurerm"
+  version = "3.0.0"
+
+  location    = module.azure-region.location
+  client_name = var.client_name
+  environment = var.environment
+  stack       = var.stack
+
+  custom_rg_name = local.support_bastion_rg_name
+}
+
+module "azure-region" {
+  source  = "claranet/regions/azurerm"
+  version = "3.0.0"
+
+  azure_region = var.azure_region
+}
+
 module "agic" {
   source = "claranet/aks/azurerm//modules/tools/agic"
   
