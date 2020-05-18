@@ -19,7 +19,7 @@ Inside each node pool, Kured is installed as a daemonset.
 
 | Module version | Terraform version | AzureRM Version |
 | -------------- | ----------------- | --------------- |
-| >= 3.x.x       | 0.12.x            | >= 2.0.0        |
+| >= 3.x.x       | 0.12.x            | ~>2.10.0        |
 | >= 2.x.x       | 0.12.x            | < 2.0.0         |
 | < 2.x.x        | 0.11.x            | < 2.0.0         |
 
