@@ -1,7 +1,7 @@
 # Azure Kubernetes Service
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/)
 
-This terraform module create an [Azure Kubernetes Service](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and associated [Azure Application Gateway](https://azure.microsoft.com/fr-fr/services/application-gateway/) as ingress controller.
+This terraform module create an [Azure Kubernetes Service](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and associated [Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview) as ingress controller.
 
 Inside the cluster default node pool, velero and cert-manager are installed.
 Inside each node pool, Kured is installed as a daemonset.
@@ -10,7 +10,7 @@ Inside each node pool, Kured is installed as a daemonset.
 ## Requirements and limitations
 
   * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.0.0) >= 2.0.0
-  * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/1.0.0) >= 1.0.0
+  * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/1.0.0) >= 1.1.1
   * [Kubernetes Terraform provider](https://registry.terraform.io/providers/hashicorp/kubernetes/1.11.1) >= 1.11.1
   * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
   * A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the nodes subnet
@@ -81,6 +81,51 @@ module "azure-network-subnet" {
   service_endpoints = ["Microsoft.Storage"]
 
 }
+module "global_run" {
+  source = "claranet/run-common/azurerm"
+
+  client_name    = var.client_name
+  location       = module.azure-region.location
+  location_short = module.azure-region.location_short
+  environment    = var.environment
+  stack          = var.stack
+
+  resource_group_name = module.rg.resource_group_name
+
+  tenant_id = var.azure_tenant_id
+
+}
+
+provider "azuread" {}
+
+resource "azuread_application" "aks-sp" {
+  name = "MySPName"
+}
+
+resource "azuread_service_principal" "aks-sp" {
+  application_id = azuread_application.aks-sp.application_id
+}
+
+resource "random_password" "aks-sp" {
+  length  = 32
+  special = true
+}
+
+resource "azuread_service_principal_password" "aks-sp" {
+  service_principal_id = azuread_service_principal.aks-sp.id
+  value                = random_password.aks-sp.result
+  end_date             = "2050-01-01T01:02:03Z"
+
+}
+
+data "azurerm_subscription" "current" {}
+
+resource "azurerm_role_assignment" "aks-sp-contributor" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Contributor"
+  principal_id         = azuread_service_principal.aks-sp.object_id
+}
+
 
 module "aks" {
   source  = "claranet/aks/azurerm"
@@ -136,13 +181,13 @@ module "aks" {
   addons = {
     dashboard              = false
     oms_agent              = true
-    oms_agent_workspace_id = module.global_run.log_analytics_workspace_id
+    oms_agent_workspace_id = var.log_analytic_workspace_id
     policy                 = false
   }
 
   diagnostics = {
     enabled       = true
-    destination   = module.global_run.log_analytics_workspace_id
+    destination   = var.log_analytic_workspace_id
     eventhub_name = null
     logs          = ["all"]
     metrics       = ["all"]
@@ -154,50 +199,6 @@ module "aks" {
   cert_manager_settings             = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
   velero_storage_settings           = { allowed_cidrs = local.allowed_cidrs }
 
-}
-
-module "global_run" {
-  source = "claranet/run-common/azurerm"
-
-  client_name    = var.client_name
-  location       = module.azure-region.location
-  location_short = module.azure-region.location_short
-  environment    = var.environment
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  tenant_id = var.azure_tenant_id
-
-}
-provider "azuread" {}
-
-resource "azuread_application" "aks-sp" {
-  name = "MySPName"
-}
-
-resource "azuread_service_principal" "aks-sp" {
-  application_id = azuread_application.aks-sp.application_id
-}
-
-resource "random_password" "aks-sp" {
-  length  = 32
-  special = true
-}
-
-resource "azuread_service_principal_password" "aks-sp" {
-  service_principal_id = azuread_service_principal.aks-sp.id
-  value                = random_password.aks-sp.result
-  end_date             = "2050-01-01T01:02:03Z"
-
-}
-
-data "azurerm_subscription" "current" {}
-
-resource "azurerm_role_assignment" "aks-sp-contributor" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Contributor"
-  principal_id         = azuread_service_principal.aks-sp.object_id
 }
 ```
 
