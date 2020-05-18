@@ -8,63 +8,104 @@ variable "client_name" {
   type        = string
 }
 
-variable "location" {}
-
-variable "resource_group_name" {}
-
-variable "resource_group_id" {}
-# Network inputs
-
-variable "ip_name" {}
-
-variable "ip_tags" {
-  type = map(string)
+variable "location" {
+  description = "Location of application gateway"
+  type        = string
 }
 
-variable "ip_label" {}
+variable "resource_group_name" {
+  description = "Name of the resource group in which to deploy the application gateway"
+  type        = string
+}
+
+variable "resource_group_id" {
+  description = "Id of the resource group used to deploy the application gateway"
+  type        = string
+}
+# Network inputs
+
+variable "ip_name" {
+  description = "Name of the applications gateway's public ip address"
+  type        = string
+}
+
+variable "ip_tags" {
+  description = "Specific tags for the public ip address"
+  type        = map(string)
+}
+
+variable "ip_label" {
+  description = "Domain name for the public ip address"
+  type        = string
+}
 
 variable "ip_sku" {
-  type    = string
-  default = "Standard"
+  description = "SKU of the public ip address"
+  type        = string
+  default     = "Standard"
 }
 
 variable "ip_allocation_method" {
-  type    = string
-  default = "Dynamic"
+  description = "Allocation method of the IP address"
+  type        = string
+  default     = "Dynamic"
 }
 
-variable "app_gateway_subnet_id" {}
+variable "app_gateway_subnet_id" {
+  description = "ID of the subnet to use with the application gateway"
+  type        = string
+}
 
 # Application gateway inputs
 
-variable "name" {}
+variable "name" {
+  description = "Name of the application gateway"
+  type        = string
+}
 
-variable "sku_capacity" {}
+variable "sku_capacity" {
+  description = "Application gateway's SKU capacity"
+  type        = string
+}
 
-variable "sku_name" {}
+variable "sku_name" {
+  description = "Application gateway's SKU name"
+  type        = string
+}
 
-variable "sku_tier" {}
+variable "sku_tier" {
+  description = "Application gateway's SKU tier"
+  type        = string
+}
 
-variable "zones" {}
+variable "zones" {
+  description = "Application gateway's Zones to use"
+  type        = list(string)
+}
 
 variable "frontend_ip_configuration_name" {
-  type = string
+  description = "Name of the appgw frontend ip configuration"
+  type        = string
 }
 
 variable "gateway_ip_configuration_name" {
-  type = string
+  description = "Name of the appgw gateway ip configuration"
+  type        = string
 }
 
 variable "frontend_port_settings" {
-  type = list(map(string))
+  description = "Appgw frontent port settings"
+  type        = list(map(string))
 }
 
 variable "firewall_mode" {
-  type    = string
-  default = "Detection"
+  description = "Appgw WAF mode"
+  type        = string
+  default     = "Detection"
 }
 
 variable "disabled_rule_group_settings" {
+  description = "Appgw WAF rules group to disable."
   type = list(object({
     rule_group_name = string
     rules           = list(string)
@@ -73,13 +114,15 @@ variable "disabled_rule_group_settings" {
 }
 
 variable "waf_exclusion_settings" {
-  type    = list(map(string))
-  default = []
+  description = "Appgw WAF exclusion settings"
+  type        = list(map(string))
+  default     = []
 }
 
 variable "policy_name" {
-  type    = string
-  default = "AppGwSslPolicy20170401S"
+  description = "Name of the SSLPolicy to use with Appgw"
+  type        = string
+  default     = "AppGwSslPolicy20170401S"
 }
 
 variable "authentication_certificate_configs" {
@@ -90,7 +133,7 @@ variable "authentication_certificate_configs" {
 
 variable "trusted_root_certificate_configs" {
   type        = list(map(string))
-  description = ""
+  description = "Trusted root certificate configurations"
   default     = []
 }
 
@@ -138,42 +181,63 @@ variable "appgw_redirect_configuration" {
 
 variable "appgw_rewrite_rule_set" {
   type        = any
-  description = "TODO"
+  description = "Application gateway's rewrite rules"
   default     = []
 }
 
 variable "app_gateway_tags" {
-  type = map(string)
+  description = "Tags to apply on the Application gateway"
+  type        = map(string)
 }
 
-variable "environment" {}
+variable "environment" {
+  description = "Project's environment"
+  type        = string
+}
 
-variable "stack" {}
+variable "stack" {
+  description = "Project's stack"
+  type        = string
+}
 
+# WAF Values
 variable "enabled_waf" {
-  default = true
+  description = "Enable WAF or not"
+  type        = bool
+  default     = true
 }
 
 variable "file_upload_limit_mb" {
-  default = 100
+  description = "WAF configuration of the file upload limit in MB"
+  type        = number
+  default     = 100
 }
 
 variable "max_request_body_size_kb" {
-  default = 128
+  description = "WAF configuration of the max request body size in KB"
+  default     = 128
+  type        = number
 }
 
 variable "request_body_check" {
-  default = "true"
+  description = "WAF should check the request body"
+  default     = true
+  type        = bool
 }
 
 variable "rule_set_type" {
-  default = "OWASP"
+  description = "WAF rules set type"
+  default     = "OWASP"
+  type        = string
 }
 
 variable "rule_set_version" {
-  default = "3.0"
+  description = "WAF rules set version"
+  default     = "3.0"
+  type        = string
 }
 
+# AGIC Values
 variable "appgw_ingress_values" {
   description = "Application Gateway Ingress Controller settings"
   type        = map(string)

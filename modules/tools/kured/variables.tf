@@ -3,6 +3,7 @@ variable "enable_kured" {
   type        = bool
   default     = true
 }
+
 variable "kured_settings" {
   description = <<EODK
 Settings for kured helm chart <br />

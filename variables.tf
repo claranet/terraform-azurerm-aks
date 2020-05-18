@@ -380,7 +380,7 @@ variable "aadpodidentity_namespace" {
 variable "aadpodidentity_chart_version" {
   description = "AAD Pod Identity helm chart version to use"
   type        = string
-  default     = "1.5.5"
+  default     = "1.6.0"
 }
 
 variable "name_prefix" {
