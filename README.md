@@ -3,9 +3,8 @@
 
 This terraform module create an [Azure Kubernetes Service](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and associated [Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview) as ingress controller.
 
-Inside the cluster default node pool, velero and cert-manager are installed.
-Inside each node pool, Kured is installed as a daemonset.
-
+Inside the cluster default node pool, [velero](https://velero.io/docs/) and [cert-manager](https://cert-manager.io/docs/) are installed.
+Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed as a daemonset.
 
 ## Requirements and limitations
 
@@ -278,7 +277,7 @@ module "aks" {
 - Terraform Kubernetes provider documentation: [www.terraform.io/docs/providers/kubernetes/index.html](https://www.terraform.io/docs/providers/kubernetes/index.html)
 - Terraform Helm provider documentation: [www.terraform.io/docs/providers/helm/index.html](https://www.terraform.io/docs/providers/helm/index.html)
 - Kured documentation: [github.com/weaveworks/kured](https://github.com/weaveworks/kured)
-- Velero documentation: [velero.io/docs/v1.2.0/](https://velero.io/docs/v1.2.0/)
+- Velero documentation: [velero.io/docs/v1.2.0/](https://velero.io/docs/)
 - Velero Azure specific documentation: [github.com/vmware-tanzu/velero-plugin-for-microsoft-azure](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure)
 - cert-manager documentation : [cert-manager.io/docs/](https://cert-manager.io/docs/)
 
