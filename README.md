@@ -8,7 +8,7 @@ Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed
 
 ## Requirements and limitations
 
-  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.0.0) >= 2.0.0
+  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.10.0) >= 2.10.0
   * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/1.0.0) >= 1.1.1
   * [Kubernetes Terraform provider](https://registry.terraform.io/providers/hashicorp/kubernetes/1.11.1) >= 1.11.1
   * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
