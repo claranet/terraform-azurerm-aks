@@ -5,7 +5,8 @@ module "appgw" {
     helm       = helm.aks-module
   }
 
-  enable_agic = var.enable_agic
+  enable_agic       = var.enable_agic
+  agic_helm_version = var.agic_helm_version
 
   stack          = var.stack
   environment    = var.environment

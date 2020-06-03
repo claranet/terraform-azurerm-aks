@@ -292,3 +292,10 @@ variable "enable_agic" {
   type        = bool
   default     = true
 }
+
+variable "agic_helm_version" {
+  description = "Version of Helm chart to deploy"
+  type        = string
+  # TODO : Watch for the release of 1.2.0 final version
+  default = "1.2.0-rc2"
+}

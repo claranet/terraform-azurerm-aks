@@ -201,6 +201,13 @@ variable "enable_agic" {
   default     = true
 }
 
+variable "agic_helm_version" {
+  description = "Version of the Helm Chart to deploy"
+  type        = string
+  # TODO : Watch for the release of 1.2.0 final version
+  default = "1.2.0-rc2"
+}
+
 variable "custom_appgw_name" {
   description = "Custom name for AKS ingress application gateway"
   type        = string
