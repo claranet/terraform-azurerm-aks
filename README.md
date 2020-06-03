@@ -30,6 +30,12 @@ More details about variables set by the `terraform wrapper` available in the [do
 You can use this module by including it this way:
 
 ```hcl
+locals {
+
+  allowed_cidr = ["x.x.x.x", "y.y.y.y"]
+
+}
+
 module "azure-region" {
   source  = "claranet/regions/azurerm"
   version = "x.x.x"
@@ -82,6 +88,7 @@ module "azure-network-subnet" {
 }
 module "global_run" {
   source = "claranet/run-common/azurerm"
+  version = "x.x.x"
 
   client_name    = var.client_name
   location       = module.azure-region.location
