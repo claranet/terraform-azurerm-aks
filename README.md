@@ -14,6 +14,43 @@ Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed
   * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
   * A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the nodes subnet
   
+There is a known bug with [azurerm_monitor_diagnostic_setting](https://www.terraform.io/docs/providers/azurerm/r/monitor_diagnostic_setting.html) on AKS and Application gateway. You will encounter an error message only on the first apply.
+You just have to launch the apply a 2nd time to finish the deployment.
+
+```
+Error: Provider produced inconsistent final plan
+
+When expanding the plan for
+module.aks.azurerm_monitor_diagnostic_setting.aks[0] to include new values
+learned so far during apply, provider "registry.terraform.io/-/azurerm"
+produced an invalid new value for .log: block set length changed from 1 to 5.
+
+This is a bug in the provider, which should be reported in the provider's own
+issue tracker.
+
+
+Error: Provider produced inconsistent final plan
+
+When expanding the plan for
+module.aks.module.appgw.azurerm_monitor_diagnostic_setting.application_gateway[0]
+to include new values learned so far during apply, provider
+"registry.terraform.io/-/azurerm" produced an invalid new value for .log:
+block set length changed from 1 to 3.
+
+This is a bug in the provider, which should be reported in the provider's own
+issue tracker.
+```
+
+Bug references :
+
+- https://github.com/hashicorp/terraform/issues/22409
+- https://github.com/terraform-providers/terraform-provider-azurerm/issues/5771
+- https://github.com/terraform-providers/terraform-provider-azurerm/issues/6254
+- https://www.terraform.io/docs/extend/terraform-0.12-compatibility.html#inaccurate-plans
+
+This bug should be fixed with Terraform 0.13. https://github.com/hashicorp/terraform/pull/24697
+
+  
 ## Terraform version compatibility
 
 | Module version | Terraform version | AzureRM Version |
