@@ -94,13 +94,9 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "service_principal" {
-  description = "Service principal used by AKS to interract with Azure API"
-  type = object({
-    client_id     = string,
-    client_secret = string,
-    object_id     = string
-  })
+variable "vnet_id" {
+  description = "Id of the vnet used for AKS"
+  type        = string
 }
 
 variable "addons" {

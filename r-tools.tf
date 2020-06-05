@@ -100,7 +100,6 @@ module "velero" {
 
   resource_group_name           = var.resource_group_name
   aks_nodes_resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
-  service_principal             = var.service_principal
   nodes_subnet_id               = var.nodes_subnet_id
 
   velero_namespace        = var.velero_namespace

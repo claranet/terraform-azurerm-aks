@@ -23,9 +23,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
     node_taints         = local.default_node_pool.node_taints
   }
-  service_principal {
-    client_id     = var.service_principal.client_id
-    client_secret = var.service_principal.client_secret
+
+  identity {
+    type = "SystemAssigned"
   }
 
   addon_profile {
@@ -86,4 +86,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   max_count             = local.nodes_pools[count.index].max_count
   enable_node_public_ip = local.nodes_pools[count.index].enable_node_public_ip
   availability_zones    = local.nodes_pools[count.index].availability_zones
+}
+
+# Allow user assigned identity to manage AKS items in MC_xxx RG
+resource "azurerm_role_assignment" "aks_user_assigned" {
+  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id
+  scope                = data.azurerm_resource_group.aks_nodes_rg.id
+  role_definition_name = "Contributor"
 }

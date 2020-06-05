@@ -54,3 +54,7 @@ output "public_ip_name" {
   value       = module.appgw.public_ip_name
   description = "Name of the public ip used by AKS application gateway"
 }
+
+output "test" {
+  value = azurerm_kubernetes_cluster.aks
+}

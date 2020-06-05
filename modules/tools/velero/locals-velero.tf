@@ -1,9 +1,6 @@
 locals {
   credentials = <<EOF
 AZURE_SUBSCRIPTION_ID = ${data.azurerm_subscription.current.0.subscription_id}
-AZURE_TENANT_ID = ${data.azurerm_subscription.current.0.tenant_id}
-AZURE_CLIENT_ID = ${var.service_principal.client_id}
-AZURE_CLIENT_SECRET = ${var.service_principal.client_secret}
 AZURE_RESOURCE_GROUP = ${var.aks_nodes_resource_group_name}
 AZURE_CLOUD_NAME = AzurePublicCloud
 EOF
@@ -43,16 +40,19 @@ EOF
     "serviceAccount.server.create"                              = "true"
     "snapshotsEnabled"                                          = "true"
     "initContainers[0].name"                                    = "velero-plugin-for-azure"
-    "initContainers[0].image"                                   = "velero/velero-plugin-for-microsoft-azure:v1.0.0"
+    "initContainers[0].image"                                   = "steveheptio/velero-plugin-for-microsoft-azure:aad-pod-identity"
     "initContainers[0].volumeMounts[0].mountPath"               = "/target"
     "initContainers[0].volumeMounts[0].name"                    = "plugins"
-    "image.repository"                                          = "velero/velero"
-    "image.tag"                                                 = "v1.2.0"
+    "image.repository"                                          = "steveheptio/velero"
+    "image.tag"                                                 = "aad-pod-identity"
     "image.pullPolicy"                                          = "IfNotPresent"
+    "podAnnotations.aadpodidbinding"                            = local.velero_identity_name
   }
 
 
   velero_credentials = local.credentials
   velero_storage     = merge(local.storage_defaults_settings, var.velero_storage_settings)
   velero_values      = merge(local.velero_default_values, var.velero_values)
+
+  velero_identity_name = "velero-identity"
 }
