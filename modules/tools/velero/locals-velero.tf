@@ -54,5 +54,5 @@ EOF
   velero_storage     = merge(local.storage_defaults_settings, var.velero_storage_settings)
   velero_values      = merge(local.velero_default_values, var.velero_values)
 
-  velero_identity_name = "velero-identity"
+  velero_identity_name = "velero"
 }

@@ -120,3 +120,8 @@ variable "stack" {
   description = "Project stack name"
   type        = string
 }
+
+variable "aks_cluster_name" {
+  description = "Name of the AKS cluster"
+  type        = string
+}
