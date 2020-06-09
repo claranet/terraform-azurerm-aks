@@ -26,10 +26,11 @@ resource "azurerm_role_assignment" "velero-itentity-role-storage" {
 
 # FIXME: Waiting for https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/pull/51
 resource "helm_release" "velero-identity" {
-  count     = var.enable_velero ? 1 : 0
-  chart     = "${path.module}/aad-bindings"
-  name      = "velero-aad-bindings"
-  namespace = kubernetes_namespace.velero.0.metadata.0.name
+  depends_on = [helm_release.velero]
+  count      = var.enable_velero ? 1 : 0
+  chart      = "${path.module}/aad-bindings"
+  name       = "velero-aad-bindings"
+  namespace  = kubernetes_namespace.velero.0.metadata.0.name
 
   set {
     name  = "IdentityName"

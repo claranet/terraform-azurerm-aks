@@ -77,6 +77,7 @@ resource "helm_release" "velero" {
   }
 
   # FIXME: Wait for helm chart to allow to add labels
+  # https://github.com/vmware-tanzu/helm-charts/pull/66
   provisioner "local-exec" {
     command = "az aks get-credentials --resource-group ${var.resource_group_name} --name ${var.aks_cluster_name} --admin --overwrite"
   }

@@ -141,37 +141,6 @@ module "global_run" {
 
 }
 
-provider "azuread" {}
-
-resource "azuread_application" "aks-sp" {
-  name = "MySPName"
-}
-
-resource "azuread_service_principal" "aks-sp" {
-  application_id = azuread_application.aks-sp.application_id
-}
-
-resource "random_password" "aks-sp" {
-  length  = 32
-  special = true
-}
-
-resource "azuread_service_principal_password" "aks-sp" {
-  service_principal_id = azuread_service_principal.aks-sp.id
-  value                = random_password.aks-sp.result
-  end_date             = "2050-01-01T01:02:03Z"
-
-}
-
-data "azurerm_subscription" "current" {}
-
-resource "azurerm_role_assignment" "aks-sp-contributor" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Contributor"
-  principal_id         = azuread_service_principal.aks-sp.object_id
-}
-
-
 module "aks" {
   source  = "claranet/aks/azurerm"
   version = "x.x.x"
@@ -185,7 +154,7 @@ module "aks" {
   location_short      = module.azure-region.location_short
 
   service_cidr       = "10.0.16.0/22"
-  kubernetes_version = "1.15.7"
+  kubernetes_version = "1.16.7"
 
   service_principal = {
     object_id     = azuread_service_principal.aks-sp.object_id
@@ -251,7 +220,7 @@ module "aks" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"1.6.0"` | no |
+| aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"2.0.0"` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart <br /><br><pre>map(object({ <br /><br>  nmi.nodeSelector.agentpool  = string <br /><br>  mic.nodeSelector.agentpool  = string <br /><br>  azureIdentity.enabled       = bool <br /><br>  azureIdentity.type          = string <br /><br>  azureIdentity.resourceID    = string <br /><br>  azureIdentity.clientID      = string <br /><br>  nmi.micNamespace            = string <br /><br>}))<br /><br></pre> | `map(string)` | `{}` | no |
 | addons | Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
@@ -290,7 +259,6 @@ module "aks" {
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
 | service\_cidr | CIDR of service subnet. If subnet has UDR make sure this is routed correctly | `string` | n/a | yes |
-| service\_principal | Service principal used by AKS to interract with Azure API | <pre>object({<br>    client_id     = string,<br>    client_secret = string,<br>    object_id     = string<br>  })</pre> | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
 | storage\_contributor | List of storage accounts ids where the AKS service principal should have access. | `list(string)` | `[]` | no |
 | velero\_chart\_version | Velero helm chart version to use | `string` | `"2.7.3"` | no |
@@ -318,6 +286,7 @@ module "aks" {
 ## Related documentation
 
 - Azure Kubernetes Service documentation : [docs.microsoft.com/en-us/azure/aks/](https://docs.microsoft.com/en-us/azure/aks/)
+- Azure Kubernetes Service MSI Usage : [docs.microsoft.com/en-us/azure/aks/use-managed-identity](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
 - Terraform AKS resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html)
 - Terraform AKS Node pool resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html)
 - Terraform Kubernetes provider documentation: [www.terraform.io/docs/providers/kubernetes/index.html](https://www.terraform.io/docs/providers/kubernetes/index.html)
