@@ -17,14 +17,13 @@ resource "azurerm_role_assignment" "velero-identity-role-aks" {
   role_definition_name = "Contributor"
 }
 
-resource "azurerm_role_assignment" "velero-itentity-role-storage" {
+resource "azurerm_role_assignment" "velero-identity-role-storage" {
   count                = var.enable_velero ? 1 : 0
   principal_id         = azurerm_user_assigned_identity.velero-identity.0.principal_id
   scope                = azurerm_storage_account.velero.0.id
   role_definition_name = "Contributor"
 }
 
-# FIXME: Waiting for https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/pull/51
 resource "helm_release" "velero-identity" {
   depends_on = [helm_release.velero]
   count      = var.enable_velero ? 1 : 0

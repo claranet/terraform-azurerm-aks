@@ -40,11 +40,11 @@ EOF
     "serviceAccount.server.create"                              = "true"
     "snapshotsEnabled"                                          = "true"
     "initContainers[0].name"                                    = "velero-plugin-for-azure"
-    "initContainers[0].image"                                   = "steveheptio/velero-plugin-for-microsoft-azure:aad-pod-identity"
+    "initContainers[0].image"                                   = "velero/velero-plugin-for-microsoft-azure:master"
     "initContainers[0].volumeMounts[0].mountPath"               = "/target"
     "initContainers[0].volumeMounts[0].name"                    = "plugins"
-    "image.repository"                                          = "steveheptio/velero"
-    "image.tag"                                                 = "aad-pod-identity"
+    "image.repository"                                          = "velero/velero"
+    "image.tag"                                                 = "master"
     "image.pullPolicy"                                          = "IfNotPresent"
     "podAnnotations.aadpodidbinding"                            = local.velero_identity_name
   }

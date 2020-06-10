@@ -156,12 +156,6 @@ module "aks" {
   service_cidr       = "10.0.16.0/22"
   kubernetes_version = "1.16.7"
 
-  service_principal = {
-    object_id     = azuread_service_principal.aks-sp.object_id
-    client_id     = azuread_service_principal.aks-sp.application_id
-    client_secret = random_password.aks-sp.result
-  }
-
   vnet_id         = module.azure-virtual-network.virtual_network_id
   nodes_subnet_id = module.azure-network-subnet.subnet_ids[0]
   nodes_pools = [
@@ -213,6 +207,19 @@ module "aks" {
   cert_manager_settings             = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
   velero_storage_settings           = { allowed_cidrs = local.allowed_cidrs }
 
+}
+
+resource "azurerm_container_registry" "acr" {
+  name                = "containerRegistry1"
+  resource_group_name = module.rg.resource_group_name
+  location            = module.azure-region.location
+  sku                 = "Standard"
+}
+
+resource "azurerm_role_assignment" "allow_ACR" {
+  principal_id         = module.aks.aks_user_managed_identity.0.object_id
+  scope                = azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
 }
 ```
 
@@ -278,6 +285,7 @@ module "aks" {
 | aks\_nodes\_pools\_ids | Ids of AKS nodes pools |
 | aks\_nodes\_pools\_names | Names of AKS nodes pools |
 | aks\_nodes\_rg | Name of the resource group in which AKS nodes are deployed |
+| aks\_user\_managed\_identity | The User Managed Identity used by AKS Agents |
 | application\_gateway\_id | Id of the application gateway used by AKS |
 | application\_gateway\_name | Name of the application gateway used by AKS |
 | public\_ip\_id | Id of the public ip used by AKS application gateway |
