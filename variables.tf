@@ -40,11 +40,6 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "resource_group_id" {
-  description = "Id of the AKS resource group"
-  type        = string
-}
-
 variable "kubernetes_version" {
   description = "Version of Kubernetes to deploy"
   type        = string
@@ -99,11 +94,6 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "vnet_id" {
-  description = "Id of the vnet used for AKS"
-  type        = string
-}
-
 variable "service_principal" {
   description = "Service principal used by AKS to interract with Azure API"
   type = object({
@@ -139,7 +129,7 @@ variable "linux_profile" {
 }
 
 variable "service_cidr" {
-  description = "CIDR of service subnet. If subnet has UDR make sure this is routed correctly"
+  description = "CIDR used by kubernetes services (kubectl get svc)."
   type        = string
 
 }

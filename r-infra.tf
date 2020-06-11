@@ -6,7 +6,7 @@ module "infra" {
   }
 
   resource_group_name     = var.resource_group_name
-  resource_group_id       = var.resource_group_id
+  resource_group_id       = data.azurerm_resource_group.aks_rg.id
   aks_resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
   aks_resource_group_id   = data.azurerm_resource_group.aks_nodes_rg.id
   location                = var.location

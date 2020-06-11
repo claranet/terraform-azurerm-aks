@@ -98,7 +98,6 @@ module "agic" {
 | name\_prefix | prefix used in naming | `string` | `""` | no |
 | policy\_name | Name of the SSLPolicy to use with Appgw | `string` | `"AppGwSslPolicy20170401S"` | no |
 | request\_body\_check | WAF should check the request body | `bool` | `true` | no |
-| resource\_group\_id | Id of the resource group used to deploy the application gateway | `string` | n/a | yes |
 | resource\_group\_name | Name of the resource group in which to deploy the application gateway | `string` | n/a | yes |
 | rule\_set\_type | WAF rules set type | `string` | `"OWASP"` | no |
 | rule\_set\_version | WAF rules set version | `string` | `"3.0"` | no |

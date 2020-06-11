@@ -18,10 +18,6 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "resource_group_id" {
-  description = "Id of the resource group used to deploy the application gateway"
-  type        = string
-}
 # Network inputs
 
 variable "ip_name" {

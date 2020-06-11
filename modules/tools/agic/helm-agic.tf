@@ -18,7 +18,7 @@ resource "azurerm_role_assignment" "agic" {
 resource "azurerm_role_assignment" "agic-rg" {
   count                = var.enable_agic ? 1 : 0
   principal_id         = var.aks_aad_pod_identity_principal_id
-  scope                = var.resource_group_id
+  scope                = data.azurerm_resource_group.resource_group.0.id
   role_definition_name = "Reader"
 }
 

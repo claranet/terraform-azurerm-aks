@@ -16,7 +16,6 @@ module "appgw" {
 
   name                  = local.appgw_name
   resource_group_name   = var.resource_group_name
-  resource_group_id     = var.resource_group_id
   app_gateway_subnet_id = var.appgw_subnet_id
   diagnostics           = var.diagnostics
 

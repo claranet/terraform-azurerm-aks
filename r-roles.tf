@@ -1,6 +1,6 @@
 resource "azurerm_role_assignment" "cluster_admin" {
   principal_id         = var.service_principal.object_id
-  scope                = var.resource_group_id
+  scope                = data.azurerm_resource_group.aks_rg.id
   role_definition_name = "Azure Kubernetes Service Cluster Admin Role"
 }
 
@@ -12,7 +12,7 @@ resource "azurerm_role_assignment" "acr" {
 }
 
 resource "azurerm_role_assignment" "subnet" {
-  scope                = var.vnet_id
+  scope                = join("/", slice(split("/", var.nodes_subnet_id), 0, 9))
   role_definition_name = "Network Contributor"
   principal_id         = var.service_principal.object_id
 }
