@@ -58,20 +58,21 @@ module "agic" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| agic\_helm\_version | Version of Helm chart to deploy | `string` | `"1.2.0-rc2"` | no |
 | aks\_aad\_pod\_identity\_client\_id | AAD Identity client\_id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_id | AAD Identity id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_principal\_id | AAD Identity principal\_id used by AKS | `string` | n/a | yes |
 | aks\_name | Name of the AKS Cluster attached to this APPGW | `string` | n/a | yes |
 | app\_gateway\_subnet\_id | ID of the subnet to use with the application gateway | `string` | n/a | yes |
 | app\_gateway\_tags | Tags to apply on the Application gateway | `map(string)` | n/a | yes |
-| appgw\_backend\_http\_settings | List of maps including backend http settings configurations | `any` | n/a | yes |
-| appgw\_backend\_pools | List of maps including backend pool configurations | `any` | n/a | yes |
-| appgw\_http\_listeners | List of maps including http listeners configurations | `list(map(string))` | n/a | yes |
+| appgw\_backend\_http\_settings | List of maps including backend http settings configurations | `any` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
+| appgw\_backend\_pools | List of maps including backend pool configurations | `any` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
+| appgw\_http\_listeners | List of maps including http listeners configurations | `list(map(string))` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | appgw\_ingress\_values | Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
-| appgw\_probes | List of maps including request probes configurations | `any` | n/a | yes |
+| appgw\_probes | List of maps including request probes configurations | `any` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | appgw\_redirect\_configuration | List of maps including redirect configurations | `list(map(string))` | `[]` | no |
 | appgw\_rewrite\_rule\_set | Application gateway's rewrite rules | `any` | `[]` | no |
-| appgw\_routings | List of maps including request routing rules configurations | `list(map(string))` | n/a | yes |
+| appgw\_routings | List of maps including request routing rules configurations | `list(map(string))` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | appgw\_url\_path\_map | List of maps including url path map configurations | `any` | `[]` | no |
 | authentication\_certificate\_configs | List of maps including authentication certificate configurations | `list(map(string))` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
@@ -79,14 +80,14 @@ module "agic" {
 | diagnostics | Enable diagnostics logs on AKS | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })</pre> | n/a | yes |
 | disabled\_rule\_group\_settings | Appgw WAF rules group to disable. | <pre>list(object({<br>    rule_group_name = string<br>    rules           = list(string)<br>  }))</pre> | `[]` | no |
 | enable\_agic | Enable application gateway ingress controller | `bool` | `true` | no |
-| enabled\_waf | Enable WAF or not | `bool` | `true` | no |
+| enabled\_waf | Enable WAF or not | `bool` | `false` | no |
 | environment | Project's environment | `string` | n/a | yes |
 | file\_upload\_limit\_mb | WAF configuration of the file upload limit in MB | `number` | `100` | no |
 | firewall\_mode | Appgw WAF mode | `string` | `"Detection"` | no |
 | frontend\_ip\_configuration\_name | Name of the appgw frontend ip configuration | `string` | n/a | yes |
-| frontend\_port\_settings | Appgw frontent port settings | `list(map(string))` | n/a | yes |
+| frontend\_port\_settings | Appgw frontent port settings | `list(map(string))` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | gateway\_ip\_configuration\_name | Name of the appgw gateway ip configuration | `string` | n/a | yes |
-| ip\_allocation\_method | Allocation method of the IP address | `string` | `"Dynamic"` | no |
+| ip\_allocation\_method | Allocation method of the IP address | `string` | `"Static"` | no |
 | ip\_label | Domain name for the public ip address | `string` | n/a | yes |
 | ip\_name | Name of the applications gateway's public ip address | `string` | n/a | yes |
 | ip\_sku | SKU of the public ip address | `string` | `"Standard"` | no |
@@ -101,14 +102,14 @@ module "agic" {
 | resource\_group\_name | Name of the resource group in which to deploy the application gateway | `string` | n/a | yes |
 | rule\_set\_type | WAF rules set type | `string` | `"OWASP"` | no |
 | rule\_set\_version | WAF rules set version | `string` | `"3.0"` | no |
-| sku\_capacity | Application gateway's SKU capacity | `string` | n/a | yes |
-| sku\_name | Application gateway's SKU name | `string` | n/a | yes |
-| sku\_tier | Application gateway's SKU tier | `string` | n/a | yes |
-| ssl\_certificates\_configs | List of maps including ssl certificates configurations | `list(map(string))` | n/a | yes |
+| sku\_capacity | Application gateway's SKU capacity | `string` | `2` | no |
+| sku\_name | Application gateway's SKU name | `string` | `"Standard_v2"` | no |
+| sku\_tier | Application gateway's SKU tier | `string` | `"Standard_v2"` | no |
+| ssl\_certificates\_configs | List of maps including ssl certificates configurations | `list(map(string))` | `[]` | no |
 | stack | Project's stack | `string` | n/a | yes |
 | trusted\_root\_certificate\_configs | Trusted root certificate configurations | `list(map(string))` | `[]` | no |
 | waf\_exclusion\_settings | Appgw WAF exclusion settings | `list(map(string))` | `[]` | no |
-| zones | Application gateway's Zones to use | `list(string)` | n/a | yes |
+| zones | Application gateway's Zones to use | `list(string)` | <pre>[<br>  "1",<br>  "2",<br>  "3"<br>]</pre> | no |
 
 ## Outputs
 
@@ -118,7 +119,6 @@ module "agic" {
 | application\_gateway\_name | Application gateway name |
 | public\_ip\_id | Application gateway public ip Id |
 | public\_ip\_name | Application gateway public ip name |
-
 
 ## Related documentation
 

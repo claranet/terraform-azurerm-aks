@@ -44,7 +44,7 @@ variable "ip_sku" {
 variable "ip_allocation_method" {
   description = "Allocation method of the IP address"
   type        = string
-  default     = "Dynamic"
+  default     = "Static"
 }
 
 variable "app_gateway_subnet_id" {
@@ -62,21 +62,25 @@ variable "name" {
 variable "sku_capacity" {
   description = "Application gateway's SKU capacity"
   type        = string
+  default     = 2
 }
 
 variable "sku_name" {
   description = "Application gateway's SKU name"
   type        = string
+  default     = "Standard_v2"
 }
 
 variable "sku_tier" {
   description = "Application gateway's SKU tier"
   type        = string
+  default     = "Standard_v2"
 }
 
 variable "zones" {
   description = "Application gateway's Zones to use"
   type        = list(string)
+  default     = ["1", "2", "3"]
 }
 
 variable "frontend_ip_configuration_name" {
@@ -92,6 +96,9 @@ variable "gateway_ip_configuration_name" {
 variable "frontend_port_settings" {
   description = "Appgw frontent port settings"
   type        = list(map(string))
+  default = [{
+    fake = "fake"
+  }]
 }
 
 variable "firewall_mode" {
@@ -136,31 +143,40 @@ variable "trusted_root_certificate_configs" {
 variable "appgw_backend_pools" {
   type        = any
   description = "List of maps including backend pool configurations"
+  default     = [{ fake = "fake" }]
 }
 
 variable "appgw_http_listeners" {
   type        = list(map(string))
   description = "List of maps including http listeners configurations"
+  default     = [{ fake = "fake" }]
 }
 
 variable "ssl_certificates_configs" {
   type        = list(map(string))
   description = "List of maps including ssl certificates configurations"
+  default     = []
 }
 
 variable "appgw_routings" {
   type        = list(map(string))
   description = "List of maps including request routing rules configurations"
+  default     = [{ fake = "fake" }]
 }
 
 variable "appgw_probes" {
   type        = any
   description = "List of maps including request probes configurations"
+  default = [
+    {
+      fake = "fake"
+  }]
 }
 
 variable "appgw_backend_http_settings" {
   type        = any
   description = "List of maps including backend http settings configurations"
+  default     = [{ fake = "fake" }]
 }
 
 variable "appgw_url_path_map" {
@@ -200,7 +216,7 @@ variable "stack" {
 variable "enabled_waf" {
   description = "Enable WAF or not"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "file_upload_limit_mb" {

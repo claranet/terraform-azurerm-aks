@@ -6,6 +6,8 @@ This terraform module creates an [Azure Kubernetes Service](https://azure.micros
 Inside the cluster default node pool, [velero](https://velero.io/docs/) and [cert-manager](https://cert-manager.io/docs/) are installed.
 Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed as a daemonset.
 
+This module also configure logging to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-create-workspace), deploy the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and create some storage classes with different types of Azure managed disks (Standard HDD retain and delete, Premium SSD retain and delete).
+
 ## Requirements and limitations
 
   * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.10.0) >= 2.10.0

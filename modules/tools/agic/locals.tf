@@ -1,6 +1,12 @@
 locals {
-  name_prefix = var.name_prefix != "" ? replace(var.name_prefix, "/[a-z0-9]/", "$0-") : ""
+  name_prefix  = var.name_prefix != "" ? replace(var.name_prefix, "/[a-z0-9]/", "$0-") : ""
+  default_name = "${local.name_prefix}${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-aks-appgw"
+  name         = coalesce(var.name, local.default_name)
 
+  ip_name                        = coalesce(var.ip_name, "${local.name}-pip")
+  ip_label                       = coalesce(var.ip_name, "${local.name}-pip")
+  frontend_ip_configuration_name = coalesce(var.frontend_ip_configuration_name, "${local.name}-frontipconfig")
+  gateway_ip_configuration_name  = coalesce(var.gateway_ip_configuration_name, "${local.name}-ipconfig")
 
   appgw_ingress_default_values = {
     "appgw.name"                 = var.enable_agic ? azurerm_application_gateway.app_gateway.0.name : ""
