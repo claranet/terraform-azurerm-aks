@@ -45,12 +45,26 @@ module "agic" {
   stack       = var.stack
 
   resource_group_name = module.rg.resource_group_name
-  resource_group_id   = module.rg.resource_group_id
   location            = module.azure-region.location
   location_short      = module.azure-region.location_short
 
   appgw_subnet_id = '/subscriptions/xxxxxxx/xxxxx/xxxxxxx'
   appgw_ingress_contoller_values = { "verbosityLevel" = "5" }
+  app_gateway_tags = {"tag1" = "value1"}
+
+  aks_aad_pod_identity_id           = "/subscription/xxx/xxx/xxx"
+  aks_aad_pod_identity_client_id    = "xxx-xxxxx-xxxx-xxxx"
+  aks_aad_pod_identity_principal_id = "xxxx-xxxx-xxxx-xxxx"
+  aks_name = "MyClusterName"
+
+  diagnostics = {
+    enabled       = true
+    destination   = "/subscription/xxx/xxx/workspace/id"
+    eventhub_name = null
+    logs          = ["all"]
+    metrics       = ["all"]
+  }
+
 }
 ```
 
