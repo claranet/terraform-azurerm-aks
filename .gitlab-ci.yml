@@ -1,0 +1,6 @@
+---
+include:
+  - project: 'claranet/projects/cloud/azure/terraform/ci'
+    ref: master
+    file: '/validate.yml'
+...
