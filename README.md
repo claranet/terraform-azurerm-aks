@@ -209,16 +209,23 @@ module "aks" {
 
 }
 
-resource "azurerm_container_registry" "acr" {
-  name                = "containerRegistry1"
-  resource_group_name = module.rg.resource_group_name
+module "acr" {
+  source  = "claranet/acr/azurerm"
+  version = "x.x.x"
+
   location            = module.azure-region.location
+  location_short      = module.azure-region.location_short
+  resource_group_name = module.rg.resource_group_name
   sku                 = "Standard"
+
+  client_name  = var.client_name
+  environement = var.environment
+  stack        = var.stack
 }
 
 resource "azurerm_role_assignment" "allow_ACR" {
   principal_id         = module.aks.aks_user_managed_identity.0.object_id
-  scope                = azurerm_container_registry.acr.id
+  scope                = module.acr.acr_id
   role_definition_name = "AcrPull"
 }
 ```
