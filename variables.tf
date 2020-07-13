@@ -203,6 +203,7 @@ variable "custom_appgw_name" {
 variable "appgw_subnet_id" {
   description = "Application gateway subnet id"
   type        = string
+  default     = ""
 }
 
 variable "appgw_ingress_controller_values" {
