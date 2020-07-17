@@ -13,7 +13,7 @@ resource "azurerm_user_assigned_identity" "velero-identity" {
 resource "azurerm_role_assignment" "velero-identity-role-aks" {
   count                = var.enable_velero ? 1 : 0
   principal_id         = azurerm_user_assigned_identity.velero-identity.0.principal_id
-  scope                = data.azurerm_resource_group.aks-nodes-rg.0.id
+  scope                = try(data.azurerm_resource_group.aks-nodes-rg.0.id, "")
   role_definition_name = "Contributor"
 }
 
