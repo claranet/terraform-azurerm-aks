@@ -141,37 +141,6 @@ module "global_run" {
 
 }
 
-provider "azuread" {}
-
-resource "azuread_application" "aks-sp" {
-  name = "MySPName"
-}
-
-resource "azuread_service_principal" "aks-sp" {
-  application_id = azuread_application.aks-sp.application_id
-}
-
-resource "random_password" "aks-sp" {
-  length  = 32
-  special = true
-}
-
-resource "azuread_service_principal_password" "aks-sp" {
-  service_principal_id = azuread_service_principal.aks-sp.id
-  value                = random_password.aks-sp.result
-  end_date             = "2050-01-01T01:02:03Z"
-
-}
-
-data "azurerm_subscription" "current" {}
-
-resource "azurerm_role_assignment" "aks-sp-contributor" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Contributor"
-  principal_id         = azuread_service_principal.aks-sp.object_id
-}
-
-
 module "aks" {
   source  = "claranet/aks/azurerm"
   version = "x.x.x"
@@ -185,13 +154,7 @@ module "aks" {
   location_short      = module.azure-region.location_short
 
   service_cidr       = "10.0.16.0/22"
-  kubernetes_version = "1.15.7"
-
-  service_principal = {
-    object_id     = azuread_service_principal.aks-sp.object_id
-    client_id     = azuread_service_principal.aks-sp.application_id
-    client_secret = random_password.aks-sp.result
-  }
+  kubernetes_version = "1.16.7"
 
   vnet_id         = module.azure-virtual-network.virtual_network_id
   nodes_subnet_id = module.azure-network-subnet.subnet_ids[0]
@@ -245,21 +208,41 @@ module "aks" {
   velero_storage_settings           = { allowed_cidrs = local.allowed_cidrs }
 
 }
+
+module "acr" {
+  source  = "claranet/acr/azurerm"
+  version = "x.x.x"
+
+  location            = module.azure-region.location
+  location_short      = module.azure-region.location_short
+  resource_group_name = module.rg.resource_group_name
+  sku                 = "Standard"
+
+  client_name  = var.client_name
+  environement = var.environment
+  stack        = var.stack
+}
+
+resource "azurerm_role_assignment" "allow_ACR" {
+  principal_id         = module.aks.aks_user_managed_identity.0.object_id
+  scope                = module.acr.acr_id
+  role_definition_name = "AcrPull"
+}
 ```
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"1.6.0"` | no |
+| aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"2.0.0"` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
-| aadpodidentity\_values | Settings for AAD Pod identity helm Chart <br /><br><pre>map(object({ <br /><br>  nmi.nodeSelector.agentpool  = string <br /><br>  mic.nodeSelector.agentpool  = string <br /><br>  azureIdentity.enabled       = bool <br /><br>  azureIdentity.type          = string <br /><br>  azureIdentity.resourceID    = string <br /><br>  azureIdentity.clientID      = string <br /><br>  nmi.micNamespace            = string <br /><br>}))<br /><br></pre> | `map(string)` | `{}` | no |
+| aadpodidentity\_values | Settings for AAD Pod identity helm Chart:<pre>map(object({ <br>  nmi.nodeSelector.agentpool  = string <br>  mic.nodeSelector.agentpool  = string <br>  azureIdentity.enabled       = bool <br>  azureIdentity.type          = string <br>  azureIdentity.resourceID    = string <br>  azureIdentity.clientID      = string <br>  nmi.micNamespace            = string <br>}))</pre> | `map(string)` | `{}` | no |
 | addons | Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
 | agic\_helm\_version | Version of the Helm Chart to deploy | `string` | `"1.2.0-rc2"` | no |
 | api\_server\_authorized\_ip\_ranges | Ip ranges allowed to interract with Kubernetes API. Default no restrictions | `list(string)` | `[]` | no |
 | appgw\_ingress\_controller\_values | Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
 | appgw\_settings | Application gateway configuration settings. Default dummy configuration | `map(any)` | `{}` | no |
-| appgw\_subnet\_id | Application gateway subnet id | `string` | n/a | yes |
+| appgw\_subnet\_id | Application gateway subnet id | `string` | `""` | no |
 | cert\_manager\_chart\_version | Cert Manager helm chart version to use | `string` | `"v0.13.0"` | no |
 | cert\_manager\_namespace | Kubernetes namespace in which to deploy Cert Manager | `string` | `"system-cert-manager"` | no |
 | cert\_manager\_settings | Settings for cert-manager helm chart | `map(string)` | `{}` | no |
@@ -267,7 +250,7 @@ module "aks" {
 | container\_registries | List of Azure Container Registries ids where AKS needs pull access. | `list(string)` | `[]` | no |
 | custom\_aks\_name | Custom AKS name | `string` | `""` | no |
 | custom\_appgw\_name | Custom name for AKS ingress application gateway | `string` | `""` | no |
-| default\_node\_pool | Default node pool configuration. <br /><br><pre>map(object({ <br /><br>    name                  = string<br /><br>    count                 = number<br /><br>    vm\_size               = string<br /><br>    os\_type               = string<br /><br>    availability\_zones    = list(number)<br /><br>    enable\_auto\_scaling   = bool<br /><br>    min\_count             = number<br /><br>    max\_count             = number<br /><br>    type                  = string<br /><br>    node\_taints           = list(string)<br /><br>    vnet\_subnet\_id        = string<br /><br>    max\_pods              = number<br /><br>    os\_disk\_size\_gb       = number<br /><br>    enable\_node\_public\_ip = bool<br /><br>}))<br /></pre> | `map(any)` | `{}` | no |
+| default\_node\_pool | Default node pool configuration:<pre>map(object({<br>    name                  = string<br>    count                 = number<br>    vm_size               = string<br>    os_type               = string<br>    availability_zones    = list(number)<br>    enable_auto_scaling   = bool<br>    min_count             = number<br>    max_count             = number<br>    type                  = string<br>    node_taints           = list(string)<br>    vnet_subnet_id        = string<br>    max_pods              = number<br>    os_disk_size_gb       = number<br>    enable_node_public_ip = bool<br>}))</pre> | `map(any)` | `{}` | no |
 | diag\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `null` | no |
 | diagnostics | Enable and configure diagnostics logs on AKS. | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })</pre> | n/a | yes |
 | docker\_bridge\_cidr | IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
@@ -279,7 +262,7 @@ module "aks" {
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
 | kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.15.7"` | no |
-| kured\_settings | Settings for kured helm chart <br /><br><pre><br>map(object({ <br /><br>  image.repository         = string <br /><br>  image.tag                = string <br /><br>  image.pullPolicy         = string <br /><br>  extraArgs.reboot-days    = string <br /><br>  extraArgs.start-time     = string <br /><br>  extraArgs.end-time       = string <br /><br>  extraArgs.time-zone      = string <br /><br>  rbac.create              = string <br /><br>  podSecurityPolicy.create = string <br /><br>  serviceAccount.create    = string <br /><br>  autolock.enabled         = string <br /><br>}))<br /><br></pre> | `map(string)` | `{}` | no |
+| kured\_settings | Settings for kured helm chart:<pre>map(object({ <br>  image.repository         = string <br>  image.tag                = string <br>  image.pullPolicy         = string <br>  extraArgs.reboot-days    = string <br>  extraArgs.start-time     = string <br>  extraArgs.end-time       = string <br>  extraArgs.time-zone      = string <br>  rbac.create              = string <br>  podSecurityPolicy.create = string <br>  serviceAccount.create    = string <br>  autolock.enabled         = string <br>}))</pre> | `map(string)` | `{}` | no |
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
 | location | Azure region to use | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use | `string` | n/a | yes |
@@ -289,14 +272,13 @@ module "aks" {
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
-| service\_cidr | CIDR of service subnet. If subnet has UDR make sure this is routed correctly | `string` | n/a | yes |
-| service\_principal | Service principal used by AKS to interract with Azure API | <pre>object({<br>    client_id     = string,<br>    client_secret = string,<br>    object_id     = string<br>  })</pre> | n/a | yes |
+| service\_cidr | CIDR used by kubernetes services (kubectl get svc). | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
 | storage\_contributor | List of storage accounts ids where the AKS service principal should have access. | `list(string)` | `[]` | no |
 | velero\_chart\_version | Velero helm chart version to use | `string` | `"2.7.3"` | no |
 | velero\_namespace | Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
-| velero\_storage\_settings | Settings for Storage account and blob container for Velero <br /><br><pre><br>map(object({ <br /><br>  name                     = string <br /><br>  resource\_group\_name      = string <br /><br>  location                 = string <br /><br>  account\_tier             = string <br /><br>  account\_replication\_type = string <br /><br>  tags                     = map(any) <br /><br>  allowed\_cirds            = list(string) <br /><br>  container\_name           = string <br /><br>}))<br /><br></pre> | `map(any)` | `{}` | no |
-| velero\_values | Settings for Velero helm chart<br><br><pre><br>map(object({ <br /><br>  configuration.backupStorageLocation.bucket                = string <br /><br>  configuration.backupStorageLocation.config.resourceGroup  = string <br /><br>  configuration.backupStorageLocation.config.storageAccount = string <br /><br>  configuration.backupStorageLocation.name                  = string <br /><br>  configuration.provider                                    = string <br /><br>  configuration.volumeSnapshotLocation.config.resourceGroup = string <br /><br>  configuration.volumeSnapshotLocation.name                 = string <br /><br>  credential.exstingSecret                                  = string <br /><br>  credentials.useSecret                                     = string <br /><br>  deployRestic                                              = string <br /><br>  env.AZURE\_CREDENTIALS\_FILE                                = string <br /><br>  metrics.enabled                                           = string <br /><br>  rbac.create                                               = string <br /><br>  schedules.daily.schedule                                  = string <br /><br>  schedules.daily.template.includedNamespaces               = string <br /><br>  schedules.daily.template.snapshotVolumes                  = string <br /><br>  schedules.daily.template.ttl                              = string <br /><br>  serviceAccount.server.create                              = string <br /><br>  snapshotsEnabled                                          = string <br /><br>  initContainers[0].name                                    = string <br /><br>  initContainers[0].image                                   = string <br /><br>  initContainers[0].volumeMounts[0].mountPath               = string <br /><br>  initContainers[0].volumeMounts[0].name                    = string <br /><br>  image.repository                                          = string <br /><br>  image.tag                                                 = string <br /><br>  image.pullPolicy                                          = string <br /><br><br>}))<br /><br></pre> | `map(string)` | `{}` | no |
+| velero\_storage\_settings | Settings for Storage account and blob container for Velero<pre>map(object({ <br>  name                     = string <br>  resource_group_name      = string <br>  location                 = string <br>  account_tier             = string <br>  account_replication_type = string <br>  tags                     = map(any) <br>  allowed_cidrs            = list(string) <br>  container_name           = string <br>}))</pre> | `map(any)` | `{}` | no |
+| velero\_values | Settings for Velero helm chart:<pre>map(object({<br>  configuration.backupStorageLocation.bucket                = string <br>  configuration.backupStorageLocation.config.resourceGroup  = string <br>  configuration.backupStorageLocation.config.storageAccount = string <br>  configuration.backupStorageLocation.name                  = string <br>  configuration.provider                                    = string <br>  configuration.volumeSnapshotLocation.config.resourceGroup = string <br>  configuration.volumeSnapshotLocation.name                 = string <br>  credential.exstingSecret                                  = string <br>  credentials.useSecret                                     = string <br>  deployRestic                                              = string <br>  env.AZURE_CREDENTIALS_FILE                                = string <br>  metrics.enabled                                           = string <br>  rbac.create                                               = string <br>  schedules.daily.schedule                                  = string <br>  schedules.daily.template.includedNamespaces               = string <br>  schedules.daily.template.snapshotVolumes                  = string <br>  schedules.daily.template.ttl                              = string <br>  serviceAccount.server.create                              = string <br>  snapshotsEnabled                                          = string <br>  initContainers[0].name                                    = string <br>  initContainers[0].image                                   = string <br>  initContainers[0].volumeMounts[0].mountPath               = string <br>  initContainers[0].volumeMounts[0].name                    = string <br>  image.repository                                          = string <br>  image.tag                                                 = string <br>  image.pullPolicy                                          = string <br><br>}))</pre> | `map(string)` | `{}` | no |
 | vnet\_id | Id of the vnet used for AKS | `string` | n/a | yes |
 
 ## Outputs
@@ -310,14 +292,17 @@ module "aks" {
 | aks\_nodes\_pools\_ids | Ids of AKS nodes pools |
 | aks\_nodes\_pools\_names | Names of AKS nodes pools |
 | aks\_nodes\_rg | Name of the resource group in which AKS nodes are deployed |
+| aks\_user\_managed\_identity | The User Managed Identity used by AKS Agents |
 | application\_gateway\_id | Id of the application gateway used by AKS |
 | application\_gateway\_name | Name of the application gateway used by AKS |
 | public\_ip\_id | Id of the public ip used by AKS application gateway |
 | public\_ip\_name | Name of the public ip used by AKS application gateway |
 
+
 ## Related documentation
 
 - Azure Kubernetes Service documentation : [docs.microsoft.com/en-us/azure/aks/](https://docs.microsoft.com/en-us/azure/aks/)
+- Azure Kubernetes Service MSI Usage : [docs.microsoft.com/en-us/azure/aks/use-managed-identity](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
 - Terraform AKS resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html)
 - Terraform AKS Node pool resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html)
 - Terraform Kubernetes provider documentation: [www.terraform.io/docs/providers/kubernetes/index.html](https://www.terraform.io/docs/providers/kubernetes/index.html)

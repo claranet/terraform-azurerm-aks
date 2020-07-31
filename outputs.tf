@@ -35,6 +35,11 @@ output "aks_kube_config" {
   sensitive   = true
 }
 
+output "aks_user_managed_identity" {
+  value       = azurerm_kubernetes_cluster.aks.kubelet_identity
+  description = "The User Managed Identity used by AKS Agents"
+}
+
 output "application_gateway_id" {
   description = "Id of the application gateway used by AKS"
   value       = module.appgw.application_gateway_id

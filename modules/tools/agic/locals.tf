@@ -9,14 +9,14 @@ locals {
   gateway_ip_configuration_name  = coalesce(var.gateway_ip_configuration_name, "${local.name}-ipconfig")
 
   appgw_ingress_default_values = {
-    "appgw.name"                 = var.enable_agic ? azurerm_application_gateway.app_gateway.0.name : ""
-    "appgw.subscriptionId"       = var.enable_agic ? data.azurerm_subscription.current.0.subscription_id : ""
-    "appgw.resourceGroup"        = var.enable_agic ? azurerm_application_gateway.app_gateway.0.resource_group_name : ""
-    "appgw.subnetID"             = var.enable_agic ? var.app_gateway_subnet_id : ""
+    "appgw.name"                 = try(azurerm_application_gateway.app_gateway.0.name, "")
+    "appgw.subscriptionId"       = try(data.azurerm_subscription.current.0.subscription_id, "")
+    "appgw.resourceGroup"        = try(azurerm_application_gateway.app_gateway.0.resource_group_name, "")
+    "appgw.subnetID"             = try(var.app_gateway_subnet_id, "")
     "appgw.usePrivateIP"         = "false"
     "armAuth.type"               = "aadPodIdentity"
-    "armAuth.identityResourceID" = var.enable_agic ? var.aks_aad_pod_identity_id : ""
-    "armAuth.identityClientID"   = var.enable_agic ? var.aks_aad_pod_identity_client_id : ""
+    "armAuth.identityResourceID" = try(var.aks_aad_pod_identity_id, "")
+    "armAuth.identityClientID"   = try(var.aks_aad_pod_identity_client_id, "")
     "rbac.enabled"               = "true"
     "verbosityLevel"             = "1"
   }
@@ -25,8 +25,8 @@ locals {
 
 
   # Diagnostic settings
-  diag_kube_logs    = var.enable_agic ? data.azurerm_monitor_diagnostic_categories.aks-diag-categories.0.logs : []
-  diag_kube_metrics = var.enable_agic ? data.azurerm_monitor_diagnostic_categories.aks-diag-categories.0.metrics : []
+  diag_kube_logs    = try(data.azurerm_monitor_diagnostic_categories.aks-diag-categories.0.logs, [])
+  diag_kube_metrics = try(data.azurerm_monitor_diagnostic_categories.aks-diag-categories.0.metrics, [])
 
   diag_resource_list = var.diagnostics.enabled && var.enable_agic ? split("/", var.diagnostics.destination) : []
   parsed_diag = var.diagnostics.enabled && var.enable_agic ? {

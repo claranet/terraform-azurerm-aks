@@ -1,9 +1,6 @@
 locals {
   credentials = <<EOF
-AZURE_SUBSCRIPTION_ID = ${data.azurerm_subscription.current.0.subscription_id}
-AZURE_TENANT_ID = ${data.azurerm_subscription.current.0.tenant_id}
-AZURE_CLIENT_ID = ${var.service_principal.client_id}
-AZURE_CLIENT_SECRET = ${var.service_principal.client_secret}
+AZURE_SUBSCRIPTION_ID = ${try(data.azurerm_subscription.current.0.subscription_id, "")}
 AZURE_RESOURCE_GROUP = ${var.aks_nodes_resource_group_name}
 AZURE_CLOUD_NAME = AzurePublicCloud
 EOF
@@ -23,14 +20,14 @@ EOF
 
 
   velero_default_values = {
-    "configuration.backupStorageLocation.bucket"                = var.enable_velero ? azurerm_storage_container.velero.0.name : ""
-    "configuration.backupStorageLocation.config.resourceGroup"  = var.enable_velero ? azurerm_storage_account.velero.0.resource_group_name : ""
-    "configuration.backupStorageLocation.config.storageAccount" = var.enable_velero ? azurerm_storage_account.velero.0.name : ""
+    "configuration.backupStorageLocation.bucket"                = try(azurerm_storage_container.velero.0.name, "")
+    "configuration.backupStorageLocation.config.resourceGroup"  = try(azurerm_storage_account.velero.0.resource_group_name, "")
+    "configuration.backupStorageLocation.config.storageAccount" = try(azurerm_storage_account.velero.0.name, "")
     "configuration.backupStorageLocation.name"                  = "azure"
     "configuration.provider"                                    = "azure"
-    "configuration.volumeSnapshotLocation.config.resourceGroup" = var.enable_velero ? var.aks_nodes_resource_group_name : ""
+    "configuration.volumeSnapshotLocation.config.resourceGroup" = try(var.aks_nodes_resource_group_name, "")
     "configuration.volumeSnapshotLocation.name"                 = "azure"
-    "credentials.existingSecret"                                = var.enable_velero ? kubernetes_secret.velero.0.metadata.0.name : ""
+    "credentials.existingSecret"                                = try(kubernetes_secret.velero.0.metadata.0.name, "")
     "credentials.useSecret"                                     = "true"
     "deployRestic"                                              = "false"
     "env.AZURE_CREDENTIALS_FILE"                                = "/credentials"
@@ -43,16 +40,19 @@ EOF
     "serviceAccount.server.create"                              = "true"
     "snapshotsEnabled"                                          = "true"
     "initContainers[0].name"                                    = "velero-plugin-for-azure"
-    "initContainers[0].image"                                   = "velero/velero-plugin-for-microsoft-azure:v1.0.0"
+    "initContainers[0].image"                                   = "velero/velero-plugin-for-microsoft-azure:master"
     "initContainers[0].volumeMounts[0].mountPath"               = "/target"
     "initContainers[0].volumeMounts[0].name"                    = "plugins"
     "image.repository"                                          = "velero/velero"
-    "image.tag"                                                 = "v1.2.0"
+    "image.tag"                                                 = "master"
     "image.pullPolicy"                                          = "IfNotPresent"
+    "podAnnotations.aadpodidbinding"                            = local.velero_identity_name
   }
 
 
   velero_credentials = local.credentials
   velero_storage     = merge(local.storage_defaults_settings, var.velero_storage_settings)
   velero_values      = merge(local.velero_default_values, var.velero_values)
+
+  velero_identity_name = "velero"
 }

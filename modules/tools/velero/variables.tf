@@ -90,15 +90,6 @@ variable "velero_chart_version" {
   default     = "2.7.3"
 }
 
-variable "service_principal" {
-  description = "Service principal used by AKS to interract with Azure API"
-  type = object({
-    client_id     = string,
-    client_secret = string,
-    object_id     = string
-  })
-}
-
 variable "name_prefix" {
   description = "prefix used in naming"
   type        = string
@@ -127,5 +118,10 @@ variable "environment" {
 
 variable "stack" {
   description = "Project stack name"
+  type        = string
+}
+
+variable "aks_cluster_name" {
+  description = "Name of the AKS cluster"
   type        = string
 }

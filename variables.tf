@@ -66,23 +66,27 @@ variable "enable_pod_security_policy" {
 
 variable "default_node_pool" {
   description = <<EOD
-Default node pool configuration. <br />
-<pre>map(object({ <br />
-    name                  = string<br />
-    count                 = number<br />
-    vm_size               = string<br />
-    os_type               = string<br />
-    availability_zones    = list(number)<br />
-    enable_auto_scaling   = bool<br />
-    min_count             = number<br />
-    max_count             = number<br />
-    type                  = string<br />
-    node_taints           = list(string)<br />
-    vnet_subnet_id        = string<br />
-    max_pods              = number<br />
-    os_disk_size_gb       = number<br />
-    enable_node_public_ip = bool<br />
-}))<br /></pre>
+Default node pool configuration:
+
+```
+map(object({
+    name                  = string
+    count                 = number
+    vm_size               = string
+    os_type               = string
+    availability_zones    = list(number)
+    enable_auto_scaling   = bool
+    min_count             = number
+    max_count             = number
+    type                  = string
+    node_taints           = list(string)
+    vnet_subnet_id        = string
+    max_pods              = number
+    os_disk_size_gb       = number
+    enable_node_public_ip = bool
+}))
+```
+
 EOD
 
   type    = map(any)
@@ -94,13 +98,9 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "service_principal" {
-  description = "Service principal used by AKS to interract with Azure API"
-  type = object({
-    client_id     = string,
-    client_secret = string,
-    object_id     = string
-  })
+variable "vnet_id" {
+  description = "Id of the vnet used for AKS"
+  type        = string
 }
 
 variable "addons" {
@@ -207,6 +207,7 @@ variable "custom_appgw_name" {
 variable "appgw_subnet_id" {
   description = "Application gateway subnet id"
   type        = string
+  default     = ""
 }
 
 variable "appgw_ingress_controller_values" {
@@ -251,22 +252,23 @@ variable "enable_kured" {
 }
 variable "kured_settings" {
   description = <<EODK
-Settings for kured helm chart <br />
-<pre>
-map(object({ <br />
-  image.repository         = string <br />
-  image.tag                = string <br />
-  image.pullPolicy         = string <br />
-  extraArgs.reboot-days    = string <br />
-  extraArgs.start-time     = string <br />
-  extraArgs.end-time       = string <br />
-  extraArgs.time-zone      = string <br />
-  rbac.create              = string <br />
-  podSecurityPolicy.create = string <br />
-  serviceAccount.create    = string <br />
-  autolock.enabled         = string <br />
-}))<br />
-</pre>
+Settings for kured helm chart:
+
+```
+map(object({ 
+  image.repository         = string 
+  image.tag                = string 
+  image.pullPolicy         = string 
+  extraArgs.reboot-days    = string 
+  extraArgs.start-time     = string 
+  extraArgs.end-time       = string 
+  extraArgs.time-zone      = string 
+  rbac.create              = string 
+  podSecurityPolicy.create = string 
+  serviceAccount.create    = string 
+  autolock.enabled         = string 
+}))
+```
 EODK
   type        = map(string)
   default     = {}
@@ -280,19 +282,19 @@ variable "enable_velero" {
 
 variable "velero_storage_settings" {
   description = <<EOVS
-Settings for Storage account and blob container for Velero <br />
-<pre>
-map(object({ <br />
-  name                     = string <br />
-  resource_group_name      = string <br />
-  location                 = string <br />
-  account_tier             = string <br />
-  account_replication_type = string <br />
-  tags                     = map(any) <br />
-  allowed_cirds            = list(string) <br />
-  container_name           = string <br />
-}))<br />
-</pre>
+Settings for Storage account and blob container for Velero
+```
+map(object({ 
+  name                     = string 
+  resource_group_name      = string 
+  location                 = string 
+  account_tier             = string 
+  account_replication_type = string 
+  tags                     = map(any) 
+  allowed_cidrs            = list(string) 
+  container_name           = string 
+}))
+```
 EOVS
   type        = map(any)
   default     = {}
@@ -300,39 +302,39 @@ EOVS
 
 variable "velero_values" {
   description = <<EOVV
-Settings for Velero helm chart
+Settings for Velero helm chart:
 
-<pre>
-map(object({ <br />
-  configuration.backupStorageLocation.bucket                = string <br />
-  configuration.backupStorageLocation.config.resourceGroup  = string <br />
-  configuration.backupStorageLocation.config.storageAccount = string <br />
-  configuration.backupStorageLocation.name                  = string <br />
-  configuration.provider                                    = string <br />
-  configuration.volumeSnapshotLocation.config.resourceGroup = string <br />
-  configuration.volumeSnapshotLocation.name                 = string <br />
-  credential.exstingSecret                                  = string <br />
-  credentials.useSecret                                     = string <br />
-  deployRestic                                              = string <br />
-  env.AZURE_CREDENTIALS_FILE                                = string <br />
-  metrics.enabled                                           = string <br />
-  rbac.create                                               = string <br />
-  schedules.daily.schedule                                  = string <br />
-  schedules.daily.template.includedNamespaces               = string <br />
-  schedules.daily.template.snapshotVolumes                  = string <br />
-  schedules.daily.template.ttl                              = string <br />
-  serviceAccount.server.create                              = string <br />
-  snapshotsEnabled                                          = string <br />
-  initContainers[0].name                                    = string <br />
-  initContainers[0].image                                   = string <br />
-  initContainers[0].volumeMounts[0].mountPath               = string <br />
-  initContainers[0].volumeMounts[0].name                    = string <br />
-  image.repository                                          = string <br />
-  image.tag                                                 = string <br />
-  image.pullPolicy                                          = string <br />
+```
+map(object({
+  configuration.backupStorageLocation.bucket                = string 
+  configuration.backupStorageLocation.config.resourceGroup  = string 
+  configuration.backupStorageLocation.config.storageAccount = string 
+  configuration.backupStorageLocation.name                  = string 
+  configuration.provider                                    = string 
+  configuration.volumeSnapshotLocation.config.resourceGroup = string 
+  configuration.volumeSnapshotLocation.name                 = string 
+  credential.exstingSecret                                  = string 
+  credentials.useSecret                                     = string 
+  deployRestic                                              = string 
+  env.AZURE_CREDENTIALS_FILE                                = string 
+  metrics.enabled                                           = string 
+  rbac.create                                               = string 
+  schedules.daily.schedule                                  = string 
+  schedules.daily.template.includedNamespaces               = string 
+  schedules.daily.template.snapshotVolumes                  = string 
+  schedules.daily.template.ttl                              = string 
+  serviceAccount.server.create                              = string 
+  snapshotsEnabled                                          = string 
+  initContainers[0].name                                    = string 
+  initContainers[0].image                                   = string 
+  initContainers[0].volumeMounts[0].mountPath               = string 
+  initContainers[0].volumeMounts[0].name                    = string 
+  image.repository                                          = string 
+  image.tag                                                 = string 
+  image.pullPolicy                                          = string 
 
-}))<br />
-</pre>
+}))
+```
 EOVV
   type        = map(string)
   default     = {}
@@ -352,17 +354,19 @@ variable "velero_chart_version" {
 
 variable "aadpodidentity_values" {
   description = <<EOD
-Settings for AAD Pod identity helm Chart <br />
-<pre>map(object({ <br />
-  nmi.nodeSelector.agentpool  = string <br />
-  mic.nodeSelector.agentpool  = string <br />
-  azureIdentity.enabled       = bool <br />
-  azureIdentity.type          = string <br />
-  azureIdentity.resourceID    = string <br />
-  azureIdentity.clientID      = string <br />
-  nmi.micNamespace            = string <br />
-}))<br />
-</pre>
+Settings for AAD Pod identity helm Chart:
+
+```
+map(object({ 
+  nmi.nodeSelector.agentpool  = string 
+  mic.nodeSelector.agentpool  = string 
+  azureIdentity.enabled       = bool 
+  azureIdentity.type          = string 
+  azureIdentity.resourceID    = string 
+  azureIdentity.clientID      = string 
+  nmi.micNamespace            = string 
+}))
+```
 EOD
   type        = map(string)
   default     = {}
@@ -377,7 +381,7 @@ variable "aadpodidentity_namespace" {
 variable "aadpodidentity_chart_version" {
   description = "AAD Pod Identity helm chart version to use"
   type        = string
-  default     = "1.6.0"
+  default     = "2.0.0"
 }
 
 variable "name_prefix" {

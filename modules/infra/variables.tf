@@ -25,7 +25,7 @@ variable "location" {
 variable "aadpodidentity_chart_version" {
   description = "Azure Active Directory Pod Identity Chart version"
   type        = string
-  default     = "1.6.0"
+  default     = "2.0.0"
 }
 variable "aadpodidentity_namespace" {
   description = "Kubernetes namespace in which to deploy AAD Pod Identity"
