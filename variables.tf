@@ -286,7 +286,7 @@ map(object({ <br />
   account_tier             = string <br />
   account_replication_type = string <br />
   tags                     = map(any) <br />
-  allowed_cirds            = list(string) <br />
+  allowed_cidrs            = list(string) <br />
   container_name           = string <br />
 }))<br />
 </pre>
