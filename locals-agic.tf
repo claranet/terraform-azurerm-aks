@@ -52,7 +52,7 @@ locals {
     }]
     appgw_http_listeners = [{
       name                           = "dummy"
-      frontend_ip_configuration_name = "dummy"
+      frontend_ip_configuration_name = "${local.appgw_name}-frontipconfig"
       frontend_port_name             = "dummy"
       protocol                       = "Http"
       host_name                      = "dummy"
