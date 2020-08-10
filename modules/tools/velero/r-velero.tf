@@ -76,12 +76,4 @@ resource "helm_release" "velero" {
     }
   }
 
-  # FIXME: Wait for helm chart to allow to add labels
-  # https://github.com/vmware-tanzu/helm-charts/pull/66
-  provisioner "local-exec" {
-    command = "az aks get-credentials --resource-group ${var.resource_group_name} --name ${var.aks_cluster_name} --admin --overwrite --subscription ${data.azurerm_subscription.current[0].subscription_id}"
-  }
-  provisioner "local-exec" {
-    command = "kubectl label pods $(kubectl get pods -n ${kubernetes_namespace.velero.0.metadata.0.name} -o jsonpath='{.items[*].metadata.name}') aadpodidbinding=${azurerm_user_assigned_identity.velero-identity.0.name} -n ${kubernetes_namespace.velero.0.metadata.0.name}"
-  }
 }
