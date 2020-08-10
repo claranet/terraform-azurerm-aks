@@ -238,7 +238,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart:<pre>map(object({ <br>  nmi.nodeSelector.agentpool  = string <br>  mic.nodeSelector.agentpool  = string <br>  azureIdentity.enabled       = bool <br>  azureIdentity.type          = string <br>  azureIdentity.resourceID    = string <br>  azureIdentity.clientID      = string <br>  nmi.micNamespace            = string <br>}))</pre> | `map(string)` | `{}` | no |
 | addons | Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
-| agic\_helm\_version | Version of the Helm Chart to deploy | `string` | `"1.2.0-rc2"` | no |
+| agic\_helm\_version | Version of the Helm Chart to deploy | `string` | `"1.2.0"` | no |
 | api\_server\_authorized\_ip\_ranges | Ip ranges allowed to interract with Kubernetes API. Default no restrictions | `list(string)` | `[]` | no |
 | appgw\_ingress\_controller\_values | Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
 | appgw\_settings | Application gateway configuration settings. Default dummy configuration | `map(any)` | `{}` | no |
@@ -261,7 +261,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | enable\_velero | Enable velero on AKS cluster | `bool` | `true` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
-| kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.15.7"` | no |
+| kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.17.9"` | no |
 | kured\_settings | Settings for kured helm chart:<pre>map(object({ <br>  image.repository         = string <br>  image.tag                = string <br>  image.pullPolicy         = string <br>  extraArgs.reboot-days    = string <br>  extraArgs.start-time     = string <br>  extraArgs.end-time       = string <br>  extraArgs.time-zone      = string <br>  rbac.create              = string <br>  podSecurityPolicy.create = string <br>  serviceAccount.create    = string <br>  autolock.enabled         = string <br>}))</pre> | `map(string)` | `{}` | no |
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
 | location | Azure region to use | `string` | n/a | yes |
@@ -275,7 +275,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | service\_cidr | CIDR used by kubernetes services (kubectl get svc). | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
 | storage\_contributor | List of storage accounts ids where the AKS service principal should have access. | `list(string)` | `[]` | no |
-| velero\_chart\_version | Velero helm chart version to use | `string` | `"2.7.3"` | no |
+| velero\_chart\_version | Velero helm chart version to use | `string` | `"2.12.13"` | no |
 | velero\_namespace | Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
 | velero\_storage\_settings | Settings for Storage account and blob container for Velero<pre>map(object({ <br>  name                     = string <br>  resource_group_name      = string <br>  location                 = string <br>  account_tier             = string <br>  account_replication_type = string <br>  tags                     = map(any) <br>  allowed_cidrs            = list(string) <br>  container_name           = string <br>}))</pre> | `map(any)` | `{}` | no |
 | velero\_values | Settings for Velero helm chart:<pre>map(object({<br>  configuration.backupStorageLocation.bucket                = string <br>  configuration.backupStorageLocation.config.resourceGroup  = string <br>  configuration.backupStorageLocation.config.storageAccount = string <br>  configuration.backupStorageLocation.name                  = string <br>  configuration.provider                                    = string <br>  configuration.volumeSnapshotLocation.config.resourceGroup = string <br>  configuration.volumeSnapshotLocation.name                 = string <br>  credential.exstingSecret                                  = string <br>  credentials.useSecret                                     = string <br>  deployRestic                                              = string <br>  env.AZURE_CREDENTIALS_FILE                                = string <br>  metrics.enabled                                           = string <br>  rbac.create                                               = string <br>  schedules.daily.schedule                                  = string <br>  schedules.daily.template.includedNamespaces               = string <br>  schedules.daily.template.snapshotVolumes                  = string <br>  schedules.daily.template.ttl                              = string <br>  serviceAccount.server.create                              = string <br>  snapshotsEnabled                                          = string <br>  initContainers[0].name                                    = string <br>  initContainers[0].image                                   = string <br>  initContainers[0].volumeMounts[0].mountPath               = string <br>  initContainers[0].volumeMounts[0].name                    = string <br>  image.repository                                          = string <br>  image.tag                                                 = string <br>  image.pullPolicy                                          = string <br><br>}))</pre> | `map(string)` | `{}` | no |
@@ -297,7 +297,6 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | application\_gateway\_name | Name of the application gateway used by AKS |
 | public\_ip\_id | Id of the public ip used by AKS application gateway |
 | public\_ip\_name | Name of the public ip used by AKS application gateway |
-
 
 ## Related documentation
 
