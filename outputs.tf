@@ -5,7 +5,7 @@ output "aks_id" {
 
 output "aks_name" {
   description = "Name of the AKS cluster"
-  value       = azurerm_kubernetes_cluster.aks.id
+  value       = split("/", azurerm_kubernetes_cluster.aks.id)[8]
 }
 
 output "aks_nodes_rg" {
