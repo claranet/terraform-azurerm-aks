@@ -219,7 +219,7 @@ module "acr" {
   sku                 = "Standard"
 
   client_name  = var.client_name
-  environement = var.environment
+  environment  = var.environment
   stack        = var.stack
 }
 
