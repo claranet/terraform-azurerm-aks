@@ -1,4 +1,4 @@
-# v3.1.1 - unreleased
+# v3.2.0 - 2020-10-20
 
 Fixed
   * AZ-251: Update velero helm chart to 2.12.13
