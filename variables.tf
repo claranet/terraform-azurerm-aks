@@ -43,7 +43,7 @@ variable "resource_group_name" {
 variable "kubernetes_version" {
   description = "Version of Kubernetes to deploy"
   type        = string
-  default     = "1.15.7"
+  default     = "1.17.9"
 }
 
 variable "api_server_authorized_ip_ranges" {
@@ -194,8 +194,7 @@ variable "enable_agic" {
 variable "agic_helm_version" {
   description = "Version of the Helm Chart to deploy"
   type        = string
-  # TODO : Watch for the release of 1.2.0 final version
-  default = "1.2.0-rc2"
+  default     = "1.2.0"
 }
 
 variable "custom_appgw_name" {
@@ -349,7 +348,7 @@ variable "velero_namespace" {
 variable "velero_chart_version" {
   description = "Velero helm chart version to use"
   type        = string
-  default     = "2.7.3"
+  default     = "2.12.13"
 }
 
 variable "aadpodidentity_values" {

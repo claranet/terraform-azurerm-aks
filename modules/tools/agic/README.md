@@ -72,7 +72,7 @@ module "agic" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| agic\_helm\_version | Version of Helm chart to deploy | `string` | `"1.2.0-rc2"` | no |
+| agic\_helm\_version | Version of Helm chart to deploy | `string` | `"1.2.0"` | no |
 | aks\_aad\_pod\_identity\_client\_id | AAD Identity client\_id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_id | AAD Identity id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_principal\_id | AAD Identity principal\_id used by AKS | `string` | n/a | yes |

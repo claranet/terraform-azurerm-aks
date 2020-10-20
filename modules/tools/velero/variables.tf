@@ -20,19 +20,19 @@ variable "enable_velero" {
 
 variable "velero_storage_settings" {
   description = <<EOVS
-Settings for Storage account and blob container for Velero <br />
-<pre>
-map(object({ <br />
-  name                     = string <br />
-  resource_group_name      = string <br />
-  location                 = string <br />
-  account_tier             = string <br />
-  account_replication_type = string <br />
-  tags                     = map(any) <br />
-  allowed_cirds            = list(string) <br />
-  container_name           = string <br />
-}))<br />
-</pre>
+Settings for Storage account and blob container for Velero
+
+map(object({
+  name                     = string 
+  resource_group_name      = string 
+  location                 = string 
+  account_tier             = string 
+  account_replication_type = string 
+  tags                     = map(any) 
+  allowed_cirds            = list(string) 
+  container_name           = string 
+}))
+
 EOVS
   type        = map(any)
   default     = {}
@@ -42,37 +42,37 @@ variable "velero_values" {
   description = <<EOVV
 Settings for Velero helm chart
 
-<pre>
-map(object({ <br />
-  configuration.backupStorageLocation.bucket                = string <br />
-  configuration.backupStorageLocation.config.resourceGroup  = string <br />
-  configuration.backupStorageLocation.config.storageAccount = string <br />
-  configuration.backupStorageLocation.name                  = string <br />
-  configuration.provider                                    = string <br />
-  configuration.volumeSnapshotLocation.config.resourceGroup = string <br />
-  configuration.volumeSnapshotLocation.name                 = string <br />
-  credential.exstingSecret                                  = string <br />
-  credentials.useSecret                                     = string <br />
-  deployRestic                                              = string <br />
-  env.AZURE_CREDENTIALS_FILE                                = string <br />
-  metrics.enabled                                           = string <br />
-  rbac.create                                               = string <br />
-  schedules.daily.schedule                                  = string <br />
-  schedules.daily.template.includedNamespaces               = string <br />
-  schedules.daily.template.snapshotVolumes                  = string <br />
-  schedules.daily.template.ttl                              = string <br />
-  serviceAccount.server.create                              = string <br />
-  snapshotsEnabled                                          = string <br />
-  initContainers[0].name                                    = string <br />
-  initContainers[0].image                                   = string <br />
-  initContainers[0].volumeMounts[0].mountPath               = string <br />
-  initContainers[0].volumeMounts[0].name                    = string <br />
-  image.repository                                          = string <br />
-  image.tag                                                 = string <br />
-  image.pullPolicy                                          = string <br />
+map(object({ 
+  configuration.backupStorageLocation.bucket                = string 
+  configuration.backupStorageLocation.config.resourceGroup  = string 
+  configuration.backupStorageLocation.config.storageAccount = string 
+  configuration.backupStorageLocation.name                  = string 
+  configuration.provider                                    = string 
+  configuration.volumeSnapshotLocation.config.resourceGroup = string 
+  configuration.volumeSnapshotLocation.name                 = string 
+  credential.exstingSecret                                  = string 
+  credentials.useSecret                                     = string 
+  deployRestic                                              = string 
+  env.AZURE_CREDENTIALS_FILE                                = string 
+  metrics.enabled                                           = string 
+  rbac.create                                               = string 
+  schedules.daily.schedule                                  = string 
+  schedules.daily.template.includedNamespaces               = string 
+  schedules.daily.template.snapshotVolumes                  = string 
+  schedules.daily.template.ttl                              = string 
+  serviceAccount.server.create                              = string 
+  snapshotsEnabled                                          = string 
+  initContainers[0].name                                    = string 
+  initContainers[0].image                                   = string 
+  initContainers[0].volumeMounts[0].mountPath               = string 
+  initContainers[0].volumeMounts[0].name                    = string 
+  image.repository                                          = string 
+  image.tag                                                 = string 
+  image.pullPolicy                                          = string
+  podAnnotations.aadpodidbinding                            = string
+  podLabels.aadpodidbinding                                 = string
 
-}))<br />
-</pre>
+}))
 EOVV
   type        = map(string)
   default     = {}
@@ -87,7 +87,7 @@ variable "velero_namespace" {
 variable "velero_chart_version" {
   description = "Velero helm chart version to use"
   type        = string
-  default     = "2.7.3"
+  default     = "2.12.13"
 }
 
 variable "name_prefix" {
