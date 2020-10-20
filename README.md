@@ -52,14 +52,14 @@ Bug references :
 
 This bug should be fixed with Terraform 0.13. https://github.com/hashicorp/terraform/pull/24697
 
-  
 ## Terraform version compatibility
 
-| Module version | Terraform version | AzureRM Version |
-| -------------- | ----------------- | --------------- |
-| >= 3.x.x       | 0.12.x            | ~>2.10.0        |
-| >= 2.x.x       | 0.12.x            | < 2.0.0         |
-| < 2.x.x        | 0.11.x            | < 2.0.0         |
+| Module version | Terraform version | AzureRM version |
+|----------------|-------------------| --------------- |
+| >= 4.x.x       | 0.13.x            | >= 2.10.0       |
+| >= 3.x.x       | 0.12.x            | >= 2.10.0       |
+| >= 2.x.x       | 0.12.x            | < 2.0           |
+| <  2.x.x       | 0.11.x            | < 2.0           |
 
 ## Usage
 
