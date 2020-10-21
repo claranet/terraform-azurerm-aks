@@ -3,6 +3,9 @@
 Changed
   * AZ-273: Update README and CI, module compatible Terraform 0.13+ (now requires Terraform 0.12.26 minimum version)
 
+Added
+  * AZ-335: Force lower domain name label for the public IP of the agic
+
 # v3.2.0 - 2020-10-20
 
 Fixed
