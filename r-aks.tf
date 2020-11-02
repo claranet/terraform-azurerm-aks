@@ -62,6 +62,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     docker_bridge_cidr = var.docker_bridge_cidr
     service_cidr       = var.service_cidr
     load_balancer_sku  = "standard"
+    outbound_type      = var.outbound_type
 
   }
 

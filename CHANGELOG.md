@@ -2,6 +2,9 @@
 
 Changed
   * AZ-273: Update README and CI, module compatible Terraform 0.13+ (now requires Terraform 0.12.26 minimum version)
+  
+Added
+  * AZ-359: Add `outbound_type` variable to be able to user user defined routing
 
 Added
   * AZ-335: Force lower domain name label for the public IP of the agic
