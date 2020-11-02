@@ -13,6 +13,10 @@ Updated
   * AZ-379: Fix kured chart repository
   * AZ-382: Update of Kured chart version
  
+Fixed
+  * AZ-357: Fix issue with AKS user role assignment
+  * AZ-357: Fix velero parameter
+
 # v3.2.0 - 2020-10-20
 
 Fixed
