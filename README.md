@@ -322,6 +322,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 
 - Azure Kubernetes Service documentation : [docs.microsoft.com/en-us/azure/aks/](https://docs.microsoft.com/en-us/azure/aks/)
 - Azure Kubernetes Service MSI Usage : [docs.microsoft.com/en-us/azure/aks/use-managed-identity](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
+- Azure Kubernetes Service User-Defined Route usage : [docs.microsoft.com/en-us/azure/aks/egress-outboundtype](https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype)
 - Terraform AKS resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html)
 - Terraform AKS Node pool resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html)
 - Terraform Kubernetes provider documentation: [www.terraform.io/docs/providers/kubernetes/index.html](https://www.terraform.io/docs/providers/kubernetes/index.html)
