@@ -3,20 +3,21 @@ locals {
   appgw_name         = coalesce(var.custom_appgw_name, local.default_appgw_name)
 
   appgw_default_settings = {
-    ip_name                        = "${local.appgw_name}-pip"
-    ip_label                       = "${local.appgw_name}-pip"
-    ip_sku                         = "Standard"
-    ip_allocation_method           = "Static"
-    frontend_ip_configuration_name = "${local.appgw_name}-frontipconfig"
-    gateway_ip_configuration_name  = "${local.appgw_name}-ipconfig"
-    sku_name                       = "Standard_v2"
-    sku_tier                       = "Standard_v2"
-    sku_capacity                   = 2
-    zones                          = ["1", "2", "3"]
-    policy_name                    = "AppGwSslPolicy20170401S"
-    enabled_waf                    = false
-    app_gateway_tags               = local.default_tags
-    ip_tags                        = local.default_tags
+    ip_name                             = "${local.appgw_name}-pip"
+    ip_label                            = "${local.appgw_name}-pip"
+    ip_sku                              = "Standard"
+    ip_allocation_method                = "Static"
+    frontend_ip_configuration_name      = "${local.appgw_name}-frontipconfig"
+    frontend_priv_ip_configuration_name = "${local.appgw_name}-frontipconfig-priv"
+    gateway_ip_configuration_name       = "${local.appgw_name}-ipconfig"
+    sku_name                            = "Standard_v2"
+    sku_tier                            = "Standard_v2"
+    sku_capacity                        = 2
+    zones                               = ["1", "2", "3"]
+    policy_name                         = "AppGwSslPolicy20170401S"
+    enabled_waf                         = false
+    app_gateway_tags                    = local.default_tags
+    ip_tags                             = local.default_tags
     appgw_backend_http_settings = [{
       name                  = "dummy"
       cookie_based_affinity = "Disabled"
@@ -52,7 +53,7 @@ locals {
     }]
     appgw_http_listeners = [{
       name                           = "dummy"
-      frontend_ip_configuration_name = "${local.appgw_name}-frontipconfig"
+      frontend_ip_configuration_name = "${local.frontend_ip_configuration_name}"
       frontend_port_name             = "dummy"
       protocol                       = "Http"
       host_name                      = "dummy"
@@ -64,5 +65,6 @@ locals {
     ssl_certificates_configs = []
   }
 
-  appgw_settings = merge(local.appgw_default_settings, var.appgw_settings)
+  appgw_settings                 = merge(local.appgw_default_settings, var.appgw_settings)
+  frontend_ip_configuration_name = var.private_ingress ? "${local.appgw_name}-frontipconfig-priv" : "${local.appgw_name}-frontipconfig"
 }

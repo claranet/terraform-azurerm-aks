@@ -247,6 +247,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
 | api\_server\_authorized\_ip\_ranges | Ip ranges allowed to interract with Kubernetes API. Default no restrictions | `list(string)` | `[]` | no |
 | appgw\_ingress\_controller\_values | Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
+| appgw\_private\_ip | Private IP for Application Gateway. Used when variable `private_ingress` is set to `true`. | `string` | `null` | no |
 | appgw\_settings | Application gateway configuration settings. Default dummy configuration | `map(any)` | `{}` | no |
 | appgw\_subnet\_id | Application gateway subnet id | `string` | `""` | no |
 | cert\_manager\_chart\_repository | Helm chart repository URL | `string` | `"https://charts.jetstack.io"` | no |
@@ -281,6 +282,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | outbound\_type | The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`. | `string` | `"loadBalancer"` | no |
+| private\_ingress | Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP. | `bool` | `false` | no |
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
 | service\_cidr | CIDR used by kubernetes services (kubectl get svc). | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |

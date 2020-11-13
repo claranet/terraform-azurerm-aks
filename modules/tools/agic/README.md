@@ -85,6 +85,7 @@ module "agic" {
 | appgw\_backend\_pools | List of maps including backend pool configurations | `any` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | appgw\_http\_listeners | List of maps including http listeners configurations | `list(map(string))` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | appgw\_ingress\_values | Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
+| appgw\_private\_ip | Private IP for Application Gateway. Used when variable `private_ingress` is set to `true`. | `string` | `null` | no |
 | appgw\_probes | List of maps including request probes configurations | `any` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | appgw\_redirect\_configuration | List of maps including redirect configurations | `list(map(string))` | `[]` | no |
 | appgw\_rewrite\_rule\_set | Application gateway's rewrite rules | `any` | `[]` | no |
@@ -102,6 +103,7 @@ module "agic" {
 | firewall\_mode | Appgw WAF mode | `string` | `"Detection"` | no |
 | frontend\_ip\_configuration\_name | Name of the appgw frontend ip configuration | `string` | n/a | yes |
 | frontend\_port\_settings | Appgw frontent port settings | `list(map(string))` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
+| frontend\_priv\_ip\_configuration\_name | Name of the appgw frontend private ip configuration | `string` | `null` | no |
 | gateway\_ip\_configuration\_name | Name of the appgw gateway ip configuration | `string` | n/a | yes |
 | ip\_allocation\_method | Allocation method of the IP address | `string` | `"Static"` | no |
 | ip\_label | Domain name for the public ip address | `string` | n/a | yes |
@@ -114,6 +116,7 @@ module "agic" {
 | name | Name of the application gateway | `string` | n/a | yes |
 | name\_prefix | prefix used in naming | `string` | `""` | no |
 | policy\_name | Name of the SSLPolicy to use with Appgw | `string` | `"AppGwSslPolicy20170401S"` | no |
+| private\_ingress | Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP. | `bool` | `false` | no |
 | request\_body\_check | WAF should check the request body | `bool` | `true` | no |
 | resource\_group\_name | Name of the resource group in which to deploy the application gateway | `string` | n/a | yes |
 | rule\_set\_type | WAF rules set type | `string` | `"OWASP"` | no |
