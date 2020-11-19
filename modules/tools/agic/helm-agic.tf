@@ -28,12 +28,13 @@ resource "helm_release" "agic" {
   depends_on = [
     azurerm_role_assignment.agic,
     azurerm_role_assignment.agic-rg,
-  azurerm_application_gateway.app_gateway]
+    azurerm_application_gateway.app_gateway
+  ]
   name       = "ingress-azure"
   repository = "https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"
   chart      = "ingress-azure"
   namespace  = kubernetes_namespace.agic.0.metadata.0.name
-  version    = var.agic_helm_version
+  version    = coalesce(var.agic_helm_version, var.agic_chart_version)
 
 
   dynamic "set" {

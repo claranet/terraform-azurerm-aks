@@ -1,3 +1,8 @@
+output "namespace" {
+  description = "Namespace used for AGIC"
+  value       = try(kubernetes_namespace.agic.0.metadata.0.name, "")
+}
+
 output "application_gateway_id" {
   description = "Application gateway Id"
   value       = try(azurerm_application_gateway.app_gateway.0.id, "")

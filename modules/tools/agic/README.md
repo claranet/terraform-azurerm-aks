@@ -1,7 +1,7 @@
-# Azure Resource Group
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm)
+# Azure Kubernetes Service - Application Gateway Ingress Controller tool submodule
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/latest/submodules/agic)
 
-This module Allow you to create an application gateway ingress controller with its associated Application Gateway v2 on an existing AKS cluster.
+This module allows you to create an application gateway ingress controller with its associated Application Gateway v2 on an existing AKS cluster.
 
 ## Version compatibility
 
@@ -20,7 +20,7 @@ More details about variables set by the `terraform-wrapper` available in the [do
 ```hcl
 module "rg" {
   source  = "claranet/rg/azurerm"
-  version = "3.0.0"
+  version = "x.x.x"
 
   location    = module.azure-region.location
   client_name = var.client_name
@@ -32,13 +32,14 @@ module "rg" {
 
 module "azure-region" {
   source  = "claranet/regions/azurerm"
-  version = "3.0.0"
+  version = "x.x.x"
 
   azure_region = var.azure_region
 }
 
 module "agic" {
-  source = "claranet/aks/azurerm//modules/tools/agic"
+  source  = "claranet/aks/azurerm//modules/tools/agic"
+  version = "x.x.x"
   
   client_name = var.client_name
   environment = var.environment
@@ -48,7 +49,7 @@ module "agic" {
   location            = module.azure-region.location
   location_short      = module.azure-region.location_short
 
-  appgw_subnet_id = '/subscriptions/xxxxxxx/xxxxx/xxxxxxx'
+  appgw_subnet_id = "/subscriptions/xxxxxxx/xxxxx/xxxxxxx"
   appgw_ingress_contoller_values = { "verbosityLevel" = "5" }
   app_gateway_tags = {"tag1" = "value1"}
 
@@ -64,7 +65,6 @@ module "agic" {
     logs          = ["all"]
     metrics       = ["all"]
   }
-
 }
 ```
 
@@ -72,7 +72,9 @@ module "agic" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| agic\_helm\_version | Version of Helm chart to deploy | `string` | `"1.2.0"` | no |
+| agic\_chart\_repository | Helm chart repository URL | `string` | `"https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"` | no |
+| agic\_chart\_version | Version of the Helm chart | `string` | `"1.2.0"` | no |
+| agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
 | aks\_aad\_pod\_identity\_client\_id | AAD Identity client\_id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_id | AAD Identity id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_principal\_id | AAD Identity principal\_id used by AKS | `string` | n/a | yes |
@@ -131,6 +133,7 @@ module "agic" {
 |------|-------------|
 | application\_gateway\_id | Application gateway Id |
 | application\_gateway\_name | Application gateway name |
+| namespace | Namespace used for AGIC |
 | public\_ip\_id | Application gateway public ip Id |
 | public\_ip\_name | Application gateway public ip name |
 

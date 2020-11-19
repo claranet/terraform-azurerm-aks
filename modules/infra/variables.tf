@@ -22,11 +22,18 @@ variable "location" {
   type        = string
 }
 
+variable "aadpodidentity_chart_repository" {
+  description = "URL of the Helm chart repository"
+  type        = string
+  default     = "https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"
+}
+
 variable "aadpodidentity_chart_version" {
   description = "Azure Active Directory Pod Identity Chart version"
   type        = string
   default     = "2.0.0"
 }
+
 variable "aadpodidentity_namespace" {
   description = "Kubernetes namespace in which to deploy AAD Pod Identity"
   type        = string

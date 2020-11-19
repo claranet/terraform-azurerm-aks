@@ -1,7 +1,7 @@
-# Azure Resource Group
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm)
+# Azure Kubernetes Service - Velero tool submodule
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/latest/submodules/velero)
 
-This module deploy Velero on an existing K8S cluster via Helm 3 and the associated Block blob storage account.
+This module deploys [Velero](https://velero.io/) on an existing K8S cluster with Helm 3 and its associated Block blob storage account.
 
 ## Version compatibility
 
@@ -16,7 +16,7 @@ This module deploy Velero on an existing K8S cluster via Helm 3 and the associat
 ```hcl
 module "rg" {
   source  = "claranet/rg/azurerm"
-  version = "3.0.0"
+  version = "x.x.x"
 
   location    = module.azure-region.location
   client_name = var.client_name
@@ -28,13 +28,14 @@ module "rg" {
 
 module "azure-region" {
   source  = "claranet/regions/azurerm"
-  version = "3.0.0"
+  version = "x.x.x"
 
   azure_region = var.azure_region
 }
 
 module "velero" {
-  source = "claranet/aks/azurerm//modules/tools/velero"
+  source  = "claranet/aks/azurerm//modules/tools/velero"
+  version = "x.x.x"
 
   enable_velero = var.enable_velero
 
@@ -46,8 +47,8 @@ module "velero" {
   name_prefix    = var.name_prefix
 
   resource_group_name           = module.rg.resource_group_name
+  aks_cluster_name              = var.aks_cluster_name
   aks_nodes_resource_group_name = var.aks_nodes_resource_group_name
-  service_principal             = var.service_principal
   nodes_subnet_id               = var.nodes_subnet_id
 
   velero_namespace        = var.velero_namespace
@@ -62,21 +63,31 @@ module "velero" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| aks\_cluster\_name | Name of the AKS cluster | `string` | n/a | yes |
 | aks\_nodes\_resource\_group\_name | Name of AKS nodes resource group | `string` | n/a | yes |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | enable\_velero | Enable velero on AKS cluster | `bool` | `true` | no |
 | environment | Project environment | `string` | n/a | yes |
 | location | Azure region to use | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use | `string` | n/a | yes |
-| name\_prefix | prefix used in naming | `string` | `""` | no |
+| name\_prefix | Prefix used in naming | `string` | `""` | no |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | resource\_group\_name | Name of the resource group for Velero's Storage Account | `string` | n/a | yes |
-| service\_principal | Service principal used by AKS to interract with Azure API | <pre>object({<br>    client_id     = string,<br>    client_secret = string,<br>    object_id     = string<br>  })</pre> | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
-| velero\_chart\_version | Velero helm chart version to use | `string` | `"2.7.3"` | no |
+| velero\_chart\_repository | Helm chart repository URL | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
+| velero\_chart\_version | Velero helm chart version to use | `string` | `"2.12.13"` | no |
 | velero\_namespace | Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
-| velero\_storage\_settings | Settings for Storage account and blob container for Velero <br /><br><pre><br>map(object({ <br /><br>  name                     = string <br /><br>  resource\_group\_name      = string <br /><br>  location                 = string <br /><br>  account\_tier             = string <br /><br>  account\_replication\_type = string <br /><br>  tags                     = map(any) <br /><br>  allowed\_cirds            = list(string) <br /><br>  container\_name           = string <br /><br>}))<br /><br></pre> | `map(any)` | `{}` | no |
-| velero\_values | Settings for Velero helm chart<br><br><pre><br>map(object({ <br /><br>  configuration.backupStorageLocation.bucket                = string <br /><br>  configuration.backupStorageLocation.config.resourceGroup  = string <br /><br>  configuration.backupStorageLocation.config.storageAccount = string <br /><br>  configuration.backupStorageLocation.name                  = string <br /><br>  configuration.provider                                    = string <br /><br>  configuration.volumeSnapshotLocation.config.resourceGroup = string <br /><br>  configuration.volumeSnapshotLocation.name                 = string <br /><br>  credential.exstingSecret                                  = string <br /><br>  credentials.useSecret                                     = string <br /><br>  deployRestic                                              = string <br /><br>  env.AZURE\_CREDENTIALS\_FILE                                = string <br /><br>  metrics.enabled                                           = string <br /><br>  rbac.create                                               = string <br /><br>  schedules.daily.schedule                                  = string <br /><br>  schedules.daily.template.includedNamespaces               = string <br /><br>  schedules.daily.template.snapshotVolumes                  = string <br /><br>  schedules.daily.template.ttl                              = string <br /><br>  serviceAccount.server.create                              = string <br /><br>  snapshotsEnabled                                          = string <br /><br>  initContainers[0].name                                    = string <br /><br>  initContainers[0].image                                   = string <br /><br>  initContainers[0].volumeMounts[0].mountPath               = string <br /><br>  initContainers[0].volumeMounts[0].name                    = string <br /><br>  image.repository                                          = string <br /><br>  image.tag                                                 = string <br /><br>  image.pullPolicy                                          = string <br /><br><br>}))<br /><br></pre> | `map(string)` | `{}` | no |
+| velero\_storage\_settings | Settings for Storage account and blob container for Velero<br><br>map(object({<br>  name                     = string <br>  resource\_group\_name      = string <br>  location                 = string <br>  account\_tier             = string <br>  account\_replication\_type = string <br>  tags                     = map(any) <br>  allowed\_cirds            = list(string) <br>  container\_name           = string <br>})) | `map(any)` | `{}` | no |
+| velero\_values | Settings for Velero helm chart<br><br>map(object({ <br>  configuration.backupStorageLocation.bucket                = string <br>  configuration.backupStorageLocation.config.resourceGroup  = string <br>  configuration.backupStorageLocation.config.storageAccount = string <br>  configuration.backupStorageLocation.name                  = string <br>  configuration.provider                                    = string <br>  configuration.volumeSnapshotLocation.config.resourceGroup = string <br>  configuration.volumeSnapshotLocation.name                 = string <br>  credential.exstingSecret                                  = string <br>  credentials.useSecret                                     = string <br>  deployRestic                                              = string <br>  env.AZURE\_CREDENTIALS\_FILE                                = string <br>  metrics.enabled                                           = string <br>  rbac.create                                               = string <br>  schedules.daily.schedule                                  = string <br>  schedules.daily.template.includedNamespaces               = string <br>  schedules.daily.template.snapshotVolumes                  = string <br>  schedules.daily.template.ttl                              = string <br>  serviceAccount.server.create                              = string <br>  snapshotsEnabled                                          = string <br>  initContainers[0].name                                    = string <br>  initContainers[0].image                                   = string <br>  initContainers[0].volumeMounts[0].mountPath               = string <br>  initContainers[0].volumeMounts[0].name                    = string <br>  image.repository                                          = string <br>  image.tag                                                 = string <br>  image.pullPolicy                                          = string<br>  podAnnotations.aadpodidbinding                            = string<br>  podLabels.aadpodidbinding                                 = string<br><br>})) | `map(string)` | `{}` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| namespace | Namespace used for Velero |
+| storage\_account | Storage Account on which Velero data is stored. |
+| storage\_account\_container | Container in Storage Account on which Velero data is stored. |
+| velero\_identity | Azure Identity used for Velero pods |
 
 ## Related documentation
 
