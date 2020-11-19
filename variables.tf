@@ -448,12 +448,6 @@ variable "aadpodidentity_chart_version" {
   default     = "2.0.0"
 }
 
-variable "name_prefix" {
-  description = "prefix used in naming"
-  type        = string
-  default     = ""
-}
-
 variable "private_ingress" {
   description = "Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP."
   type        = bool
