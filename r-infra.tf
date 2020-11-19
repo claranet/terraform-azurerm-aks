@@ -11,8 +11,8 @@ module "infra" {
   aks_resource_group_id   = data.azurerm_resource_group.aks_nodes_rg.id
   location                = var.location
 
-  aadpodidentity_chart_version = var.aadpodidentity_chart_version
-  aadpodidentity_namespace     = var.aadpodidentity_namespace
-  aadpodidentity_values        = var.aadpodidentity_values
-
+  aadpodidentity_chart_version    = var.aadpodidentity_chart_version
+  aadpodidentity_chart_repository = var.aadpodidentity_chart_repository
+  aadpodidentity_namespace        = var.aadpodidentity_namespace
+  aadpodidentity_values           = var.aadpodidentity_values
 }

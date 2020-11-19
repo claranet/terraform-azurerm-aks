@@ -4,6 +4,18 @@ variable "enable_kured" {
   default     = true
 }
 
+variable "kured_chart_repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://weaveworks.github.io/kured"
+}
+
+variable "kured_chart_version" {
+  description = "Version of the Helm chart"
+  type        = string
+  default     = "2.2.0"
+}
+
 variable "kured_settings" {
   description = <<EODK
 Settings for kured helm chart <br />

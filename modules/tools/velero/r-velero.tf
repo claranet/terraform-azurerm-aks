@@ -63,7 +63,7 @@ resource "helm_release" "velero" {
   azurerm_storage_container.velero]
   name       = "velero"
   chart      = "velero"
-  repository = "https://vmware-tanzu.github.io/helm-charts"
+  repository = var.velero_chart_repository
   namespace  = kubernetes_namespace.velero.0.metadata.0.name
   version    = var.velero_chart_version
 

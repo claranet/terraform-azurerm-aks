@@ -1,7 +1,9 @@
 locals {
+  # Forced to kube-system due to Chart specificity
+  namespace = "kube-system"
   kured_default_values = {
     "image.repository"         = "weaveworks/kured"
-    "image.tag"                = "1.3.0"
+    "image.tag"                = "1.5.0"
     "image.pullPolicy"         = "IfNotPresent"
     "extraArgs.reboot-days"    = "mon"
     "extraArgs.start-time"     = "3am"
@@ -10,7 +12,6 @@ locals {
     "rbac.create"              = "true"
     "podSecurityPolicy.create" = "false"
     "serviceAccount.create"    = "true"
-    "autolock.enabled"         = "false"
   }
 
   kured_values = merge(local.kured_default_values, var.kured_settings)

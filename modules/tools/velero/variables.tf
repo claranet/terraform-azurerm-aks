@@ -18,6 +18,12 @@ variable "enable_velero" {
   default     = true
 }
 
+variable "velero_chart_repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://vmware-tanzu.github.io/helm-charts"
+}
+
 variable "velero_storage_settings" {
   description = <<EOVS
 Settings for Storage account and blob container for Velero

@@ -306,7 +306,19 @@ variable "enable_agic" {
 }
 
 variable "agic_helm_version" {
-  description = "Version of Helm chart to deploy"
+  description = "[DEPRECATED] Version of Helm chart to deploy"
+  type        = string
+  default     = null
+}
+
+variable "agic_chart_repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"
+}
+
+variable "agic_chart_version" {
+  description = "Version of the Helm chart"
   type        = string
   default     = "1.2.0"
 }

@@ -1,12 +1,14 @@
 module "appgw" {
   source = "./modules/tools/agic"
+
   providers = {
     kubernetes = kubernetes.aks-module
     helm       = helm.aks-module
   }
 
-  enable_agic       = var.enable_agic
-  agic_helm_version = var.agic_helm_version
+  enable_agic           = var.enable_agic
+  agic_chart_repository = var.agic_chart_repository
+  agic_chart_version    = coalesce(var.agic_helm_version, var.agic_chart_version)
 
   stack          = var.stack
   environment    = var.environment
@@ -63,10 +65,11 @@ module "certmanager" {
     helm       = helm.aks-module
   }
 
-  enable_cert_manager        = var.enable_cert_manager
-  cert_manager_namespace     = var.cert_manager_namespace
-  cert_manager_chart_version = var.cert_manager_chart_version
-  cert_manager_settings      = var.cert_manager_settings
+  enable_cert_manager           = var.enable_cert_manager
+  cert_manager_namespace        = var.cert_manager_namespace
+  cert_manager_chart_repository = var.cert_manager_chart_repository
+  cert_manager_chart_version    = var.cert_manager_chart_version
+  cert_manager_settings         = var.cert_manager_settings
 }
 
 module "kured" {
@@ -77,8 +80,10 @@ module "kured" {
     helm       = helm.aks-module
   }
 
-  enable_kured   = var.enable_kured
-  kured_settings = var.kured_settings
+  enable_kured           = var.enable_kured
+  kured_settings         = var.kured_settings
+  kured_chart_repository = var.kured_chart_repository
+  kured_chart_version    = var.kured_chart_version
 }
 
 module "velero" {
@@ -104,8 +109,8 @@ module "velero" {
   nodes_subnet_id               = var.nodes_subnet_id
 
   velero_namespace        = var.velero_namespace
+  velero_chart_repository = var.velero_chart_repository
   velero_chart_version    = var.velero_chart_version
   velero_values           = var.velero_values
   velero_storage_settings = var.velero_storage_settings
-
 }

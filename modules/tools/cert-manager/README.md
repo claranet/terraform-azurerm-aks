@@ -1,7 +1,7 @@
-# Azure Resource Group
+# Azure Kubernetes Service - Cert manager tool submodule
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm)
 
-This module deploy certmanager on an existing K8S cluster via Helm 3.
+This module deploys [cert-manager](https://cert-manager.io/docs/) utility on an existing K8S cluster with Helm 3.
 
 ## Version compatibility
 
@@ -28,10 +28,17 @@ module "certmanager" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| cert\_manager\_chart\_repository | Helm chart repository URL | `string` | `"https://charts.jetstack.io"` | no |
 | cert\_manager\_chart\_version | Cert Manager helm chart version to use | `string` | `"v0.13.0"` | no |
 | cert\_manager\_namespace | Kubernetes namespace in which to deploy Cert Manager | `string` | `"system-cert-manager"` | no |
 | cert\_manager\_settings | Settings for cert-manager helm chart | `map(string)` | `{}` | no |
 | enable\_cert\_manager | Enable cert-manager on AKS cluster | `bool` | `true` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| namespace | Namespace used for Cert Manager |
 
 ## Related documentation
 

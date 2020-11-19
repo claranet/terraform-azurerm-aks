@@ -29,6 +29,12 @@ variable "custom_aks_name" {
   default     = ""
 }
 
+variable "name_prefix" {
+  description = "prefix used in naming"
+  type        = string
+  default     = ""
+}
+
 variable "extra_tags" {
   description = "Extra tags to add"
   type        = map(string)
@@ -181,10 +187,9 @@ variable "diag_custom_name" {
   default     = null
 }
 
-#
-# APPGW
-#
-
+##########################
+# AGIC variables
+##########################
 variable "enable_agic" {
   description = "Enable Application gateway ingress controller"
   type        = bool
@@ -192,7 +197,19 @@ variable "enable_agic" {
 }
 
 variable "agic_helm_version" {
-  description = "Version of the Helm Chart to deploy"
+  description = "[DEPRECATED] Version of Helm chart to deploy"
+  type        = string
+  default     = null
+}
+
+variable "agic_chart_repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"
+}
+
+variable "agic_chart_version" {
+  description = "Version of the Helm chart"
   type        = string
   default     = "1.2.0"
 }
@@ -221,6 +238,9 @@ variable "appgw_settings" {
   default     = {}
 }
 
+##########################
+# Cert Manager variables
+##########################
 variable "enable_cert_manager" {
   description = "Enable cert-manager on AKS cluster"
   type        = bool
@@ -238,17 +258,39 @@ variable "cert_manager_namespace" {
   default     = "system-cert-manager"
 }
 
+variable "cert_manager_chart_repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://charts.jetstack.io"
+}
+
 variable "cert_manager_chart_version" {
   description = "Cert Manager helm chart version to use"
   type        = string
   default     = "v0.13.0"
 }
 
+##########################
+# Kured variables
+##########################
 variable "enable_kured" {
   description = "Enable kured daemon on AKS cluster"
   type        = bool
   default     = true
 }
+
+variable "kured_chart_repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://weaveworks.github.io/kured"
+}
+
+variable "kured_chart_version" {
+  description = "Version of the Helm chart"
+  type        = string
+  default     = "2.2.0"
+}
+
 variable "kured_settings" {
   description = <<EODK
 Settings for kured helm chart:
@@ -273,6 +315,9 @@ EODK
   default     = {}
 }
 
+##########################
+# Velero variables
+##########################
 variable "enable_velero" {
   description = "Enable velero on AKS cluster"
   type        = bool
@@ -351,6 +396,15 @@ variable "velero_chart_version" {
   default     = "2.12.13"
 }
 
+variable "velero_chart_repository" {
+  description = "URL of the Helm chart repository"
+  type        = string
+  default     = "https://vmware-tanzu.github.io/helm-charts"
+}
+
+##########################
+# AAD Pod Identity variables
+##########################
 variable "aadpodidentity_values" {
   description = <<EOD
 Settings for AAD Pod identity helm Chart:
@@ -377,14 +431,15 @@ variable "aadpodidentity_namespace" {
   default     = "system-aadpodid"
 }
 
+variable "aadpodidentity_chart_repository" {
+  description = "AAD Pod Identity Helm chart repository URL"
+  type        = string
+  default     = "https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"
+}
+
 variable "aadpodidentity_chart_version" {
   description = "AAD Pod Identity helm chart version to use"
   type        = string
   default     = "2.0.0"
 }
 
-variable "name_prefix" {
-  description = "prefix used in naming"
-  type        = string
-  default     = ""
-}

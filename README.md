@@ -4,9 +4,12 @@
 This terraform module creates an [Azure Kubernetes Service](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and its associated [Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview) as ingress controller.
 
 Inside the cluster default node pool, [velero](https://velero.io/docs/) and [cert-manager](https://cert-manager.io/docs/) are installed.
+
 Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed as a daemonset.
 
-This module also configure logging to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-create-workspace), deploy the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and create some storage classes with different types of Azure managed disks (Standard HDD retain and delete, Premium SSD retain and delete).
+This module also configures logging to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-create-workspace), 
+deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and creates some 
+[Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) with different types of Azure managed disks (Standard HDD retain and delete, Premium SSD retain and delete).
 
 ## Requirements and limitations
 
@@ -234,15 +237,19 @@ resource "azurerm_role_assignment" "allow_ACR" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| aadpodidentity\_chart\_repository | AAD Pod Identity Helm chart repository URL | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
 | aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"2.0.0"` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart:<pre>map(object({ <br>  nmi.nodeSelector.agentpool  = string <br>  mic.nodeSelector.agentpool  = string <br>  azureIdentity.enabled       = bool <br>  azureIdentity.type          = string <br>  azureIdentity.resourceID    = string <br>  azureIdentity.clientID      = string <br>  nmi.micNamespace            = string <br>}))</pre> | `map(string)` | `{}` | no |
 | addons | Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
-| agic\_helm\_version | Version of the Helm Chart to deploy | `string` | `"1.2.0"` | no |
+| agic\_chart\_repository | Helm chart repository URL | `string` | `"https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"` | no |
+| agic\_chart\_version | Version of the Helm chart | `string` | `"1.2.0"` | no |
+| agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
 | api\_server\_authorized\_ip\_ranges | Ip ranges allowed to interract with Kubernetes API. Default no restrictions | `list(string)` | `[]` | no |
 | appgw\_ingress\_controller\_values | Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
 | appgw\_settings | Application gateway configuration settings. Default dummy configuration | `map(any)` | `{}` | no |
 | appgw\_subnet\_id | Application gateway subnet id | `string` | `""` | no |
+| cert\_manager\_chart\_repository | Helm chart repository URL | `string` | `"https://charts.jetstack.io"` | no |
 | cert\_manager\_chart\_version | Cert Manager helm chart version to use | `string` | `"v0.13.0"` | no |
 | cert\_manager\_namespace | Kubernetes namespace in which to deploy Cert Manager | `string` | `"system-cert-manager"` | no |
 | cert\_manager\_settings | Settings for cert-manager helm chart | `map(string)` | `{}` | no |
@@ -262,6 +269,8 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
 | kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.17.9"` | no |
+| kured\_chart\_repository | Helm chart repository URL | `string` | `"https://weaveworks.github.io/kured"` | no |
+| kured\_chart\_version | Version of the Helm chart | `string` | `"1.5.0"` | no |
 | kured\_settings | Settings for kured helm chart:<pre>map(object({ <br>  image.repository         = string <br>  image.tag                = string <br>  image.pullPolicy         = string <br>  extraArgs.reboot-days    = string <br>  extraArgs.start-time     = string <br>  extraArgs.end-time       = string <br>  extraArgs.time-zone      = string <br>  rbac.create              = string <br>  podSecurityPolicy.create = string <br>  serviceAccount.create    = string <br>  autolock.enabled         = string <br>}))</pre> | `map(string)` | `{}` | no |
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
 | location | Azure region to use | `string` | n/a | yes |
@@ -275,6 +284,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | service\_cidr | CIDR used by kubernetes services (kubectl get svc). | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
 | storage\_contributor | List of storage accounts ids where the AKS service principal should have access. | `list(string)` | `[]` | no |
+| velero\_chart\_repository | URL of the Helm chart repository | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
 | velero\_chart\_version | Velero helm chart version to use | `string` | `"2.12.13"` | no |
 | velero\_namespace | Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
 | velero\_storage\_settings | Settings for Storage account and blob container for Velero<pre>map(object({ <br>  name                     = string <br>  resource_group_name      = string <br>  location                 = string <br>  account_tier             = string <br>  account_replication_type = string <br>  tags                     = map(any) <br>  allowed_cidrs            = list(string) <br>  container_name           = string <br>}))</pre> | `map(any)` | `{}` | no |
@@ -285,6 +295,9 @@ resource "azurerm_role_assignment" "allow_ACR" {
 
 | Name | Description |
 |------|-------------|
+| aad\_pod\_identity\_azure\_identity | Identity object for AAD Pod Identity |
+| aad\_pod\_identity\_namespace | Namespace used for AAD Pod Identity |
+| agic\_namespace | Namespace used for AGIC |
 | aks\_id | AKS resource id |
 | aks\_kube\_config | Kube configuration of AKS Cluster |
 | aks\_kube\_config\_raw | Raw kube config to be used by kubectl command |
@@ -295,8 +308,14 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | aks\_user\_managed\_identity | The User Managed Identity used by AKS Agents |
 | application\_gateway\_id | Id of the application gateway used by AKS |
 | application\_gateway\_name | Name of the application gateway used by AKS |
+| cert\_manager\_namespace | Namespace used for Cert Manager |
+| kured\_namespace | Namespace used for Kured |
 | public\_ip\_id | Id of the public ip used by AKS application gateway |
 | public\_ip\_name | Name of the public ip used by AKS application gateway |
+| velero\_identity | Azure Identity used for Velero pods |
+| velero\_namespace | Namespace used for Velero |
+| velero\_storage\_account | Storage Account on which Velero data is stored. |
+| velero\_storage\_account\_container | Container in Storage Account on which Velero data is stored. |
 
 ## Related documentation
 
