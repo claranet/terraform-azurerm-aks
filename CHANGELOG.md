@@ -1,3 +1,8 @@
+# v4.1.0 - Unreleased
+
+Breaking
+  * AZ-404: Rework log management by using diagnostic-settings module
+
 # v3.3.0/v4.0.0 - 2020-12-30
 
 Changed

@@ -19,7 +19,13 @@ module "appgw" {
   name                  = local.appgw_name
   resource_group_name   = var.resource_group_name
   app_gateway_subnet_id = var.appgw_subnet_id
-  diagnostics           = var.diagnostics
+
+  diagnostic_settings_logs_destination_ids = var.diagnostic_settings_logs_destination_ids
+  diagnostic_settings_event_hub_name       = var.diagnostic_settings_event_hub_name
+  diagnostic_settings_log_categories       = var.diagnostic_settings_log_categories
+  diagnostic_settings_metric_categories    = var.diagnostic_settings_metric_categories
+  diagostic_settings_custom_name           = var.diagostic_settings_custom_name
+  diagnostic_settings_retention_days       = var.diagnostic_settings_retention_days
 
   ip_name                             = local.appgw_settings.ip_name
   ip_label                            = local.appgw_settings.ip_label

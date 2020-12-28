@@ -276,16 +276,48 @@ variable "aks_name" {
   type        = string
 }
 
-variable "diagnostics" {
-  description = "Enable diagnostics logs on AKS"
-  type = object({
-    enabled       = bool,
-    destination   = string,
-    eventhub_name = string,
-    logs          = list(string),
-    metrics       = list(string)
-  })
+variable "diagostic_settings_custom_name" {
+  description = "Custom name for Azure Diagnostics for AKS."
+  type        = string
+  default     = "default"
 }
+
+variable "diagnostic_settings_logs_destination_ids" {
+  description = "List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set."
+  type        = list(string)
+  default     = []
+}
+
+variable "diagnostic_settings_event_hub_name" {
+  description = "Event hub name used with diagnostics settings"
+  type        = string
+  default     = null
+}
+
+variable "diagnostic_settings_retention_days" {
+  description = "The number of days to keep diagnostic logs."
+  type        = number
+  default     = 30
+}
+
+variable "diagnostic_settings_log_categories" {
+  description = "List of log categories"
+  type        = list(string)
+  default     = null
+}
+
+variable "diagnostic_settings_metric_categories" {
+  description = "List of metric categories"
+  type        = list(string)
+  default     = null
+}
+
+variable "diagnostic_settings_log_analytics_destination_type" {
+  description = "When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory"
+  type        = string
+  default     = "AzureDiagnostics"
+}
+
 
 variable "name_prefix" {
   description = "prefix used in naming"
