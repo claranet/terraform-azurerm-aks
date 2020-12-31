@@ -19,42 +19,6 @@ deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-p
   * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
   * A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the nodes subnet
   
-There is a known bug with [azurerm_monitor_diagnostic_setting](https://www.terraform.io/docs/providers/azurerm/r/monitor_diagnostic_setting.html) on AKS and Application gateway. You will encounter an error message only on the first apply.
-You just have to launch the apply a 2nd time to finish the deployment.
-
-```
-Error: Provider produced inconsistent final plan
-
-When expanding the plan for
-module.aks.azurerm_monitor_diagnostic_setting.aks[0] to include new values
-learned so far during apply, provider "registry.terraform.io/-/azurerm"
-produced an invalid new value for .log: block set length changed from 1 to 5.
-
-This is a bug in the provider, which should be reported in the provider's own
-issue tracker.
-
-
-Error: Provider produced inconsistent final plan
-
-When expanding the plan for
-module.aks.module.appgw.azurerm_monitor_diagnostic_setting.application_gateway[0]
-to include new values learned so far during apply, provider
-"registry.terraform.io/-/azurerm" produced an invalid new value for .log:
-block set length changed from 1 to 3.
-
-This is a bug in the provider, which should be reported in the provider's own
-issue tracker.
-```
-
-Bug references :
-
-- https://github.com/hashicorp/terraform/issues/22409
-- https://github.com/terraform-providers/terraform-provider-azurerm/issues/5771
-- https://github.com/terraform-providers/terraform-provider-azurerm/issues/6254
-- https://www.terraform.io/docs/extend/terraform-0.12-compatibility.html#inaccurate-plans
-
-This bug should be fixed with Terraform 0.13. https://github.com/hashicorp/terraform/pull/24697
-
 ## Version compatibility
 
 | Module version | Terraform version | AzureRM version |
@@ -196,13 +160,8 @@ module "aks" {
     policy                 = false
   }
 
-  diagnostics = {
-    enabled       = true
-    destination   = var.log_analytic_workspace_id
-    eventhub_name = null
-    logs          = ["all"]
-    metrics       = ["all"]
-  }
+  diagnostic_settings_logs_destination_ids = [var.log_analytic_workspace_id]
+
 
   appgw_subnet_id   = module.azure-network-subnet.subnet_ids[1]
 
@@ -259,8 +218,13 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | custom\_aks\_name | Custom AKS name | `string` | `""` | no |
 | custom\_appgw\_name | Custom name for AKS ingress application gateway | `string` | `""` | no |
 | default\_node\_pool | Default node pool configuration:<pre>map(object({<br>    name                  = string<br>    count                 = number<br>    vm_size               = string<br>    os_type               = string<br>    availability_zones    = list(number)<br>    enable_auto_scaling   = bool<br>    min_count             = number<br>    max_count             = number<br>    type                  = string<br>    node_taints           = list(string)<br>    vnet_subnet_id        = string<br>    max_pods              = number<br>    os_disk_size_gb       = number<br>    enable_node_public_ip = bool<br>}))</pre> | `map(any)` | `{}` | no |
-| diag\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `null` | no |
-| diagnostics | Enable and configure diagnostics logs on AKS. | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })</pre> | n/a | yes |
+| diagnostic\_settings\_event\_hub\_name | Event hub name used with diagnostics settings | `string` | `null` | no |
+| diagnostic\_settings\_log\_analytics\_destination\_type | When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory | `string` | `"AzureDiagnostics"` | no |
+| diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
+| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `null` | no |
+| diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
+| diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
+| diagostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | docker\_bridge\_cidr | IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
 | enable\_agic | Enable Application gateway ingress controller | `bool` | `true` | no |
 | enable\_cert\_manager | Enable cert-manager on AKS cluster | `bool` | `true` | no |

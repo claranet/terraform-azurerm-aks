@@ -7,6 +7,7 @@ This module allows you to create an application gateway ingress controller with 
 
 | Module version    | Terraform version | AzureRM version | Helm version | Kubernetes version |
 |-------------------|-------------------|-----------------|--------------|--------------------|
+| >= 4.x.x          | >= 0.13.x         | >= 2.0          | = 1.1.1      | ~> 1.11.1          |
 | >= 3.x.x          | 0.12.x            | >= 2.0          | = 1.1.1      | ~> 1.11.1          |
 | >= 2.x.x, < 3.x.x | 0.12.x            | <  2.0          | N/A          | N/A                |
 | <  2.x.x          | 0.11.x            | <  2.0          | N/A          | N/A                |
@@ -94,7 +95,13 @@ module "agic" {
 | authentication\_certificate\_configs | List of maps including authentication certificate configurations | `list(map(string))` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | diag\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `null` | no |
-| diagnostics | Enable diagnostics logs on AKS | <pre>object({<br>    enabled       = bool,<br>    destination   = string,<br>    eventhub_name = string,<br>    logs          = list(string),<br>    metrics       = list(string)<br>  })</pre> | n/a | yes |
+| diagnostic\_settings\_event\_hub\_name | Event hub name used with diagnostics settings | `string` | `null` | no |
+| diagnostic\_settings\_log\_analytics\_destination\_type | When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory | `string` | `"AzureDiagnostics"` | no |
+| diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
+| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `null` | no |
+| diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
+| diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
+| diagostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | disabled\_rule\_group\_settings | Appgw WAF rules group to disable. | <pre>list(object({<br>    rule_group_name = string<br>    rules           = list(string)<br>  }))</pre> | `[]` | no |
 | enable\_agic | Enable application gateway ingress controller | `bool` | `true` | no |
 | enabled\_waf | Enable WAF or not | `bool` | `false` | no |
@@ -139,6 +146,7 @@ module "agic" {
 | namespace | Namespace used for AGIC |
 | public\_ip\_id | Application gateway public ip Id |
 | public\_ip\_name | Application gateway public ip name |
+
 
 ## Related documentation
 

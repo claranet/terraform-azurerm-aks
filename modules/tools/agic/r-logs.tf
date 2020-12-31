@@ -1,31 +1,13 @@
-resource "azurerm_monitor_diagnostic_setting" "application_gateway" {
-  count                          = var.diagnostics.enabled && var.enable_agic ? 1 : 0
-  name                           = var.diag_custom_name == null ? "${local.name_prefix}${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-appgw-diag" : var.diag_custom_name
-  target_resource_id             = azurerm_application_gateway.app_gateway.0.id
-  log_analytics_workspace_id     = local.parsed_diag.log_analytics_id
-  eventhub_authorization_rule_id = local.parsed_diag.event_hub_auth_id
-  eventhub_name                  = local.parsed_diag.event_hub_auth_id != null ? var.diagnostics.eventhub_name : null
-  storage_account_id             = local.parsed_diag.storage_account_id
+module "diagnostic-settings-appgw" {
+  count   = length(var.diagnostic_settings_logs_destination_ids) > 0 && var.enable_agic ? 1 : 0
+  source  = "claranet/diagnostic-settings/azurerm"
+  version = "4.0.1"
 
-  dynamic "log" {
-    for_each = local.parsed_diag.log
-    content {
-      category = log.value
-
-      retention_policy {
-        enabled = false
-      }
-    }
-  }
-
-  dynamic "metric" {
-    for_each = local.parsed_diag.metric
-    content {
-      category = metric.value
-
-      retention_policy {
-        enabled = false
-      }
-    }
-  }
+  resource_id           = azurerm_application_gateway.app_gateway.0.id
+  logs_destinations_ids = var.diagnostic_settings_logs_destination_ids
+  eventhub_name         = var.diagnostic_settings_event_hub_name
+  log_categories        = var.diagnostic_settings_log_categories
+  metric_categories     = var.diagnostic_settings_metric_categories
+  name                  = var.diagostic_settings_custom_name
+  retention_days        = var.diagnostic_settings_retention_days
 }
