@@ -5,7 +5,14 @@ Changed
 
 Added
   * AZ-335: Force lower domain name label for the public IP of the agic
+  * AZ-377: Core tools as documented sub-module
 
+Updated
+  * AZ-381: Harmonize variables and add outputs
+  * AZ-380: AKS module: pin velero azure image
+  * AZ-379: Fix kured chart repository
+  * AZ-382: Update of Kured chart version
+ 
 # v3.2.0 - 2020-10-20
 
 Fixed

@@ -12,10 +12,17 @@ variable "nodes_subnet_id" {
   description = "Id of the subnet used for nodes"
   type        = string
 }
+
 variable "enable_velero" {
   description = "Enable velero on AKS cluster"
   type        = bool
   default     = true
+}
+
+variable "velero_chart_repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://vmware-tanzu.github.io/helm-charts"
 }
 
 variable "velero_storage_settings" {
@@ -91,7 +98,7 @@ variable "velero_chart_version" {
 }
 
 variable "name_prefix" {
-  description = "prefix used in naming"
+  description = "Prefix used in naming"
   type        = string
   default     = ""
 }

@@ -13,7 +13,7 @@ resource "kubernetes_namespace" "add_pod_identity" {
 
 resource "helm_release" "aad_pod_identity" {
   name       = "aad-pod-identity"
-  repository = "https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"
+  repository = var.aadpodidentity_chart_repository
   chart      = "aad-pod-identity"
   version    = var.aadpodidentity_chart_version
   namespace  = kubernetes_namespace.add_pod_identity.metadata.0.name
@@ -33,9 +33,9 @@ resource "azurerm_user_assigned_identity" "aad_pod_identity" {
   name                = "aad-pod-identity"
   resource_group_name = var.aks_resource_group_name
 }
+
 resource "azurerm_role_assignment" "aad_pod_identity_msi" {
   scope                = data.azurerm_resource_group.aks_nodes_rg.id
   principal_id         = azurerm_user_assigned_identity.aad_pod_identity.principal_id
   role_definition_name = "Managed Identity Operator"
 }
-
