@@ -1,4 +1,4 @@
-# v4.1.0 - Unreleased
+# v4.1.0 - 2020-12-31
 
 Breaking
   * AZ-404: Rework log management by using diagnostic-settings module
