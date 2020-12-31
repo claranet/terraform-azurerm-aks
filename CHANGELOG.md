@@ -16,6 +16,7 @@ Updated
 Fixed
   * AZ-357: Fix issue with AKS user role assignment
   * AZ-357: Fix velero parameter
+  * AZ-357: Fix versions in submodules
 
 # v3.2.0 - 2020-10-20
 

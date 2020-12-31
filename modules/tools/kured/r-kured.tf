@@ -1,4 +1,3 @@
-
 resource "helm_release" "kured" {
   count      = var.enable_kured ? 1 : 0
   name       = "kured"
