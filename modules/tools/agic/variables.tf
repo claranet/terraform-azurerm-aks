@@ -322,3 +322,21 @@ variable "agic_chart_version" {
   type        = string
   default     = "1.2.0"
 }
+
+variable "private_ingress" {
+  description = "Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP."
+  type        = bool
+  default     = false
+}
+
+variable "appgw_private_ip" {
+  description = "Private IP for Application Gateway. Used when variable `private_ingress` is set to `true`."
+  type        = string
+  default     = null
+}
+
+variable "frontend_priv_ip_configuration_name" {
+  description = "Name of the appgw frontend private ip configuration"
+  type        = string
+  default     = null
+}

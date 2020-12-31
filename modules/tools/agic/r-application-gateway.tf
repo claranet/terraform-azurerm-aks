@@ -21,6 +21,16 @@ resource "azurerm_application_gateway" "app_gateway" {
     public_ip_address_id = azurerm_public_ip.ip.0.id
   }
 
+  dynamic "frontend_ip_configuration" {
+    for_each = var.private_ingress ? ["fake"] : []
+    content {
+      name                          = local.frontend_priv_ip_configuration_name
+      private_ip_address_allocation = var.private_ingress ? "Static" : null
+      private_ip_address            = var.private_ingress ? var.appgw_private_ip : null
+      subnet_id                     = var.private_ingress ? var.app_gateway_subnet_id : null
+    }
+  }
+
   dynamic "frontend_port" {
     for_each = var.frontend_port_settings
     content {

@@ -21,12 +21,13 @@ module "appgw" {
   app_gateway_subnet_id = var.appgw_subnet_id
   diagnostics           = var.diagnostics
 
-  ip_name                        = local.appgw_settings.ip_name
-  ip_label                       = local.appgw_settings.ip_label
-  ip_sku                         = local.appgw_settings.ip_sku
-  ip_allocation_method           = local.appgw_settings.ip_allocation_method
-  frontend_ip_configuration_name = local.appgw_settings.frontend_ip_configuration_name
-  gateway_ip_configuration_name  = local.appgw_settings.gateway_ip_configuration_name
+  ip_name                             = local.appgw_settings.ip_name
+  ip_label                            = local.appgw_settings.ip_label
+  ip_sku                              = local.appgw_settings.ip_sku
+  ip_allocation_method                = local.appgw_settings.ip_allocation_method
+  frontend_ip_configuration_name      = local.appgw_settings.frontend_ip_configuration_name
+  frontend_priv_ip_configuration_name = local.appgw_settings.frontend_priv_ip_configuration_name
+  gateway_ip_configuration_name       = local.appgw_settings.gateway_ip_configuration_name
 
   sku_name     = local.appgw_settings.sku_name
   sku_tier     = local.appgw_settings.sku_tier
@@ -55,6 +56,9 @@ module "appgw" {
 
   appgw_ingress_values = var.appgw_ingress_controller_values
   aks_name             = azurerm_kubernetes_cluster.aks.name
+
+  private_ingress  = var.private_ingress
+  appgw_private_ip = var.appgw_private_ip
 }
 
 module "certmanager" {
