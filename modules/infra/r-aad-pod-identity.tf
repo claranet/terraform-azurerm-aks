@@ -2,6 +2,8 @@ data "azurerm_resource_group" "aks_nodes_rg" {
   name = var.aks_resource_group_name
 }
 
+data "azurerm_subscription" "current" {}
+
 resource "kubernetes_namespace" "add_pod_identity" {
   metadata {
     name = var.aadpodidentity_namespace
@@ -35,7 +37,7 @@ resource "azurerm_user_assigned_identity" "aad_pod_identity" {
 }
 
 resource "azurerm_role_assignment" "aad_pod_identity_msi" {
-  scope                = data.azurerm_resource_group.aks_nodes_rg.id
+  scope                = format("/subscriptions/%s/resourceGroups/%s", data.azurerm_subscription.current.subscription_id, var.aks_resource_group_name)
   principal_id         = azurerm_user_assigned_identity.aad_pod_identity.principal_id
   role_definition_name = "Managed Identity Operator"
 }
