@@ -1,3 +1,8 @@
+# Unreleased
+
+Fixed
+  * AZ-483: Remove deprecated `load_config_file` parameter from kubernetes provider declaration according to latest provider release (2.0)
+
 # v4.1.0 - 2020-12-31
 
 Breaking
