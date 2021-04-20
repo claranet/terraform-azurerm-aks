@@ -121,7 +121,7 @@ module "aks" {
   location_short      = module.azure-region.location_short
 
   service_cidr       = "10.0.16.0/22"
-  kubernetes_version = "1.16.7"
+  kubernetes_version = "1.19.7"
 
   vnet_id         = module.azure-virtual-network.virtual_network_id
   nodes_subnet_id = module.azure-network-subnet.subnet_ids[0]
