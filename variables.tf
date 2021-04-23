@@ -175,7 +175,7 @@ variable "managed_identities" {
   default     = []
 }
 
-variable "diagostic_settings_custom_name" {
+variable "diagnostic_settings_custom_name" {
   description = "Custom name for Azure Diagnostics for AKS."
   type        = string
   default     = "default"

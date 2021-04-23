@@ -24,7 +24,7 @@ module "appgw" {
   diagnostic_settings_event_hub_name       = var.diagnostic_settings_event_hub_name
   diagnostic_settings_log_categories       = var.diagnostic_settings_log_categories
   diagnostic_settings_metric_categories    = var.diagnostic_settings_metric_categories
-  diagostic_settings_custom_name           = var.diagostic_settings_custom_name
+  diagnostic_settings_custom_name          = var.diagnostic_settings_custom_name
   diagnostic_settings_retention_days       = var.diagnostic_settings_retention_days
 
   ip_name                             = local.appgw_settings.ip_name
