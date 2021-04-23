@@ -70,6 +70,63 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
+variable "enable_private_cluster" {
+  description = "Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled"
+  type        = bool
+  default     = false
+}
+
+variable "enable_appgw_msi" {
+  description = "Configure a managed service identity for Application gateway used with AGIC (usefull to configure ssl cert into appgw from keyvault)"
+  type        = bool
+  default     = false
+}
+
+variable "private_dns_zone_type" {
+  type        = string
+  default     = "System"
+  description = <<EOD
+Set AKS private dns zone if needed and if private cluster is enabled (privatelink.<region>.azmk8s.io)
+- "Custom" : You will have to deploy a private Dns Zone on your own and pass the id with <private_dns_zone_id> variable
+If this settings is used, aks user assigned identity will be "userassigned" instead of "systemassigned"
+and the aks user will have "Private DNS Zone Contributor" role on the private DNS Zone
+- "System" : AKS will manage the private zone and create it in the same resource group as the Node Resource Group
+- "None" : In case of None you will need to bring your own DNS server and set up resolving, otherwise cluster will have issues after provisioning.
+
+https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_dns_zone_id
+EOD
+}
+
+variable "private_dns_zone_id" {
+  type        = string
+  default     = null
+  description = "Id of the private DNS Zone when <private_dns_zone_type> is custom"
+}
+
+variable "aks_user_assigned_identity_resource_group_name" {
+  description = "Resource Group where to deploy the aks user assigned identity resource. Used when private cluster is enabled and when Azure private dns zone is not managed by aks"
+  type        = string
+  default     = null
+}
+
+variable "aks_user_assigned_identity_custom_name" {
+  description = "Custom name for the aks user assigned identity resource"
+  type        = string
+  default     = null
+}
+
+variable "appgw_user_assigned_identity_custom_name" {
+  description = "Custom name for the application gateway user assigned identity resource"
+  type        = string
+  default     = null
+}
+
+variable "appgw_user_assigned_identity_resource_group_name" {
+  description = "Resource Group where to deploy the application gateway user assigned identity resource"
+  type        = string
+  default     = null
+}
+
 variable "default_node_pool" {
   description = <<EOD
 Default node pool configuration:
@@ -92,7 +149,6 @@ map(object({
     enable_node_public_ip = bool
 }))
 ```
-
 EOD
 
   type    = map(any)
@@ -268,6 +324,13 @@ variable "appgw_settings" {
   type        = map(any)
   default     = {}
 }
+
+variable "appgw_ssl_certificates_configs" {
+  description = "Application gateway ssl certificates configuration"
+  type        = list(map(string))
+  default     = []
+}
+
 
 ##########################
 # Cert Manager variables
@@ -485,3 +548,4 @@ variable "appgw_private_ip" {
   type        = string
   default     = null
 }
+

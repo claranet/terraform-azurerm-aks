@@ -93,6 +93,12 @@ variable "gateway_ip_configuration_name" {
   type        = string
 }
 
+variable "gateway_identity_id" {
+  description = "Id of the application gateway MSI"
+  type        = string
+  default     = null
+}
+
 variable "frontend_port_settings" {
   description = "Appgw frontent port settings"
   type        = list(map(string))

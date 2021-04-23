@@ -39,6 +39,16 @@ resource "azurerm_application_gateway" "app_gateway" {
     }
   }
 
+  dynamic "identity" {
+    for_each = var.gateway_identity_id != null ? ["fake"] : []
+    content {
+      type         = "UserAssigned"
+      identity_ids = [var.gateway_identity_id]
+    }
+  }
+
+
+
   gateway_ip_configuration {
     name      = local.gateway_ip_configuration_name
     subnet_id = var.app_gateway_subnet_id
@@ -140,11 +150,12 @@ resource "azurerm_application_gateway" "app_gateway" {
   #
 
   dynamic "ssl_certificate" {
-    for_each = var.ssl_certificates_configs
+    for_each = toset(var.ssl_certificates_configs)
     content {
-      name     = lookup(ssl_certificate.value, "name")
-      data     = filebase64(lookup(ssl_certificate.value, "data"))
-      password = lookup(ssl_certificate.value, "password")
+      name                = lookup(ssl_certificate.value, "name")
+      data                = lookup(ssl_certificate.value, "key_vault_secret_id") == null ? filebase64((lookup(ssl_certificate.value, "data"))) : null
+      password            = lookup(ssl_certificate.value, "key_vault_secret_id") == null ? lookup(ssl_certificate.value, "password") : null
+      key_vault_secret_id = lookup(ssl_certificate.value, "data") == null ? lookup(ssl_certificate.value, "key_vault_secret_id") : null
     }
   }
 

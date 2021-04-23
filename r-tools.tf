@@ -1,6 +1,7 @@
 module "appgw" {
   source = "./modules/tools/agic"
 
+
   providers = {
     kubernetes = kubernetes.aks-module
     helm       = helm.aks-module
@@ -34,6 +35,7 @@ module "appgw" {
   frontend_ip_configuration_name      = local.appgw_settings.frontend_ip_configuration_name
   frontend_priv_ip_configuration_name = local.appgw_settings.frontend_priv_ip_configuration_name
   gateway_ip_configuration_name       = local.appgw_settings.gateway_ip_configuration_name
+  gateway_identity_id                 = local.appgw_settings.identity
 
   sku_name     = local.appgw_settings.sku_name
   sku_tier     = local.appgw_settings.sku_tier
@@ -43,7 +45,13 @@ module "appgw" {
 
   policy_name = local.appgw_settings.policy_name
 
-  enabled_waf = local.appgw_settings.enabled_waf
+  enabled_waf              = local.appgw_settings.enabled_waf
+  file_upload_limit_mb     = local.appgw_settings.file_upload_limit_mb
+  max_request_body_size_kb = local.appgw_settings.max_request_body_size_kb
+  request_body_check       = local.appgw_settings.request_body_check
+  rule_set_type            = local.appgw_settings.rule_set_type
+  rule_set_version         = local.appgw_settings.rule_set_version
+  firewall_mode            = local.appgw_settings.firewall_mode
 
   appgw_backend_http_settings = local.appgw_settings.appgw_backend_http_settings
   appgw_backend_pools         = local.appgw_settings.appgw_backend_pools
@@ -51,7 +59,8 @@ module "appgw" {
   appgw_routings              = local.appgw_settings.appgw_routings
   appgw_http_listeners        = local.appgw_settings.appgw_http_listeners
   frontend_port_settings      = local.appgw_settings.frontend_port_settings
-  ssl_certificates_configs    = local.appgw_settings.ssl_certificates_configs
+
+  ssl_certificates_configs = var.appgw_ssl_certificates_configs
 
   app_gateway_tags = local.appgw_settings.app_gateway_tags
   ip_tags          = local.appgw_settings.ip_tags
