@@ -1,3 +1,12 @@
+# Unreleased
+
+Breaking
+  * AZ-483: Remove deprecated `load_config_file` parameter from kubernetes provider declaration according to latest provider release (2.0)
+  * AZ-483: Update minimal version required for kubernetes provider to `>= 2.1.0`
+
+Added
+  * AZ-484: Update CI to cover Terraform 0.15
+
 # v4.1.0 - 2020-12-31
 
 Breaking

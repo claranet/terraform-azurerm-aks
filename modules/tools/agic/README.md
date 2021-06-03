@@ -101,7 +101,7 @@ module "agic" {
 | diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `null` | no |
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
-| diagostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
+| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | disabled\_rule\_group\_settings | Appgw WAF rules group to disable. | <pre>list(object({<br>    rule_group_name = string<br>    rules           = list(string)<br>  }))</pre> | `[]` | no |
 | enable\_agic | Enable application gateway ingress controller | `bool` | `true` | no |
 | enabled\_waf | Enable WAF or not | `bool` | `false` | no |
