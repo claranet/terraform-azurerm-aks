@@ -1,6 +1,3 @@
-data "azurerm_resource_group" "aks_nodes_rg" {
-  name = var.aks_resource_group_name
-}
 
 data "azurerm_subscription" "current" {}
 

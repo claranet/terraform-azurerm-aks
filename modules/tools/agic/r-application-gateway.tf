@@ -153,9 +153,9 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = toset(var.ssl_certificates_configs)
     content {
       name                = lookup(ssl_certificate.value, "name")
-      data                = lookup(ssl_certificate.value, "key_vault_secret_id") == null ? filebase64((lookup(ssl_certificate.value, "data"))) : null
-      password            = lookup(ssl_certificate.value, "key_vault_secret_id") == null ? lookup(ssl_certificate.value, "password") : null
-      key_vault_secret_id = lookup(ssl_certificate.value, "data") == null ? lookup(ssl_certificate.value, "key_vault_secret_id") : null
+      data                = lookup(ssl_certificate.value, "key_vault_secret_id") == "" ? filebase64((lookup(ssl_certificate.value, "data"))) : null
+      password            = lookup(ssl_certificate.value, "key_vault_secret_id") == "" ? lookup(ssl_certificate.value, "password") : null
+      key_vault_secret_id = lookup(ssl_certificate.value, "data") == "" ? lookup(ssl_certificate.value, "key_vault_secret_id") : null
     }
   }
 
@@ -167,7 +167,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.authentication_certificate_configs
     content {
       name = lookup(authentication_certificate.value, "name")
-      data = filebase64(lookup(authentication_certificate.value, "data"))
+      data = filebase64(ylookup(authentication_certificate.value, "data"))
     }
   }
 

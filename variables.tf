@@ -89,7 +89,7 @@ variable "private_dns_zone_type" {
 Set AKS private dns zone if needed and if private cluster is enabled (privatelink.<region>.azmk8s.io)
 - "Custom" : You will have to deploy a private Dns Zone on your own and pass the id with <private_dns_zone_id> variable
 If this settings is used, aks user assigned identity will be "userassigned" instead of "systemassigned"
-and the aks user will have "Private DNS Zone Contributor" role on the private DNS Zone
+and the aks user must have "Private DNS Zone Contributor" role on the private DNS Zone
 - "System" : AKS will manage the private zone and create it in the same resource group as the Node Resource Group
 - "None" : In case of None you will need to bring your own DNS server and set up resolving, otherwise cluster will have issues after provisioning.
 

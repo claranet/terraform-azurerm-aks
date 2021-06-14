@@ -36,7 +36,7 @@ resource "azurerm_user_assigned_identity" "appgw_assigned_identity" {
 resource "azurerm_role_assignment" "aad_pod_identity_mio_appgw_identity" {
   count = var.enable_appgw_msi ? 1 : 0
 
-  scope                = azurerm_user_assigned_identity.appgw_assigned_identity.id
+  scope                = azurerm_user_assigned_identity.appgw_assigned_identity[0].id
   role_definition_name = "Managed Identity Operator"
   principal_id         = module.infra.aad_pod_identity_id
 }
