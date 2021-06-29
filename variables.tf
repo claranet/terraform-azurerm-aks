@@ -77,7 +77,7 @@ variable "enable_private_cluster" {
 }
 
 variable "enable_appgw_msi" {
-  description = "Configure a managed service identity for Application gateway used with AGIC (usefull to configure ssl cert into appgw from keyvault)"
+  description = "Configure a managed service identity for Application gateway used with AGIC (useful to configure ssl cert into appgw from keyvault)"
   type        = bool
   default     = false
 }
@@ -330,7 +330,6 @@ variable "appgw_ssl_certificates_configs" {
   type        = list(map(string))
   default     = []
 }
-
 
 ##########################
 # Cert Manager variables

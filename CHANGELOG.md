@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # v4.2.0 - 2021-06-03
 
 Breaking
@@ -7,12 +6,10 @@ Breaking
 
 Added
   * AZ-484: Update CI to cover Terraform 0.15
-=======
 # Unreleased
 
 Added
   * AZ-485: Enable Private Cluster feature
->>>>>>> 29b387c... AZ-485 add private cluster feature
 
 # v4.1.0 - 2020-12-31
 
