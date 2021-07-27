@@ -13,7 +13,7 @@ resource "helm_release" "aad_pod_identity" {
   repository = var.aadpodidentity_chart_repository
   chart      = "aad-pod-identity"
   version    = var.aadpodidentity_chart_version
-  namespace  = kubernetes_namespace.add_pod_identity.metadata.0.name
+  namespace  = kubernetes_namespace.add_pod_identity.metadata[0].name
 
   dynamic "set" {
     for_each = local.aadpodidentity_values

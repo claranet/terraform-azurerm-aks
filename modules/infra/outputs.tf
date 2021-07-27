@@ -1,6 +1,6 @@
 output "aad_pod_identity_namespace" {
   description = "Namespace used for AAD Pod Identity"
-  value       = kubernetes_namespace.add_pod_identity.metadata.0.name
+  value       = kubernetes_namespace.add_pod_identity.metadata[0].name
 }
 
 output "aad_pod_identity_azure_identity" {

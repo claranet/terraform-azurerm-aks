@@ -1,0 +1,11 @@
+location="fr-central"
+location_short="frc"
+client_name="test"
+environment="test"
+stack="ci"
+resource_group_name="rg-test"
+name_prefix="ci"
+tenant_id="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+extra_tags = {
+  foo = "bar"
+}
