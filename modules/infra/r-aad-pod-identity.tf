@@ -1,6 +1,4 @@
 
-data "azurerm_subscription" "current" {}
-
 resource "kubernetes_namespace" "add_pod_identity" {
   metadata {
     name = var.aadpodidentity_namespace

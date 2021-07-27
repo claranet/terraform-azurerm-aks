@@ -219,22 +219,10 @@ variable "nodes_pools" {
 
 }
 
-variable "container_registries" {
+variable "container_registries_id" {
   description = "List of Azure Container Registries ids where AKS needs pull access."
   type        = list(string)
-  default     = []
-}
-
-variable "storage_contributor" {
-  description = "List of storage accounts ids where the AKS service principal should have access."
-  type        = list(string)
-  default     = []
-}
-
-variable "managed_identities" {
-  description = "List of managed identities where the AKS service principal should have access."
-  type        = list(string)
-  default     = []
+  default     = null
 }
 
 variable "diagnostic_settings_custom_name" {
@@ -271,12 +259,6 @@ variable "diagnostic_settings_metric_categories" {
   description = "List of metric categories"
   type        = list(string)
   default     = null
-}
-
-variable "diagnostic_settings_log_analytics_destination_type" {
-  description = "When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory"
-  type        = string
-  default     = "AzureDiagnostics"
 }
 
 ##########################

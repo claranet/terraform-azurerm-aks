@@ -1,4 +1,4 @@
-module "diagnostic-settings" {
+module "diagnostic_settings" {
   count   = length(var.diagnostic_settings_logs_destination_ids) > 0 ? 1 : 0
   source  = "claranet/diagnostic-settings/azurerm"
   version = "4.0.1"
