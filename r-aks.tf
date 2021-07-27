@@ -5,6 +5,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name             = var.resource_group_name
   dns_prefix                      = replace(coalesce(var.custom_aks_name, local.aks_name), "/[\\W_]/", "-")
   kubernetes_version              = var.kubernetes_version
+  sku_tier                        = var.aks_sku_tier
   api_server_authorized_ip_ranges = var.enable_private_cluster ? null : var.api_server_authorized_ip_ranges
   node_resource_group             = var.node_resource_group
   enable_pod_security_policy      = var.enable_pod_security_policy

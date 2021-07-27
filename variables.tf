@@ -115,6 +115,12 @@ variable "aks_user_assigned_identity_custom_name" {
   default     = null
 }
 
+variable "aks_sku_tier" {
+  description = "aks sku tier. Possible values are Free ou Paid"
+  type        = string
+  default     = "Free"
+}
+
 variable "appgw_user_assigned_identity_custom_name" {
   description = "Custom name for the application gateway user assigned identity resource"
   type        = string
