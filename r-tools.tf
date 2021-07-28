@@ -103,6 +103,8 @@ module "kured" {
 }
 
 module "velero" {
+  depends_on = [azurerm_kubernetes_cluster.aks]
+
   source = "./modules/velero"
 
   providers = {

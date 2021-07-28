@@ -1,4 +1,6 @@
 data "azurerm_resource_group" "aks_nodes_rg" {
+  depends_on = [azurerm_kubernetes_cluster.aks]
+
   count = var.enable_velero ? 1 : 0
   name  = var.aks_nodes_resource_group_name
 }
