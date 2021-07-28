@@ -1,5 +1,5 @@
 module "appgw" {
-  source = "./modules/tools/agic"
+  source = "./modules/agic"
 
 
   providers = {
@@ -29,7 +29,6 @@ module "appgw" {
   diagnostic_settings_retention_days       = var.diagnostic_settings_retention_days
 
   ip_name                             = local.appgw_settings.ip_name
-  ip_label                            = local.appgw_settings.ip_label
   ip_sku                              = local.appgw_settings.ip_sku
   ip_allocation_method                = local.appgw_settings.ip_allocation_method
   frontend_ip_configuration_name      = local.appgw_settings.frontend_ip_configuration_name
@@ -70,14 +69,13 @@ module "appgw" {
   aks_aad_pod_identity_principal_id = module.infra.aad_pod_identity_principal_id
 
   appgw_ingress_values = var.appgw_ingress_controller_values
-  aks_name             = azurerm_kubernetes_cluster.aks.name
 
   private_ingress  = var.private_ingress
   appgw_private_ip = var.appgw_private_ip
 }
 
 module "certmanager" {
-  source = "./modules/tools/cert-manager"
+  source = "./modules/cert-manager"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -92,11 +90,10 @@ module "certmanager" {
 }
 
 module "kured" {
-  source = "./modules/tools/kured"
+  source = "./modules/kured"
 
   providers = {
-    kubernetes = kubernetes.aks-module
-    helm       = helm.aks-module
+    helm = helm.aks-module
   }
 
   enable_kured           = var.enable_kured
@@ -106,7 +103,7 @@ module "kured" {
 }
 
 module "velero" {
-  source = "./modules/tools/velero"
+  source = "./modules/velero"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -124,7 +121,6 @@ module "velero" {
 
   resource_group_name           = var.resource_group_name
   aks_nodes_resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
-  aks_cluster_name              = azurerm_kubernetes_cluster.aks.name
   nodes_subnet_id               = var.nodes_subnet_id
 
   velero_namespace        = var.velero_namespace

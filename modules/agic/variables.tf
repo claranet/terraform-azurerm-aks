@@ -1,6 +1,7 @@
 # Common inputs
 variable "location_short" {
   description = "Short name of Azure regions to use"
+  type        = string
 }
 
 variable "client_name" {
@@ -28,11 +29,6 @@ variable "ip_name" {
 variable "ip_tags" {
   description = "Specific tags for the public ip address"
   type        = map(string)
-}
-
-variable "ip_label" {
-  description = "Domain name for the public ip address"
-  type        = string
 }
 
 variable "ip_sku" {
@@ -277,11 +273,6 @@ variable "aks_aad_pod_identity_principal_id" {
   type        = string
 }
 
-variable "aks_name" {
-  description = "Name of the AKS Cluster attached to this APPGW"
-  type        = string
-}
-
 variable "diagnostic_settings_custom_name" {
   description = "Custom name for Azure Diagnostics for AKS."
   type        = string
@@ -318,23 +309,10 @@ variable "diagnostic_settings_metric_categories" {
   default     = null
 }
 
-variable "diagnostic_settings_log_analytics_destination_type" {
-  description = "When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory"
-  type        = string
-  default     = "AzureDiagnostics"
-}
-
-
 variable "name_prefix" {
   description = "prefix used in naming"
   type        = string
   default     = ""
-}
-
-variable "diag_custom_name" {
-  description = "Custom name for Azure Diagnostics for AKS."
-  type        = string
-  default     = null
 }
 
 variable "enable_agic" {

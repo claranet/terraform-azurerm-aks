@@ -18,7 +18,7 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
-    public_ip_address_id = azurerm_public_ip.ip.0.id
+    public_ip_address_id = azurerm_public_ip.ip[0].id
   }
 
   dynamic "frontend_ip_configuration" {
@@ -293,7 +293,7 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   tags = var.app_gateway_tags
 
-  // Ignore most changes as they should be managed by AKS ingress controller
+  # Ignore most changes as they should be managed by AKS ingress controller
   lifecycle {
     ignore_changes = [
       backend_address_pool,

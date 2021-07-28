@@ -1,4 +1,4 @@
-# v4.2.0 - 2021-06-03
+# Unreleased
 
 Breaking
   * AZ-483: Remove deprecated `load_config_file` parameter from kubernetes provider declaration according to latest provider release (2.0)
@@ -6,7 +6,6 @@ Breaking
 
 Added
   * AZ-484: Update CI to cover Terraform 0.15
-# Unreleased
 
 Added
   * AZ-485: Enable Private Cluster feature

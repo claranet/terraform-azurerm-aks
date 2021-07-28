@@ -4,7 +4,6 @@ locals {
 
   appgw_default_settings = {
     ip_name                             = "${local.appgw_name}-pip"
-    ip_label                            = "${local.appgw_name}-pip"
     ip_sku                              = "Standard"
     ip_allocation_method                = "Static"
     frontend_ip_configuration_name      = "${local.appgw_name}-frontipconfig"
