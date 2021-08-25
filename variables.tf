@@ -222,7 +222,7 @@ variable "nodes_pools" {
 variable "container_registries_id" {
   description = "List of Azure Container Registries ids where AKS needs pull access."
   type        = list(string)
-  default     = null
+  default     = []
 }
 
 variable "diagnostic_settings_custom_name" {
