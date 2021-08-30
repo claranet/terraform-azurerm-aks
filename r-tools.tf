@@ -21,7 +21,6 @@ module "appgw" {
   app_gateway_subnet_id = var.appgw_subnet_id
 
   diagnostic_settings_logs_destination_ids = var.diagnostic_settings_logs_destination_ids
-  diagnostic_settings_event_hub_name       = var.diagnostic_settings_event_hub_name
   diagnostic_settings_log_categories       = var.diagnostic_settings_log_categories
   diagnostic_settings_metric_categories    = var.diagnostic_settings_metric_categories
   diagnostic_settings_custom_name          = var.diagnostic_settings_custom_name
