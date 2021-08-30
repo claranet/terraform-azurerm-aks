@@ -8,6 +8,8 @@ This module deploys the [Azure Active Directory Pod Identity](https://github.com
 
 | Module version | Terraform version | AzureRM Version |
 | -------------- | ----------------- | --------------- |
+| >= 5.x.x       | 0.15.x & 1.0.x    | ~>2.10.0        |
+| >= 4.x.x       | 0.13.x            | ~>2.10.0        |
 | >= 3.x.x       | 0.12.x            | ~>2.10.0        |
 | >= 2.x.x       | 0.12.x            | < 2.0.0         |
 | < 2.x.x        | 0.11.x            | < 2.0.0         |
@@ -64,6 +66,36 @@ module "aks2_infra" {
 }
 ```
 
+<!-- BEGIN_TF_DOCS -->
+## Providers
+
+| Name | Version |
+|------|---------|
+| azurerm | >= 2.10 |
+| helm | 1.1.1 |
+| kubernetes | >= 1.11.1 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_role_assignment.aad_pod_identity_msi](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_user_assigned_identity.aad_pod_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [helm_release.aad_pod_identity](https://registry.terraform.io/providers/hashicorp/helm/1.1.1/docs/resources/release) | resource |
+| [kubernetes_cluster_role.containerlogs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role) | resource |
+| [kubernetes_cluster_role_binding.containerlogs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role_binding) | resource |
+| [kubernetes_namespace.add_pod_identity](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
+| [kubernetes_storage_class.managed-premium-delete](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
+| [kubernetes_storage_class.managed-premium-retain](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
+| [kubernetes_storage_class.managed-standard-delete](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
+| [kubernetes_storage_class.managed-standard-retain](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
+| [azurerm_resource_group.aks_nodes_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -87,7 +119,7 @@ module "aks2_infra" {
 | aad\_pod\_identity\_id | ID of the User MSI used for AAD Pod Identity |
 | aad\_pod\_identity\_namespace | Namespace used for AAD Pod Identity |
 | add\_pod\_identity\_principal\_id | Principal ID of the User MSI used for AAD Pod Identity |
-
+<!-- END_TF_DOCS -->
 ## Related documentation
 
 - AAD Pod Identity : [github.com/Azure/aad-pod-identity](https://github.com/Azure/aad-pod-identity)
