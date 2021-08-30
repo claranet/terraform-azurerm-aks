@@ -1,5 +1,5 @@
 module "appgw" {
-  source = "./modules/tools/agic"
+  source = "./tools/agic"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -68,7 +68,7 @@ module "appgw" {
 }
 
 module "certmanager" {
-  source = "./modules/tools/cert-manager"
+  source = "./tools/cert-manager"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -83,7 +83,7 @@ module "certmanager" {
 }
 
 module "kured" {
-  source = "./modules/tools/kured"
+  source = "./tools/kured"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -97,7 +97,7 @@ module "kured" {
 }
 
 module "velero" {
-  source = "./modules/tools/velero"
+  source = "./tools/velero"
 
   providers = {
     kubernetes = kubernetes.aks-module

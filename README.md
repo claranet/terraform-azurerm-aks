@@ -204,12 +204,12 @@ resource "azurerm_role_assignment" "allow_ACR" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| appgw | ./modules/tools/agic | n/a |
-| certmanager | ./modules/tools/cert-manager | n/a |
+| appgw | ./tools/agic | n/a |
+| certmanager | ./tools/cert-manager | n/a |
 | diagnostic\_settings | claranet/diagnostic-settings/azurerm | 4.0.2 |
 | infra | ./modules/infra | n/a |
-| kured | ./modules/tools/kured | n/a |
-| velero | ./modules/tools/velero | n/a |
+| kured | ./tools/kured | n/a |
+| velero | ./tools/velero | n/a |
 
 ## Resources
 
