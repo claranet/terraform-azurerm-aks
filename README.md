@@ -22,9 +22,10 @@ deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-p
 ## Version compatibility
 
 | Module version | Terraform version | AzureRM version |
-|----------------|-------------------| --------------- |
-| >= 4.x.x       | 0.13.x            | >= 2.10.0       |
-| >= 3.x.x       | 0.12.x            | >= 2.10.0       |
+| -------------- | ----------------- | --------------- |
+| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.10         |
+| >= 4.x.x       | 0.13.x            | >= 2.10         |
+| >= 3.x.x       | 0.12.x            | >= 2.10         |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
 | <  2.x.x       | 0.11.x            | < 2.0           |
 
@@ -192,11 +193,40 @@ resource "azurerm_role_assignment" "allow_ACR" {
 }
 ```
 
+<!-- BEGIN_TF_DOCS -->
+## Providers
+
+| Name | Version |
+|------|---------|
+| azurerm | >= 2.10 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| appgw | ./modules/tools/agic | n/a |
+| certmanager | ./modules/tools/cert-manager | n/a |
+| diagnostic-settings | claranet/diagnostic-settings/azurerm | 4.0.1 |
+| infra | ./modules/infra | n/a |
+| kured | ./modules/tools/kured | n/a |
+| velero | ./modules/tools/velero | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster) | resource |
+| [azurerm_kubernetes_cluster_node_pool.node_pools](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool) | resource |
+| [azurerm_role_assignment.aks_user_assigned](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_monitor_diagnostic_categories.aks-diag-categories](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_diagnostic_categories) | data source |
+| [azurerm_resource_group.aks_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| aadpodidentity\_chart\_repository | AAD Pod Identity Helm chart repository URL | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
+| aadpodidentity\_chart\_repository | AAD Pod Identity Helm chart repository URL | `string` | `"https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"` | no |
 | aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"2.0.0"` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart:<pre>map(object({ <br>  nmi.nodeSelector.agentpool  = string <br>  mic.nodeSelector.agentpool  = string <br>  azureIdentity.enabled       = bool <br>  azureIdentity.type          = string <br>  azureIdentity.resourceID    = string <br>  azureIdentity.clientID      = string <br>  nmi.micNamespace            = string <br>}))</pre> | `map(string)` | `{}` | no |
@@ -218,13 +248,13 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | custom\_aks\_name | Custom AKS name | `string` | `""` | no |
 | custom\_appgw\_name | Custom name for AKS ingress application gateway | `string` | `""` | no |
 | default\_node\_pool | Default node pool configuration:<pre>map(object({<br>    name                  = string<br>    count                 = number<br>    vm_size               = string<br>    os_type               = string<br>    availability_zones    = list(number)<br>    enable_auto_scaling   = bool<br>    min_count             = number<br>    max_count             = number<br>    type                  = string<br>    node_taints           = list(string)<br>    vnet_subnet_id        = string<br>    max_pods              = number<br>    os_disk_size_gb       = number<br>    enable_node_public_ip = bool<br>}))</pre> | `map(any)` | `{}` | no |
+| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | diagnostic\_settings\_event\_hub\_name | Event hub name used with diagnostics settings | `string` | `null` | no |
 | diagnostic\_settings\_log\_analytics\_destination\_type | When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory | `string` | `"AzureDiagnostics"` | no |
 | diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
-| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `null` | no |
+| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `[]` | no |
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
-| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | docker\_bridge\_cidr | IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
 | enable\_agic | Enable Application gateway ingress controller | `bool` | `true` | no |
 | enable\_cert\_manager | Enable cert-manager on AKS cluster | `bool` | `true` | no |
@@ -235,7 +265,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
 | kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.17.9"` | no |
 | kured\_chart\_repository | Helm chart repository URL | `string` | `"https://weaveworks.github.io/kured"` | no |
-| kured\_chart\_version | Version of the Helm chart | `string` | `"1.5.0"` | no |
+| kured\_chart\_version | Version of the Helm chart | `string` | `"2.2.0"` | no |
 | kured\_settings | Settings for kured helm chart:<pre>map(object({ <br>  image.repository         = string <br>  image.tag                = string <br>  image.pullPolicy         = string <br>  extraArgs.reboot-days    = string <br>  extraArgs.start-time     = string <br>  extraArgs.end-time       = string <br>  extraArgs.time-zone      = string <br>  rbac.create              = string <br>  podSecurityPolicy.create = string <br>  serviceAccount.create    = string <br>  autolock.enabled         = string <br>}))</pre> | `map(string)` | `{}` | no |
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
 | location | Azure region to use | `string` | n/a | yes |
@@ -283,18 +313,15 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | velero\_namespace | Namespace used for Velero |
 | velero\_storage\_account | Storage Account on which Velero data is stored. |
 | velero\_storage\_account\_container | Container in Storage Account on which Velero data is stored. |
-
+<!-- END_TF_DOCS -->
 ## Related documentation
 
 - Azure Kubernetes Service documentation : [docs.microsoft.com/en-us/azure/aks/](https://docs.microsoft.com/en-us/azure/aks/)
 - Azure Kubernetes Service MSI Usage : [docs.microsoft.com/en-us/azure/aks/use-managed-identity](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
 - Azure Kubernetes Service User-Defined Route usage : [docs.microsoft.com/en-us/azure/aks/egress-outboundtype](https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype)
-- Terraform AKS resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html)
-- Terraform AKS Node pool resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html)
 - Terraform Kubernetes provider documentation: [www.terraform.io/docs/providers/kubernetes/index.html](https://www.terraform.io/docs/providers/kubernetes/index.html)
 - Terraform Helm provider documentation: [www.terraform.io/docs/providers/helm/index.html](https://www.terraform.io/docs/providers/helm/index.html)
 - Kured documentation: [github.com/weaveworks/kured](https://github.com/weaveworks/kured)
 - Velero documentation: [velero.io/docs/v1.2.0/](https://velero.io/docs/)
 - Velero Azure specific documentation: [github.com/vmware-tanzu/velero-plugin-for-microsoft-azure](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure)
 - cert-manager documentation : [cert-manager.io/docs/](https://cert-manager.io/docs/)
-
