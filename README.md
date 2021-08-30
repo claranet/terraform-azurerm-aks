@@ -206,7 +206,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 |------|--------|---------|
 | appgw | ./modules/tools/agic | n/a |
 | certmanager | ./modules/tools/cert-manager | n/a |
-| diagnostic-settings | claranet/diagnostic-settings/azurerm | 4.0.1 |
+| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 4.0.2 |
 | infra | ./modules/infra | n/a |
 | kured | ./modules/tools/kured | n/a |
 | velero | ./modules/tools/velero | n/a |
@@ -218,7 +218,6 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster) | resource |
 | [azurerm_kubernetes_cluster_node_pool.node_pools](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool) | resource |
 | [azurerm_role_assignment.aks_user_assigned](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_monitor_diagnostic_categories.aks-diag-categories](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_diagnostic_categories) | data source |
 | [azurerm_resource_group.aks_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
@@ -244,13 +243,11 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | cert\_manager\_namespace | Kubernetes namespace in which to deploy Cert Manager | `string` | `"system-cert-manager"` | no |
 | cert\_manager\_settings | Settings for cert-manager helm chart | `map(string)` | `{}` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
-| container\_registries | List of Azure Container Registries ids where AKS needs pull access. | `list(string)` | `[]` | no |
 | custom\_aks\_name | Custom AKS name | `string` | `""` | no |
 | custom\_appgw\_name | Custom name for AKS ingress application gateway | `string` | `""` | no |
 | default\_node\_pool | Default node pool configuration:<pre>map(object({<br>    name                  = string<br>    count                 = number<br>    vm_size               = string<br>    os_type               = string<br>    availability_zones    = list(number)<br>    enable_auto_scaling   = bool<br>    min_count             = number<br>    max_count             = number<br>    type                  = string<br>    node_taints           = list(string)<br>    vnet_subnet_id        = string<br>    max_pods              = number<br>    os_disk_size_gb       = number<br>    enable_node_public_ip = bool<br>}))</pre> | `map(any)` | `{}` | no |
 | diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | diagnostic\_settings\_event\_hub\_name | Event hub name used with diagnostics settings | `string` | `null` | no |
-| diagnostic\_settings\_log\_analytics\_destination\_type | When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory | `string` | `"AzureDiagnostics"` | no |
 | diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `[]` | no |
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
@@ -270,7 +267,6 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
 | location | Azure region to use | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use | `string` | n/a | yes |
-| managed\_identities | List of managed identities where the AKS service principal should have access. | `list(string)` | `[]` | no |
 | name\_prefix | Prefix used in naming | `string` | `""` | no |
 | node\_resource\_group | Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | `null` | no |
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
@@ -280,13 +276,11 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
 | service\_cidr | CIDR used by kubernetes services (kubectl get svc). | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
-| storage\_contributor | List of storage accounts ids where the AKS service principal should have access. | `list(string)` | `[]` | no |
 | velero\_chart\_repository | URL of the Helm chart repository | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
 | velero\_chart\_version | Velero helm chart version to use | `string` | `"2.12.13"` | no |
 | velero\_namespace | Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
 | velero\_storage\_settings | Settings for Storage account and blob container for Velero<pre>map(object({ <br>  name                     = string <br>  resource_group_name      = string <br>  location                 = string <br>  account_tier             = string <br>  account_replication_type = string <br>  tags                     = map(any) <br>  allowed_cidrs            = list(string) <br>  container_name           = string <br>}))</pre> | `map(any)` | `{}` | no |
 | velero\_values | Settings for Velero helm chart:<pre>map(object({<br>  configuration.backupStorageLocation.bucket                = string <br>  configuration.backupStorageLocation.config.resourceGroup  = string <br>  configuration.backupStorageLocation.config.storageAccount = string <br>  configuration.backupStorageLocation.name                  = string <br>  configuration.provider                                    = string <br>  configuration.volumeSnapshotLocation.config.resourceGroup = string <br>  configuration.volumeSnapshotLocation.name                 = string <br>  credential.exstingSecret                                  = string <br>  credentials.useSecret                                     = string <br>  deployRestic                                              = string <br>  env.AZURE_CREDENTIALS_FILE                                = string <br>  metrics.enabled                                           = string <br>  rbac.create                                               = string <br>  schedules.daily.schedule                                  = string <br>  schedules.daily.template.includedNamespaces               = string <br>  schedules.daily.template.snapshotVolumes                  = string <br>  schedules.daily.template.ttl                              = string <br>  serviceAccount.server.create                              = string <br>  snapshotsEnabled                                          = string <br>  initContainers[0].name                                    = string <br>  initContainers[0].image                                   = string <br>  initContainers[0].volumeMounts[0].mountPath               = string <br>  initContainers[0].volumeMounts[0].name                    = string <br>  image.repository                                          = string <br>  image.tag                                                 = string <br>  image.pullPolicy                                          = string <br><br>}))</pre> | `map(string)` | `{}` | no |
-| vnet\_id | Id of the vnet used for AKS | `string` | n/a | yes |
 
 ## Outputs
 
