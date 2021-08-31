@@ -1,22 +1,8 @@
-variable "resource_group_name" {
-  description = "Name of the AKS resource group"
-  type        = string
-}
-
-variable "resource_group_id" {
-  description = "Id of the AKS resource group"
-  type        = string
-}
-
 variable "aks_resource_group_name" {
   description = "Name of the AKS Managed resource group. Eg MC_xxxx"
   type        = string
 }
 
-variable "aks_resource_group_id" {
-  description = "Id of the AKS Managed resource group. Eg MC_xxxxx"
-  type        = string
-}
 variable "location" {
   description = "AKS Cluster location"
   type        = string

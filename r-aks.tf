@@ -91,7 +91,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
 
 # Allow user assigned identity to manage AKS items in MC_xxx RG
 resource "azurerm_role_assignment" "aks_user_assigned" {
-  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id
+  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
   scope                = format("/subscriptions/%s/resourceGroups/%s", data.azurerm_subscription.current.subscription_id, azurerm_kubernetes_cluster.aks.node_resource_group)
   role_definition_name = "Contributor"
 }

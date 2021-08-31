@@ -1,4 +1,4 @@
-resource "kubernetes_storage_class" "managed-standard-retain" {
+resource "kubernetes_storage_class" "managed_standard_retain" {
   storage_provisioner    = "kubernetes.io/azure-disk"
   allow_volume_expansion = true
   metadata {
@@ -11,7 +11,7 @@ resource "kubernetes_storage_class" "managed-standard-retain" {
   }
 }
 
-resource "kubernetes_storage_class" "managed-standard-delete" {
+resource "kubernetes_storage_class" "managed_standard_delete" {
   storage_provisioner    = "kubernetes.io/azure-disk"
   allow_volume_expansion = true
   metadata {
@@ -24,7 +24,7 @@ resource "kubernetes_storage_class" "managed-standard-delete" {
   }
 }
 
-resource "kubernetes_storage_class" "managed-premium-retain" {
+resource "kubernetes_storage_class" "managed_premium_retain" {
   storage_provisioner    = "kubernetes.io/azure-disk"
   allow_volume_expansion = true
   metadata {
@@ -37,7 +37,7 @@ resource "kubernetes_storage_class" "managed-premium-retain" {
   }
 }
 
-resource "kubernetes_storage_class" "managed-premium-delete" {
+resource "kubernetes_storage_class" "managed_premium_delete" {
   storage_provisioner = "kubernetes.io/azure-disk"
   metadata {
     name = "managed-premium-delete"

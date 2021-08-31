@@ -1,5 +1,5 @@
 module "appgw" {
-  source = "./modules/tools/agic"
+  source = "./tools/agic"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -21,7 +21,6 @@ module "appgw" {
   app_gateway_subnet_id = var.appgw_subnet_id
 
   diagnostic_settings_logs_destination_ids = var.diagnostic_settings_logs_destination_ids
-  diagnostic_settings_event_hub_name       = var.diagnostic_settings_event_hub_name
   diagnostic_settings_log_categories       = var.diagnostic_settings_log_categories
   diagnostic_settings_metric_categories    = var.diagnostic_settings_metric_categories
   diagnostic_settings_custom_name          = var.diagnostic_settings_custom_name
@@ -68,7 +67,7 @@ module "appgw" {
 }
 
 module "certmanager" {
-  source = "./modules/tools/cert-manager"
+  source = "./tools/cert-manager"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -83,7 +82,7 @@ module "certmanager" {
 }
 
 module "kured" {
-  source = "./modules/tools/kured"
+  source = "./tools/kured"
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -97,7 +96,7 @@ module "kured" {
 }
 
 module "velero" {
-  source = "./modules/tools/velero"
+  source = "./tools/velero"
 
   providers = {
     kubernetes = kubernetes.aks-module
