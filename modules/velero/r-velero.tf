@@ -43,7 +43,7 @@ resource "azurerm_storage_account_network_rules" "velero" {
   storage_account_name       = azurerm_storage_account.velero[0].name
   resource_group_name        = azurerm_storage_account.velero[0].resource_group_name
   default_action             = "Deny"
-  virtual_network_subnet_ids = [var.nodes_subnet_id]
+  virtual_network_subnet_ids = concat(local.velero_storage.allowed_subnet_ids, [var.nodes_subnet_id])
   ip_rules                   = local.velero_storage.allowed_cidrs
 }
 

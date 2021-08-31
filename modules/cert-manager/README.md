@@ -1,28 +1,21 @@
-# Azure Kubernetes Service - Cert manager tool submodule
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/latest/submodules/cert-manager)
+<!-- BEGIN_TF_DOCS -->
+## Providers
 
-This module deploys [cert-manager](https://cert-manager.io/docs/) utility on an existing K8S cluster with Helm 3.
+| Name | Version |
+|------|---------|
+| helm | >=2.3.0 |
+| kubernetes | >= 1.11.1 |
 
-## Version compatibility
+## Modules
 
-| Module version    | Terraform version | Helm version | Kubernetes version |
-|-------------------|-------------------|--------------|--------------------|
-| >= 3.x.x          | 0.12.x            | = 1.1.1      | ~> 1.11.1          |
-| >= 2.x.x, < 3.x.x | 0.12.x            | N/A          | N/A                |
-| <  2.x.x          | 0.11.x            | N/A          | N/A                |
+No modules.
 
-## Usage
+## Resources
 
-```hcl
-module "certmanager" {
-  source = "claranet/aks/azurerm//modules/tools/cert-manager"
-
-  cert_manager_namespace     = var.cert_manager_namespace
-  cert_manager_chart_version = var.cert_manager_chart_version
-  cert_manager_settings      = var.cert_manager_settings
-}
-
-```
+| Name | Type |
+|------|------|
+| [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [kubernetes_namespace.cert_manager](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 
 ## Inputs
 
@@ -39,7 +32,4 @@ module "certmanager" {
 | Name | Description |
 |------|-------------|
 | namespace | Namespace used for Cert Manager |
-
-## Related documentation
-
-- cert-manager documentation : [github.com/jetstack/cert-manager](https://github.com/jetstack/cert-manager)
+<!-- END_TF_DOCS -->

@@ -1,198 +1,36 @@
-# Azure Kubernetes Service
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/)
+<!-- BEGIN_TF_DOCS -->
+## Providers
 
-This terraform module creates an [Azure Kubernetes Service](https://azure.microsoft.com/fr-fr/services/kubernetes-service/) and its associated [Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview) as ingress controller.
+| Name | Version |
+|------|---------|
+| azurerm | >= 2.51 |
 
-This module can create the Azure Kubernetes Service cluster as private or public. In case of an  [AKS private cluster](https://docs.microsoft.com/fr-fr/azure/aks/private-clusters) , the Terraform code including this module should be executed from a device that has access to the Azure Virtual Network where AKS Api Server stands. 
+## Modules
 
-Inside the cluster default node pool, [velero](https://velero.io/docs/) and [cert-manager](https://cert-manager.io/docs/) are installed.
+| Name | Source | Version |
+|------|--------|---------|
+| appgw | ./modules/agic | n/a |
+| certmanager | ./modules/cert-manager | n/a |
+| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 4.0.1 |
+| infra | ./modules/infra | n/a |
+| kured | ./modules/kured | n/a |
+| velero | ./modules/velero | n/a |
 
-Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed as a daemonset.
+## Resources
 
-This module also configures logging to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-create-workspace), 
-deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and creates some 
-[Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) with different types of Azure managed disks (Standard HDD retain and delete, Premium SSD retain and delete).
+| Name | Type |
+|------|------|
+| [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster) | resource |
+| [azurerm_kubernetes_cluster_node_pool.node_pools](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool) | resource |
+| [azurerm_role_assignment.aad_pod_identity_mio_appgw_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_acr_pull_allowed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_uai_private_dns_zone_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_uai_vnet_network_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_user_assigned](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_user_assigned_identity.aks_user_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azurerm_user_assigned_identity.appgw_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
-## Requirements and limitations
-
-  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.51.0) >= 2.51.0
-  * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/1.0.0) >= 1.1.1
-  * [Kubernetes Terraform provider](https://registry.terraform.io/providers/hashicorp/kubernetes/2.1.0) >= 2.1.0
-  * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-  * A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the nodes subnet
-  
-## Version compatibility
-
-| Module version | Terraform version | AzureRM version |
-|----------------|-------------------| --------------- |
-| >= 4.x.x       | 0.13.x            | >= 2.10.0       |
-| >= 3.x.x       | 0.12.x            | >= 2.10.0       |
-| >= 2.x.x       | 0.12.x            | < 2.0           |
-| <  2.x.x       | 0.11.x            | < 2.0           |
-
-## Usage
-
-This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) too which set some terraform variables in the environment needed by this module.
-More details about variables set by the `terraform wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
-
-You can use this module by including it this way:
-
-```hcl
-locals {
-
-  allowed_cidr = ["x.x.x.x", "y.y.y.y"]
-
-}
-
-module "azure-region" {
-  source  = "claranet/regions/azurerm"
-  version = "x.x.x"
-
-  azure_region = var.azure_region
-}
-
-module "rg" {
-  source  = "claranet/rg/azurerm"
-  version = "x.x.x"
-
-  location    = module.azure-region.location
-  client_name = var.client_name
-  environment = var.environment
-  stack       = var.stack
-}
-
-module "azure-virtual-network" {
-  source  = "claranet/vnet/azurerm"
-  version = "x.x.x"
-
-  environment    = var.environment
-  location       = module.azure-region.location
-  location_short = module.azure-region.location_short
-  client_name    = var.client_name
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  vnet_cidr = ["10.0.0.0/19"]
-
-}
-
-module "azure-network-subnet" {
-  source  = "claranet/subnet/azurerm"
-  version = "x.x.x"
-
-  environment    = var.environment
-  location_short = module.azure-region.location_short
-  client_name    = var.client_name
-  stack          = var.stack
-
-  resource_group_name  = module.rg.resource_group_name
-  virtual_network_name = module.azure-virtual-network.virtual_network_name
-
-  subnet_cidr_list = ["10.0.0.0/20", "10.0.20.0/24"]
-
-  service_endpoints = ["Microsoft.Storage"]
-
-}
-module "global_run" {
-  source = "claranet/run-common/azurerm"
-  version = "x.x.x"
-
-  client_name    = var.client_name
-  location       = module.azure-region.location
-  location_short = module.azure-region.location_short
-  environment    = var.environment
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  tenant_id = var.azure_tenant_id
-
-}
-
-module "aks" {
-  source  = "claranet/aks/azurerm"
-  version = "x.x.x"
-
-  client_name = var.client_name
-  environment = var.environment
-  stack       = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-  location            = module.azure-region.location
-  location_short      = module.azure-region.location_short
-
-  service_cidr       = "10.0.16.0/22"
-  kubernetes_version = "1.19.7"
-
-  vnet_id         = module.azure-virtual-network.virtual_network_id
-  nodes_subnet_id = module.azure-network-subnet.subnet_ids[0]
-  nodes_pools = [
-    {
-      name            = "pool1"
-      count           = 1
-      vm_size         = "Standard_D1_v2"
-      os_type         = "Linux"
-      os_disk_size_gb = 30
-      vnet_subnet_id  = module.azure-network-subnet.subnet_ids[0]
-    },
-    {
-      name                = "bigpool1"
-      count               = 3
-      vm_size             = "Standard_F8s_v2"
-      os_type             = "Linux"
-      os_disk_size_gb     = 30
-      vnet_subnet_id      = module.azure-network-subnet.subnet_ids[0]
-      enable_auto_scaling = true
-      min_count           = 3
-      max_count           = 9
-    }
-
-  ]
-
-  linux_profile = {
-    username = "user"
-    ssh_key  = file("~/.ssh/id_rsa.pub")
-  }
-
-  addons = {
-    dashboard              = false
-    oms_agent              = true
-    oms_agent_workspace_id = var.log_analytic_workspace_id
-    policy                 = false
-  }
-
-  diagnostic_settings_logs_destination_ids = [var.log_analytic_workspace_id]
-
-
-  appgw_subnet_id   = module.azure-network-subnet.subnet_ids[1]
-
-  appgw_ingress_controller_values   = { "verbosityLevel" = "5", "appgw.shared" = "true" }
-  cert_manager_settings             = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
-  velero_storage_settings           = { allowed_cidrs = local.allowed_cidrs }
-
-}
-
-module "acr" {
-  source  = "claranet/acr/azurerm"
-  version = "x.x.x"
-
-  location            = module.azure-region.location
-  location_short      = module.azure-region.location_short
-  resource_group_name = module.rg.resource_group_name
-  sku_tier                 = "Free"
-
-  client_name  = var.client_name
-  environment  = var.environment
-  stack        = var.stack
-}
-
-resource "azurerm_role_assignment" "allow_ACR" {
-  principal_id         = module.aks.aks_user_managed_identity.0.object_id
-  scope                = module.acr.acr_id
-  role_definition_name = "AcrPull"
-}
-```
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -270,41 +108,26 @@ resource "azurerm_role_assignment" "allow_ACR" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_aad_pod_identity_azure_identity"></a> [aad\_pod\_identity\_azure\_identity](#output\_aad\_pod\_identity\_azure\_identity) | Identity object for AAD Pod Identity |
-| <a name="output_aad_pod_identity_namespace"></a> [aad\_pod\_identity\_namespace](#output\_aad\_pod\_identity\_namespace) | Namespace used for AAD Pod Identity |
-| <a name="output_agic_namespace"></a> [agic\_namespace](#output\_agic\_namespace) | Namespace used for AGIC |
-| <a name="output_aks_id"></a> [aks\_id](#output\_aks\_id) | AKS resource id |
-| <a name="output_aks_kube_config"></a> [aks\_kube\_config](#output\_aks\_kube\_config) | Kube configuration of AKS Cluster |
-| <a name="output_aks_kube_config_raw"></a> [aks\_kube\_config\_raw](#output\_aks\_kube\_config\_raw) | Raw kube config to be used by kubectl command |
-| <a name="output_aks_name"></a> [aks\_name](#output\_aks\_name) | Name of the AKS cluster |
-| <a name="output_aks_nodes_pools_ids"></a> [aks\_nodes\_pools\_ids](#output\_aks\_nodes\_pools\_ids) | Ids of AKS nodes pools |
-| <a name="output_aks_nodes_pools_names"></a> [aks\_nodes\_pools\_names](#output\_aks\_nodes\_pools\_names) | Names of AKS nodes pools |
-| <a name="output_aks_nodes_rg"></a> [aks\_nodes\_rg](#output\_aks\_nodes\_rg) | Name of the resource group in which AKS nodes are deployed |
-| <a name="output_aks_user_managed_identity"></a> [aks\_user\_managed\_identity](#output\_aks\_user\_managed\_identity) | The User Managed Identity used by AKS Agents |
-| <a name="output_application_gateway_id"></a> [application\_gateway\_id](#output\_application\_gateway\_id) | Id of the application gateway used by AKS |
-| <a name="output_application_gateway_identity_principal_id"></a> [application\_gateway\_identity\_principal\_id](#output\_application\_gateway\_identity\_principal\_id) | Id of the managed service identity of the application gateway used by AKS |
-| <a name="output_application_gateway_name"></a> [application\_gateway\_name](#output\_application\_gateway\_name) | Name of the application gateway used by AKS |
-| <a name="output_cert_manager_namespace"></a> [cert\_manager\_namespace](#output\_cert\_manager\_namespace) | Namespace used for Cert Manager |
-| <a name="output_kured_namespace"></a> [kured\_namespace](#output\_kured\_namespace) | Namespace used for Kured |
-| <a name="output_public_ip_id"></a> [public\_ip\_id](#output\_public\_ip\_id) | Id of the public ip used by AKS application gateway |
-| <a name="output_public_ip_name"></a> [public\_ip\_name](#output\_public\_ip\_name) | Name of the public ip used by AKS application gateway |
-| <a name="output_velero_identity"></a> [velero\_identity](#output\_velero\_identity) | Azure Identity used for Velero pods |
-| <a name="output_velero_namespace"></a> [velero\_namespace](#output\_velero\_namespace) | Namespace used for Velero |
-| <a name="output_velero_storage_account"></a> [velero\_storage\_account](#output\_velero\_storage\_account) | Storage Account on which Velero data is stored. |
-| <a name="output_velero_storage_account_container"></a> [velero\_storage\_account\_container](#output\_velero\_storage\_account\_container) | Container in Storage Account on which Velero data is stored. |
-
-## Related documentation
-
-- Azure Kubernetes Service documentation : [docs.microsoft.com/en-us/azure/aks/](https://docs.microsoft.com/en-us/azure/aks/)
-- Azure Kubernetes Service MSI Usage : [docs.microsoft.com/en-us/azure/aks/use-managed-identity](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
-- Azure Kubernetes Service User-Defined Route usage : [docs.microsoft.com/en-us/azure/aks/egress-outboundtype](https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype)
-- Terraform AKS resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html)
-- Terraform AKS Node pool resource documentation: [www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html](https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster_node_pool.html)
-- Azure Kubernetes Service Private Cluster documentation : (https://docs.microsoft.com/fr-fr/azure/aks/private-clusters#options-for-connecting-to-the-private-cluster)
-- Terraform Kubernetes provider documentation: [www.terraform.io/docs/providers/kubernetes/index.html](https://www.terraform.io/docs/providers/kubernetes/index.html)
-- Terraform Helm provider documentation: [www.terraform.io/docs/providers/helm/index.html](https://www.terraform.io/docs/providers/helm/index.html)
-- Kured documentation: [github.com/weaveworks/kured](https://github.com/weaveworks/kured)
-- Velero documentation: [velero.io/docs/v1.2.0/](https://velero.io/docs/)
-- Velero Azure specific documentation: [github.com/vmware-tanzu/velero-plugin-for-microsoft-azure](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure)
-- cert-manager documentation : [cert-manager.io/docs/](https://cert-manager.io/docs/)
-
+| aad\_pod\_identity\_azure\_identity | Identity object for AAD Pod Identity |
+| aad\_pod\_identity\_namespace | Namespace used for AAD Pod Identity |
+| agic\_namespace | Namespace used for AGIC |
+| aks\_id | AKS resource id |
+| aks\_kube\_config | Kube configuration of AKS Cluster |
+| aks\_kube\_config\_raw | Raw kube config to be used by kubectl command |
+| aks\_name | Name of the AKS cluster |
+| aks\_nodes\_pools\_ids | Ids of AKS nodes pools |
+| aks\_nodes\_pools\_names | Names of AKS nodes pools |
+| aks\_nodes\_rg | Name of the resource group in which AKS nodes are deployed |
+| aks\_user\_managed\_identity | The User Managed Identity used by AKS Agents |
+| application\_gateway\_id | Id of the application gateway used by AKS |
+| application\_gateway\_identity\_principal\_id | Id of the managed service identity of the application gateway used by AKS |
+| application\_gateway\_name | Name of the application gateway used by AKS |
+| cert\_manager\_namespace | Namespace used for Cert Manager |
+| kured\_namespace | Namespace used for Kured |
+| public\_ip\_id | Id of the public ip used by AKS application gateway |
+| public\_ip\_name | Name of the public ip used by AKS application gateway |
+| velero\_identity | Azure Identity used for Velero pods |
+| velero\_namespace | Namespace used for Velero |
+| velero\_storage\_account | Storage Account on which Velero data is stored. |
+| velero\_storage\_account\_container | Container in Storage Account on which Velero data is stored. |
+<!-- END_TF_DOCS -->

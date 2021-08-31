@@ -15,6 +15,7 @@ EOF
     account_replication_type = "LRS"
     tags                     = {}
     allowed_cidrs            = []
+    allowed_subnet_ids       = []
     container_name           = "velero"
   }
 

@@ -417,6 +417,7 @@ map(object({
   account_replication_type = string 
   tags                     = map(any) 
   allowed_cidrs            = list(string) 
+  allowed_subnet_ids       = list(string) 
   container_name           = string 
 }))
 ```

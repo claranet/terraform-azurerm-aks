@@ -1,73 +1,30 @@
-# Azure Kubernetes Service - Application Gateway Ingress Controller tool submodule
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/latest/submodules/agic)
+<!-- BEGIN_TF_DOCS -->
+## Providers
 
-This module allows you to create an application gateway ingress controller with its associated Application Gateway v2 on an existing AKS cluster.
+| Name | Version |
+|------|---------|
+| azurerm | >= 2.10 |
+| helm | >=2.3.0 |
+| kubernetes | >= 1.11.1 |
 
-## Version compatibility
+## Modules
 
-| Module version    | Terraform version | AzureRM version | Helm version | Kubernetes version |
-|-------------------|-------------------|-----------------|--------------|--------------------|
-| >= 4.x.x          | >= 0.13.x         | >= 2.0          | = 1.1.1      | ~> 1.11.1          |
-| >= 3.x.x          | 0.12.x            | >= 2.0          | = 1.1.1      | ~> 1.11.1          |
-| >= 2.x.x, < 3.x.x | 0.12.x            | <  2.0          | N/A          | N/A                |
-| <  2.x.x          | 0.11.x            | <  2.0          | N/A          | N/A                |
+| Name | Source | Version |
+|------|--------|---------|
+| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 4.0.1 |
 
-## Usage
+## Resources
 
-This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) tool
-which set some terraform variables in the environment needed by this module.
-More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
-
-```hcl
-module "rg" {
-  source  = "claranet/rg/azurerm"
-  version = "x.x.x"
-
-  location    = module.azure-region.location
-  client_name = var.client_name
-  environment = var.environment
-  stack       = var.stack
-
-  custom_rg_name = local.support_bastion_rg_name
-}
-
-module "azure-region" {
-  source  = "claranet/regions/azurerm"
-  version = "x.x.x"
-
-  azure_region = var.azure_region
-}
-
-module "agic" {
-  source  = "claranet/aks/azurerm//modules/tools/agic"
-  version = "x.x.x"
-  
-  client_name = var.client_name
-  environment = var.environment
-  stack       = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-  location            = module.azure-region.location
-  location_short      = module.azure-region.location_short
-
-  appgw_subnet_id = "/subscriptions/xxxxxxx/xxxxx/xxxxxxx"
-  appgw_ingress_contoller_values = { "verbosityLevel" = "5" }
-  app_gateway_tags = {"tag1" = "value1"}
-
-  aks_aad_pod_identity_id           = "/subscription/xxx/xxx/xxx"
-  aks_aad_pod_identity_client_id    = "xxx-xxxxx-xxxx-xxxx"
-  aks_aad_pod_identity_principal_id = "xxxx-xxxx-xxxx-xxxx"
-  aks_name = "MyClusterName"
-
-  diagnostics = {
-    enabled       = true
-    destination   = "/subscription/xxx/xxx/workspace/id"
-    eventhub_name = null
-    logs          = ["all"]
-    metrics       = ["all"]
-  }
-}
-```
+| Name | Type |
+|------|------|
+| [azurerm_application_gateway.app_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_gateway) | resource |
+| [azurerm_public_ip.ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
+| [azurerm_role_assignment.agic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.agic_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [helm_release.agic](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [kubernetes_namespace.agic](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
+| [azurerm_resource_group.resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
 ## Inputs
 
@@ -79,7 +36,6 @@ module "agic" {
 | aks\_aad\_pod\_identity\_client\_id | AAD Identity client\_id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_id | AAD Identity id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_principal\_id | AAD Identity principal\_id used by AKS | `string` | n/a | yes |
-| aks\_name | Name of the AKS Cluster attached to this APPGW | `string` | n/a | yes |
 | app\_gateway\_subnet\_id | ID of the subnet to use with the application gateway | `string` | n/a | yes |
 | app\_gateway\_tags | Tags to apply on the Application gateway | `map(string)` | n/a | yes |
 | appgw\_backend\_http\_settings | List of maps including backend http settings configurations | `any` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
@@ -94,14 +50,12 @@ module "agic" {
 | appgw\_url\_path\_map | List of maps including url path map configurations | `any` | `[]` | no |
 | authentication\_certificate\_configs | List of maps including authentication certificate configurations | `list(map(string))` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
-| diag\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `null` | no |
+| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | diagnostic\_settings\_event\_hub\_name | Event hub name used with diagnostics settings | `string` | `null` | no |
-| diagnostic\_settings\_log\_analytics\_destination\_type | When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory | `string` | `"AzureDiagnostics"` | no |
 | diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
-| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `null` | no |
+| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `[]` | no |
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
-| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | disabled\_rule\_group\_settings | Appgw WAF rules group to disable. | <pre>list(object({<br>    rule_group_name = string<br>    rules           = list(string)<br>  }))</pre> | `[]` | no |
 | enable\_agic | Enable application gateway ingress controller | `bool` | `true` | no |
 | enabled\_waf | Enable WAF or not | `bool` | `false` | no |
@@ -111,14 +65,14 @@ module "agic" {
 | frontend\_ip\_configuration\_name | Name of the appgw frontend ip configuration | `string` | n/a | yes |
 | frontend\_port\_settings | Appgw frontent port settings | `list(map(string))` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | frontend\_priv\_ip\_configuration\_name | Name of the appgw frontend private ip configuration | `string` | `null` | no |
+| gateway\_identity\_id | Id of the application gateway MSI | `string` | `null` | no |
 | gateway\_ip\_configuration\_name | Name of the appgw gateway ip configuration | `string` | n/a | yes |
 | ip\_allocation\_method | Allocation method of the IP address | `string` | `"Static"` | no |
-| ip\_label | Domain name for the public ip address | `string` | n/a | yes |
 | ip\_name | Name of the applications gateway's public ip address | `string` | n/a | yes |
 | ip\_sku | SKU of the public ip address | `string` | `"Standard"` | no |
 | ip\_tags | Specific tags for the public ip address | `map(string)` | n/a | yes |
 | location | Location of application gateway | `string` | n/a | yes |
-| location\_short | Short name of Azure regions to use | `any` | n/a | yes |
+| location\_short | Short name of Azure regions to use | `string` | n/a | yes |
 | max\_request\_body\_size\_kb | WAF configuration of the max request body size in KB | `number` | `128` | no |
 | name | Name of the application gateway | `string` | n/a | yes |
 | name\_prefix | prefix used in naming | `string` | `""` | no |
@@ -146,10 +100,4 @@ module "agic" {
 | namespace | Namespace used for AGIC |
 | public\_ip\_id | Application gateway public ip Id |
 | public\_ip\_name | Application gateway public ip name |
-
-
-## Related documentation
-
-- Terraform Azure Application gateway documentation: [terraform.io/docs/providers/azurerm/r/application_gateway.html](https://www.terraform.io/docs/providers/azurerm/r/application_gateway.html)
-- Azure application gateway documentation : [docs.microsoft.com/en-us/azure/application-gateway/overview](https://docs.microsoft.com/en-us/azure/application-gateway/overview)
-- Helm AGIC documentation : [azure.github.io/application-gateway-kubernetes-ingress/](https://azure.github.io/application-gateway-kubernetes-ingress/)
+<!-- END_TF_DOCS -->
