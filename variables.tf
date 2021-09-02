@@ -166,11 +166,6 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "vnet_id" {
-  description = "Id of the vnet used for AKS"
-  type        = string
-}
-
 variable "addons" {
   description = "Kubernetes addons to enable /disable"
   type = object({
@@ -235,12 +230,6 @@ variable "diagnostic_settings_logs_destination_ids" {
   description = "List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set."
   type        = list(string)
   default     = []
-}
-
-variable "diagnostic_settings_event_hub_name" {
-  description = "Event hub name used with diagnostics settings"
-  type        = string
-  default     = null
 }
 
 variable "diagnostic_settings_retention_days" {

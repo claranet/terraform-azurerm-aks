@@ -1,5 +1,6 @@
 module "infra" {
   source = "./modules/infra"
+
   providers = {
     kubernetes = kubernetes.aks-module
     helm       = helm.aks-module

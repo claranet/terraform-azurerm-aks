@@ -285,12 +285,6 @@ variable "diagnostic_settings_logs_destination_ids" {
   default     = []
 }
 
-variable "diagnostic_settings_event_hub_name" {
-  description = "Event hub name used with diagnostics settings"
-  type        = string
-  default     = null
-}
-
 variable "diagnostic_settings_retention_days" {
   description = "The number of days to keep diagnostic logs."
   type        = number
