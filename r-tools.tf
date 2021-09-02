@@ -1,10 +1,6 @@
 module "appgw" {
-<<<<<<< HEAD
-  source = "./modules/agic"
-
-=======
   source = "./tools/agic"
->>>>>>> origin/master
+
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -78,11 +74,7 @@ module "appgw" {
 }
 
 module "certmanager" {
-<<<<<<< HEAD
-  source = "./modules/cert-manager"
-=======
   source = "./tools/cert-manager"
->>>>>>> origin/master
 
   providers = {
     kubernetes = kubernetes.aks-module
@@ -97,11 +89,7 @@ module "certmanager" {
 }
 
 module "kured" {
-<<<<<<< HEAD
-  source = "./modules/kured"
-=======
   source = "./tools/kured"
->>>>>>> origin/master
 
   providers = {
     helm = helm.aks-module
@@ -116,7 +104,7 @@ module "kured" {
 module "velero" {
   depends_on = [azurerm_kubernetes_cluster.aks]
 
-  source = "./modules/velero"
+  source = "./tools/velero"
 
   providers = {
     kubernetes = kubernetes.aks-module

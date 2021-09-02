@@ -72,7 +72,7 @@ module "aks2_infra" {
 | Name | Version |
 |------|---------|
 | azurerm | >= 2.10 |
-| helm | 1.1.1 |
+| helm | >=2.3.0 |
 | kubernetes | >= 1.11.1 |
 
 ## Modules
@@ -85,7 +85,7 @@ No modules.
 |------|------|
 | [azurerm_role_assignment.aad_pod_identity_msi](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_user_assigned_identity.aad_pod_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
-| [helm_release.aad_pod_identity](https://registry.terraform.io/providers/hashicorp/helm/1.1.1/docs/resources/release) | resource |
+| [helm_release.aad_pod_identity](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_cluster_role.containerlogs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role) | resource |
 | [kubernetes_cluster_role_binding.containerlogs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role_binding) | resource |
 | [kubernetes_namespace.add_pod_identity](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
@@ -114,7 +114,7 @@ No modules.
 | aad\_pod\_identity\_client\_id | Client ID of the User MSI used for AAD Pod Identity |
 | aad\_pod\_identity\_id | ID of the User MSI used for AAD Pod Identity |
 | aad\_pod\_identity\_namespace | Namespace used for AAD Pod Identity |
-| add\_pod\_identity\_principal\_id | Principal ID of the User MSI used for AAD Pod Identity |
+| aad\_pod\_identity\_principal\_id | Principal ID of the User MSI used for AAD Pod Identity |
 <!-- END_TF_DOCS -->
 ## Related documentation
 

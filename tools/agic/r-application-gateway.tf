@@ -167,7 +167,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.authentication_certificate_configs
     content {
       name = lookup(authentication_certificate.value, "name")
-      data = filebase64(ylookup(authentication_certificate.value, "data"))
+      data = filebase64(lookup(authentication_certificate.value, "data"))
     }
   }
 

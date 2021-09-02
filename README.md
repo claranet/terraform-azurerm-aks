@@ -1,37 +1,3 @@
-<<<<<<< HEAD
-<!-- BEGIN_TF_DOCS -->
-## Providers
-
-| Name | Version |
-|------|---------|
-| azurerm | >= 2.51 |
-
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| appgw | ./modules/agic | n/a |
-| certmanager | ./modules/cert-manager | n/a |
-| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 4.0.1 |
-| infra | ./modules/infra | n/a |
-| kured | ./modules/kured | n/a |
-| velero | ./modules/velero | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster) | resource |
-| [azurerm_kubernetes_cluster_node_pool.node_pools](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool) | resource |
-| [azurerm_role_assignment.aad_pod_identity_mio_appgw_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aks_acr_pull_allowed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aks_uai_private_dns_zone_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aks_uai_vnet_network_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aks_user_assigned](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_user_assigned_identity.aks_user_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
-| [azurerm_user_assigned_identity.appgw_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
-| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
-=======
 # Azure Kubernetes Service
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/)
 
@@ -47,11 +13,12 @@ deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-p
 
 ## Requirements and limitations
 
-  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.10.0) >= 2.10.0
-  * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/1.0.0) >= 1.1.1
-  * [Kubernetes Terraform provider](https://registry.terraform.io/providers/hashicorp/kubernetes/1.11.1) >= 1.11.1
+  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.51.0) >= 2.51.0
+  * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/2.3.0) >= 2.3.0
+  * [Kubernetes Terraform provider](https://registry.terraform.io/providers/hashicorp/kubernetes/2.1.0) >= 2.1.0
   * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
   * A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the nodes subnet
+  * In the case of an Aks Private Cluster, A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the subnet from where the Terraform code will be executed
   
 ## Version compatibility
 
@@ -226,14 +193,13 @@ resource "azurerm_role_assignment" "allow_ACR" {
   role_definition_name = "AcrPull"
 }
 ```
->>>>>>> origin/master
 
 <!-- BEGIN_TF_DOCS -->
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | >= 2.10 |
+| azurerm | >= 2.51 |
 
 ## Modules
 
@@ -252,7 +218,13 @@ resource "azurerm_role_assignment" "allow_ACR" {
 |------|------|
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster) | resource |
 | [azurerm_kubernetes_cluster_node_pool.node_pools](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool) | resource |
+| [azurerm_role_assignment.aad_pod_identity_mio_appgw_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_acr_pull_allowed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_uai_private_dns_zone_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_uai_vnet_network_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_user_assigned](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_user_assigned_identity.aks_user_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azurerm_user_assigned_identity.appgw_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
 ## Inputs
@@ -283,18 +255,11 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | cert\_manager\_namespace | Kubernetes namespace in which to deploy Cert Manager | `string` | `"system-cert-manager"` | no |
 | cert\_manager\_settings | Settings for cert-manager helm chart | `map(string)` | `{}` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
-<<<<<<< HEAD
 | container\_registries\_id | List of Azure Container Registries ids where AKS needs pull access. | `list(string)` | `[]` | no |
-=======
->>>>>>> origin/master
 | custom\_aks\_name | Custom AKS name | `string` | `""` | no |
 | custom\_appgw\_name | Custom name for AKS ingress application gateway | `string` | `""` | no |
 | default\_node\_pool | Default node pool configuration:<pre>map(object({<br>    name                  = string<br>    count                 = number<br>    vm_size               = string<br>    os_type               = string<br>    availability_zones    = list(number)<br>    enable_auto_scaling   = bool<br>    min_count             = number<br>    max_count             = number<br>    type                  = string<br>    node_taints           = list(string)<br>    vnet_subnet_id        = string<br>    max_pods              = number<br>    os_disk_size_gb       = number<br>    enable_node_public_ip = bool<br>}))</pre> | `map(any)` | `{}` | no |
 | diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
-<<<<<<< HEAD
-| diagnostic\_settings\_event\_hub\_name | Event hub name used with diagnostics settings | `string` | `null` | no |
-=======
->>>>>>> origin/master
 | diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `[]` | no |
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
@@ -332,6 +297,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | velero\_namespace | Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
 | velero\_storage\_settings | Settings for Storage account and blob container for Velero<pre>map(object({ <br>  name                     = string <br>  resource_group_name      = string <br>  location                 = string <br>  account_tier             = string <br>  account_replication_type = string <br>  tags                     = map(any) <br>  allowed_cidrs            = list(string) <br>  allowed_subnet_ids       = list(string) <br>  container_name           = string <br>}))</pre> | `map(any)` | `{}` | no |
 | velero\_values | Settings for Velero helm chart:<pre>map(object({<br>  configuration.backupStorageLocation.bucket                = string <br>  configuration.backupStorageLocation.config.resourceGroup  = string <br>  configuration.backupStorageLocation.config.storageAccount = string <br>  configuration.backupStorageLocation.name                  = string <br>  configuration.provider                                    = string <br>  configuration.volumeSnapshotLocation.config.resourceGroup = string <br>  configuration.volumeSnapshotLocation.name                 = string <br>  credential.exstingSecret                                  = string <br>  credentials.useSecret                                     = string <br>  deployRestic                                              = string <br>  env.AZURE_CREDENTIALS_FILE                                = string <br>  metrics.enabled                                           = string <br>  rbac.create                                               = string <br>  schedules.daily.schedule                                  = string <br>  schedules.daily.template.includedNamespaces               = string <br>  schedules.daily.template.snapshotVolumes                  = string <br>  schedules.daily.template.ttl                              = string <br>  serviceAccount.server.create                              = string <br>  snapshotsEnabled                                          = string <br>  initContainers[0].name                                    = string <br>  initContainers[0].image                                   = string <br>  initContainers[0].volumeMounts[0].mountPath               = string <br>  initContainers[0].volumeMounts[0].name                    = string <br>  image.repository                                          = string <br>  image.tag                                                 = string <br>  image.pullPolicy                                          = string <br><br>}))</pre> | `map(string)` | `{}` | no |
+| vnet\_id | Vnet id that Aks MSI should be network contributor in a private cluster | `string` | `null` | no |
 
 ## Outputs
 
@@ -359,9 +325,6 @@ resource "azurerm_role_assignment" "allow_ACR" {
 | velero\_namespace | Namespace used for Velero |
 | velero\_storage\_account | Storage Account on which Velero data is stored. |
 | velero\_storage\_account\_container | Container in Storage Account on which Velero data is stored. |
-<<<<<<< HEAD
-<!-- END_TF_DOCS -->
-=======
 <!-- END_TF_DOCS -->
 ## Related documentation
 
@@ -374,4 +337,3 @@ resource "azurerm_role_assignment" "allow_ACR" {
 - Velero documentation: [velero.io/docs/v1.2.0/](https://velero.io/docs/)
 - Velero Azure specific documentation: [github.com/vmware-tanzu/velero-plugin-for-microsoft-azure](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure)
 - cert-manager documentation : [cert-manager.io/docs/](https://cert-manager.io/docs/)
->>>>>>> origin/master

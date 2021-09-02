@@ -1,3 +1,64 @@
+# Azure Kubernetes Service - Velero tool submodule
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/latest/submodules/velero)
+
+This module deploys [Velero](https://velero.io/) on an existing K8S cluster with Helm 3 and its associated Block blob storage account.
+
+## Version compatibility
+
+| Module version    | Terraform version | Helm version | Kubernetes version |
+|-------------------|-------------------|--------------|--------------------|
+| >= 3.x.x          | 0.12.x            | = 1.1.1      | ~> 1.11.1          |
+| >= 2.x.x, < 3.x.x | 0.12.x            | N/A          | N/A                |
+| <  2.x.x          | 0.11.x            | N/A          | N/A                |
+
+## Usage
+
+```hcl
+module "rg" {
+  source  = "claranet/rg/azurerm"
+  version = "x.x.x"
+
+  location    = module.azure-region.location
+  client_name = var.client_name
+  environment = var.environment
+  stack       = var.stack
+
+  custom_rg_name = local.support_bastion_rg_name
+}
+
+module "azure-region" {
+  source  = "claranet/regions/azurerm"
+  version = "x.x.x"
+
+  azure_region = var.azure_region
+}
+
+module "velero" {
+  source  = "claranet/aks/azurerm//modules/tools/velero"
+  version = "x.x.x"
+
+  enable_velero = var.enable_velero
+
+  client_name    = var.client_name
+  stack          = var.stack
+  environment    = var.environment
+  location       = module.azure-region.location
+  location_short = module.azure-region.location_short
+  name_prefix    = var.name_prefix
+
+  resource_group_name           = module.rg.resource_group_name
+  aks_cluster_name              = var.aks_cluster_name
+  aks_nodes_resource_group_name = var.aks_nodes_resource_group_name
+  nodes_subnet_id               = var.nodes_subnet_id
+
+  velero_namespace        = var.velero_namespace
+  velero_chart_version    = var.velero_chart_version
+  velero_values           = var.velero_values
+  velero_storage_settings = var.velero_storage_settings
+}
+
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Providers
 
@@ -15,17 +76,17 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azurerm_role_assignment.velero_identity_role_aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.velero_identity_role_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.velero-identity-role-aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.velero-identity-role-storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_storage_account.velero](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
 | [azurerm_storage_account_network_rules.velero](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account_network_rules) | resource |
 | [azurerm_storage_container.velero](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
-| [azurerm_user_assigned_identity.velero_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azurerm_user_assigned_identity.velero-identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
 | [helm_release.velero](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.velero_identity](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.velero-identity](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace.velero](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_secret.velero](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [azurerm_resource_group.aks_nodes_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.aks-nodes-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
 ## Inputs
@@ -57,3 +118,9 @@ No modules.
 | storage\_account\_container | Container in Storage Account on which Velero data is stored. |
 | velero\_identity | Azure Identity used for Velero pods |
 <!-- END_TF_DOCS -->
+
+## Related documentation
+
+- Velero documentation : [velero.io/docs/v1.3.2/](https://velero.io/docs/v1.3.2/)
+- Velero Azure plugin documentation : [github.com/vmware-tanzu/velero-plugin-for-microsoft-azure](https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure)
+- BlockBlob storage account documentation : [docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-create-account-block-blob?tabs=azure-portal](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-create-account-block-blob?tabs=azure-portal)

@@ -1,9 +1,4 @@
-<<<<<<< HEAD:modules/agic/r-logs.tf
 module "diagnostic_settings_appgw" {
-  count   = length(var.diagnostic_settings_logs_destination_ids) > 0 && var.enable_agic ? 1 : 0
-=======
-module "diagnostic-settings-appgw" {
->>>>>>> origin/master:tools/agic/r-logs.tf
   source  = "claranet/diagnostic-settings/azurerm"
   version = "4.0.2"
 

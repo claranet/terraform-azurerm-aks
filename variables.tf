@@ -76,6 +76,12 @@ variable "enable_private_cluster" {
   default     = false
 }
 
+variable "vnet_id" {
+  description = "Vnet id that Aks MSI should be network contributor in a private cluster"
+  type        = string
+  default     = null
+}
+
 variable "enable_appgw_msi" {
   description = "Configure a managed service identity for Application gateway used with AGIC (useful to configure ssl cert into appgw from keyvault)"
   type        = bool
@@ -525,4 +531,5 @@ variable "appgw_private_ip" {
   type        = string
   default     = null
 }
+
 

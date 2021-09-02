@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 data "azurerm_subscription" "current" {}
->>>>>>> origin/master
 
 resource "kubernetes_namespace" "add_pod_identity" {
   metadata {
