@@ -1,4 +1,6 @@
 module "diagnostic_settings_appgw" {
+  count = var.enable_agic ? 1 : 0
+
   source  = "claranet/diagnostic-settings/azurerm"
   version = "4.0.2"
 
