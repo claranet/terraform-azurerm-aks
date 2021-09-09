@@ -74,15 +74,15 @@ module "agic" {
 
 | Name | Version |
 |------|---------|
-| azurerm | >= 2.10 |
-| helm | >=2.3.0 |
+| azurerm | >= 2.51 |
+| helm | >= 2.3.0 |
 | kubernetes | >= 1.11.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| diagnostic-settings-appgw | claranet/diagnostic-settings/azurerm | 4.0.2 |
+| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 4.0.2 |
 
 ## Resources
 

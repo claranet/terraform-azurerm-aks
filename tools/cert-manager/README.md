@@ -29,7 +29,7 @@ module "certmanager" {
 
 | Name | Version |
 |------|---------|
-| helm | >=2.3.0 |
+| helm | >= 2.3.0 |
 | kubernetes | >= 1.11.1 |
 
 ## Modules

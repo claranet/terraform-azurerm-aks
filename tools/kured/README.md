@@ -30,7 +30,7 @@ module "kured" {
 
 | Name | Version |
 |------|---------|
-| helm | >=2.3.0 |
+| helm | >= 2.3.0 |
 
 ## Modules
 
