@@ -9,7 +9,7 @@ resource "azurerm_user_assigned_identity" "aks_user_assigned_identity" {
 resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {
   count = var.enable_private_cluster && var.private_dns_zone_type == "Custom" ? 1 : 0
 
-  scope                = var.private_dns_zone_type
+  scope                = var.private_dns_zone_id
   role_definition_name = "Private DNS Zone Contributor"
   principal_id         = azurerm_user_assigned_identity.aks_user_assigned_identity[0].principal_id
 }
