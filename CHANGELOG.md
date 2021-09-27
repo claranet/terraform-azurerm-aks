@@ -7,6 +7,7 @@ Added
   * AZ-485: Add Msi Identity for Applicationg Gateway with Agic
   * AZ-485: Add Private DNS Zone support
   * AZ-485: Add Azure Container Registry Permissions
+  * AZ-485: Allow to configure AKS SKU
 
 Changed
   * AZ-532: Revamp README with latest `terraform-docs` tool

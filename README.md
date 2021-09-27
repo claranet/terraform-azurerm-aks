@@ -227,7 +227,7 @@ module "acr" {
 
 | Name | Version |
 |------|---------|
-| azurerm | >= 2.51 |
+| azurerm | 2.74.0 |
 
 ## Modules
 
