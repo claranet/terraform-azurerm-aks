@@ -1,4 +1,14 @@
-# Unreleased
+# v4.3.0 - unreleased
+
+Added
+  * AZ-485: Add AKS Private Cluster Feature
+
+Changed
+  * AZ-532: Revamp README with latest `terraform-docs` tool
+  * AZ-530: Cleanup module, fix linter errors
+  * AZ-485: Add AKS Private Cluster Feature
+
+# v4.2.0 - 2021-06-03
 
 Breaking
   * AZ-483: Remove deprecated `load_config_file` parameter from kubernetes provider declaration according to latest provider release (2.0)
@@ -6,9 +16,6 @@ Breaking
 
 Added
   * AZ-484: Update CI to cover Terraform 0.15
-
-Added
-  * AZ-485: Enable Private Cluster feature
 
 # v4.1.0 - 2020-12-31
 
@@ -61,4 +68,3 @@ Fixed
 
 Added
   * AZ-123: First version of the AKS module
-

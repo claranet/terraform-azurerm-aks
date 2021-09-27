@@ -187,11 +187,6 @@ module "acr" {
   stack        = var.stack
 }
 
-resource "azurerm_role_assignment" "allow_ACR" {
-  principal_id         = module.aks.aks_user_managed_identity.0.object_id
-  scope                = module.acr.acr_id
-  role_definition_name = "AcrPull"
-}
 ```
 
 <!-- BEGIN_TF_DOCS -->
@@ -199,7 +194,7 @@ resource "azurerm_role_assignment" "allow_ACR" {
 
 | Name | Version |
 |------|---------|
-| azurerm | >= 2.51 |
+| azurerm | 2.74.0 |
 
 ## Modules
 
