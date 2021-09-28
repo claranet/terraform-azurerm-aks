@@ -7,7 +7,7 @@ module "appgw" {
     helm       = helm.aks-module
   }
 
-  enable_agic           = var.enable_agic
+  agic_enabled          = var.agic_enabled
   agic_chart_repository = var.agic_chart_repository
   agic_chart_version    = coalesce(var.agic_helm_version, var.agic_chart_version)
 

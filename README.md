@@ -10,15 +10,6 @@ Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed
 This module also configures logging to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-create-workspace), 
 deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and creates some 
 [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) with different types of Azure managed disks (Standard HDD retain and delete, Premium SSD retain and delete).
-
-## Requirements and limitations
-
-  * [Azurerm Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/2.51.0) >= 2.51.0
-  * [Helm Terraform provider](https://registry.terraform.io/providers/hashicorp/helm/2.3.0) >= 2.3.0
-  * [Kubernetes Terraform provider](https://registry.terraform.io/providers/hashicorp/kubernetes/2.1.0) >= 2.1.0
-  * [Kubectl command](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-  * A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the nodes subnet
-  * In the case of an Aks Private Cluster, A Microsoft.Storage [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) into the subnet from where the Terraform code will be executed
   
 ## Version compatibility
 
@@ -35,16 +26,38 @@ deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-p
 This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) too which set some terraform variables in the environment needed by this module.
 More details about variables set by the `terraform wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
 
-You can use this module by including it this way:
+
+<!-- BEGIN_TF_DOCS -->
+## Global versioning rule for Claranet Azure modules
+
+| Module version | Terraform version | AzureRM version |
+| -------------- | ----------------- | --------------- |
+| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.0          |
+| >= 4.x.x       | 0.13.x            | >= 2.0          |
+| >= 3.x.x       | 0.12.x            | >= 2.0          |
+| >= 2.x.x       | 0.12.x            | < 2.0           |
+| <  2.x.x       | 0.11.x            | < 2.0           |
+
+## Usage
+
+This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) tool
+which set some terraform variables in the environment needed by this module.
+More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
 
 ```hcl
 locals {
 
-  allowed_cidr = ["x.x.x.x", "y.y.y.y"]
+  allowed_cidrs = ["x.x.x.x", "y.y.y.y"]
 
 }
 
-module "azure-region" {
+data "azurerm_kubernetes_cluster" "aks" {
+  depends_on          = [module.aks] # refresh cluster state before reading
+  name                = module.aks.aks_name
+  resource_group_name = module.rg.resource_group_name
+}
+
+module "azure_region" {
   source  = "claranet/regions/azurerm"
   version = "x.x.x"
 
@@ -55,19 +68,19 @@ module "rg" {
   source  = "claranet/rg/azurerm"
   version = "x.x.x"
 
-  location    = module.azure-region.location
+  location    = module.azure_region.location
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
 }
 
-module "azure-virtual-network" {
+module "azure_virtual_network" {
   source  = "claranet/vnet/azurerm"
   version = "x.x.x"
 
   environment    = var.environment
-  location       = module.azure-region.location
-  location_short = module.azure-region.location_short
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
   client_name    = var.client_name
   stack          = var.stack
 
@@ -77,32 +90,52 @@ module "azure-virtual-network" {
 
 }
 
-module "azure-network-subnet" {
+module "node_network_subnet" {
   source  = "claranet/subnet/azurerm"
   version = "x.x.x"
 
   environment    = var.environment
-  location_short = module.azure-region.location_short
+  location_short = module.azure_region.location_short
   client_name    = var.client_name
   stack          = var.stack
 
   resource_group_name  = module.rg.resource_group_name
-  virtual_network_name = module.azure-virtual-network.virtual_network_name
+  virtual_network_name = module.azure_virtual_network.virtual_network_name
 
-  subnet_cidr_list = ["10.0.0.0/20", "10.0.20.0/24"]
+  subnet_cidr_list = ["10.0.0.0/20"]
 
   service_endpoints = ["Microsoft.Storage"]
 
 }
+
+module "appgtw_network_subnet" {
+  source  = "claranet/subnet/azurerm"
+  version = "x.x.x"
+
+  environment    = var.environment
+  location_short = module.azure_region.location_short
+  client_name    = var.client_name
+  stack          = var.stack
+
+  resource_group_name  = module.rg.resource_group_name
+  virtual_network_name = module.azure_virtual_network.virtual_network_name
+
+  subnet_cidr_list = ["10.0.20.0/24"]
+
+
+}
+
 module "global_run" {
-  source = "claranet/run-common/azurerm"
+  source  = "claranet/run-common/azurerm"
   version = "x.x.x"
 
   client_name    = var.client_name
-  location       = module.azure-region.location
-  location_short = module.azure-region.location_short
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
   environment    = var.environment
   stack          = var.stack
+
+  monitoring_function_splunk_token = var.monitoring_function_splunk_token
 
   resource_group_name = module.rg.resource_group_name
 
@@ -119,14 +152,14 @@ module "aks" {
   stack       = var.stack
 
   resource_group_name = module.rg.resource_group_name
-  location            = module.azure-region.location
-  location_short      = module.azure-region.location_short
+  location            = module.azure_region.location
+  location_short      = module.azure_region.location_short
 
   service_cidr       = "10.0.16.0/22"
   kubernetes_version = "1.19.7"
 
-  vnet_id         = module.azure-virtual-network.virtual_network_id
-  nodes_subnet_id = module.azure-network-subnet.subnet_ids[0]
+  vnet_id         = module.azure_virtual_network.virtual_network_id
+  nodes_subnet_id = module.node_network_subnet.subnet_id
   nodes_pools = [
     {
       name            = "pool1"
@@ -134,7 +167,7 @@ module "aks" {
       vm_size         = "Standard_D1_v2"
       os_type         = "Linux"
       os_disk_size_gb = 30
-      vnet_subnet_id  = module.azure-network-subnet.subnet_ids[0]
+      vnet_subnet_id  = module.node_network_subnet.subnet_id
     },
     {
       name                = "bigpool1"
@@ -142,7 +175,7 @@ module "aks" {
       vm_size             = "Standard_F8s_v2"
       os_type             = "Linux"
       os_disk_size_gb     = 30
-      vnet_subnet_id      = module.azure-network-subnet.subnet_ids[0]
+      vnet_subnet_id      = module.node_network_subnet.subnet_id
       enable_auto_scaling = true
       min_count           = 3
       max_count           = 9
@@ -152,24 +185,25 @@ module "aks" {
 
   linux_profile = {
     username = "user"
-    ssh_key  = file("~/.ssh/id_rsa.pub")
+    ssh_key  = "ssh_priv_key"
   }
 
   addons = {
     dashboard              = false
     oms_agent              = true
-    oms_agent_workspace_id = var.log_analytic_workspace_id
+    oms_agent_workspace_id = module.global_run.log_analytics_workspace_id
     policy                 = false
   }
 
-  diagnostic_settings_logs_destination_ids = [var.log_analytic_workspace_id]
+  diagnostic_settings_logs_destination_ids = [module.global_run.log_analytics_workspace_id]
 
+  appgw_subnet_id = module.appgtw_network_subnet.subnet_id
 
-  appgw_subnet_id   = module.azure-network-subnet.subnet_ids[1]
+  appgw_ingress_controller_values = { "verbosityLevel" = "5", "appgw.shared" = "true" }
+  cert_manager_settings           = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
+  velero_storage_settings         = { allowed_cidrs = local.allowed_cidrs }
 
-  appgw_ingress_controller_values   = { "verbosityLevel" = "5", "appgw.shared" = "true" }
-  cert_manager_settings             = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
-  velero_storage_settings           = { allowed_cidrs = local.allowed_cidrs }
+  container_registries_id = [module.acr.acr_id]
 
 }
 
@@ -177,24 +211,23 @@ module "acr" {
   source  = "claranet/acr/azurerm"
   version = "x.x.x"
 
-  location            = module.azure-region.location
-  location_short      = module.azure-region.location_short
+  location            = module.azure_region.location
+  location_short      = module.azure_region.location_short
   resource_group_name = module.rg.resource_group_name
   sku                 = "Standard"
 
-  client_name  = var.client_name
-  environment  = var.environment
-  stack        = var.stack
+  client_name = var.client_name
+  environment = var.environment
+  stack       = var.stack
 }
 
 ```
 
-<!-- BEGIN_TF_DOCS -->
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | 2.74.0 |
+| azurerm | >= 2.51 |
 
 ## Modules
 
@@ -233,11 +266,13 @@ module "acr" {
 | addons | Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
 | agic\_chart\_repository | Helm chart repository URL | `string` | `"https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"` | no |
 | agic\_chart\_version | Version of the Helm chart | `string` | `"1.2.0"` | no |
+| agic\_enabled | Enable Application gateway ingress controller | `bool` | `true` | no |
 | agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
 | aks\_sku\_tier | aks sku tier. Possible values are Free ou Paid | `string` | `"Free"` | no |
 | aks\_user\_assigned\_identity\_custom\_name | Custom name for the aks user assigned identity resource | `string` | `null` | no |
 | aks\_user\_assigned\_identity\_resource\_group\_name | Resource Group where to deploy the aks user assigned identity resource. Used when private cluster is enabled and when Azure private dns zone is not managed by aks | `string` | `null` | no |
 | api\_server\_authorized\_ip\_ranges | Ip ranges allowed to interract with Kubernetes API. Default no restrictions | `list(string)` | `[]` | no |
+| appgw\_identity\_enabled | Configure a managed service identity for Application gateway used with AGIC (useful to configure ssl cert into appgw from keyvault) | `bool` | `false` | no |
 | appgw\_ingress\_controller\_values | Application Gateway Ingress Controller settings | `map(string)` | `{}` | no |
 | appgw\_private\_ip | Private IP for Application Gateway. Used when variable `private_ingress` is set to `true`. | `string` | `null` | no |
 | appgw\_settings | Application gateway configuration settings. Default dummy configuration | `map(any)` | `{}` | no |
@@ -260,12 +295,9 @@ module "acr" {
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
 | docker\_bridge\_cidr | IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
-| enable\_agic | Enable Application gateway ingress controller | `bool` | `true` | no |
-| enable\_appgw\_msi | Configure a managed service identity for Application gateway used with AGIC (useful to configure ssl cert into appgw from keyvault) | `bool` | `false` | no |
 | enable\_cert\_manager | Enable cert-manager on AKS cluster | `bool` | `true` | no |
 | enable\_kured | Enable kured daemon on AKS cluster | `bool` | `true` | no |
 | enable\_pod\_security\_policy | Enable pod security policy or not. https://docs.microsoft.com/fr-fr/azure/AKS/use-pod-security-policies | `bool` | `false` | no |
-| enable\_private\_cluster | Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled | `bool` | `false` | no |
 | enable\_velero | Enable velero on AKS cluster | `bool` | `true` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
@@ -281,6 +313,7 @@ module "acr" {
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
 | outbound\_type | The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`. | `string` | `"loadBalancer"` | no |
+| private\_cluster\_enabled | Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled | `bool` | `false` | no |
 | private\_dns\_zone\_id | Id of the private DNS Zone when <private\_dns\_zone\_type> is custom | `string` | `null` | no |
 | private\_dns\_zone\_type | Set AKS private dns zone if needed and if private cluster is enabled (privatelink.<region>.azmk8s.io)<br>- "Custom" : You will have to deploy a private Dns Zone on your own and pass the id with <private\_dns\_zone\_id> variable<br>If this settings is used, aks user assigned identity will be "userassigned" instead of "systemassigned"<br>and the aks user must have "Private DNS Zone Contributor" role on the private DNS Zone<br>- "System" : AKS will manage the private zone and create it in the same resource group as the Node Resource Group<br>- "None" : In case of None you will need to bring your own DNS server and set up resolving, otherwise cluster will have issues after provisioning.<br><br>https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_dns_zone_id | `string` | `"System"` | no |
 | private\_ingress | Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP. | `bool` | `false` | no |

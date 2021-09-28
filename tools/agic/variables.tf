@@ -309,7 +309,7 @@ variable "name_prefix" {
   default     = ""
 }
 
-variable "enable_agic" {
+variable "agic_enabled" {
   description = "Enable application gateway ingress controller"
   type        = bool
   default     = true

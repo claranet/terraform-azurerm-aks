@@ -70,7 +70,7 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
-variable "enable_private_cluster" {
+variable "private_cluster_enabled" {
   description = "Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled"
   type        = bool
   default     = false
@@ -82,7 +82,7 @@ variable "vnet_id" {
   default     = null
 }
 
-variable "enable_appgw_msi" {
+variable "appgw_identity_enabled" {
   description = "Configure a managed service identity for Application gateway used with AGIC (useful to configure ssl cert into appgw from keyvault)"
   type        = bool
   default     = false
@@ -260,7 +260,7 @@ variable "diagnostic_settings_metric_categories" {
 # AGIC variables
 ##########################
 
-variable "enable_agic" {
+variable "agic_enabled" {
   description = "Enable Application gateway ingress controller"
   type        = bool
   default     = true

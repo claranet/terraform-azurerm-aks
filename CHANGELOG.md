@@ -1,12 +1,16 @@
 # v4.3.0 - unreleased
 
-Added
+Breaking
   * AZ-485: Add AKS Private Cluster Feature
+  
+Added
+  * AZ-485: Add Msi Identity for Applicationg Gateway with Agic
+  * AZ-485: Add Private DNS Zone support
+  * AZ-485: Add Azure Container Registry Permissions
 
 Changed
   * AZ-532: Revamp README with latest `terraform-docs` tool
   * AZ-530: Cleanup module, fix linter errors
-  * AZ-485: Add AKS Private Cluster Feature
 
 # v4.2.0 - 2021-06-03
 

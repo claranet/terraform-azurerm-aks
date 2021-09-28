@@ -55,7 +55,7 @@ output "application_gateway_id" {
 
 output "application_gateway_identity_principal_id" {
   description = "Id of the managed service identity of the application gateway used by AKS"
-  value       = var.enable_appgw_msi ? azurerm_user_assigned_identity.appgw_assigned_identity[0].principal_id : null
+  value       = var.appgw_identity_enabled ? azurerm_user_assigned_identity.appgw_assigned_identity[0].principal_id : null
 }
 
 output "application_gateway_name" {

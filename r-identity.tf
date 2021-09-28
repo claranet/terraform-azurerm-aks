@@ -1,5 +1,5 @@
 resource "azurerm_user_assigned_identity" "aks_user_assigned_identity" {
-  count = var.enable_private_cluster && var.private_dns_zone_type == "Custom" ? 1 : 0
+  count = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? 1 : 0
 
   name                = coalesce(var.aks_user_assigned_identity_custom_name, local.aks_user_assigned_identity_name)
   resource_group_name = var.aks_user_assigned_identity_resource_group_name == null ? var.resource_group_name : var.aks_user_assigned_identity_resource_group_name
@@ -7,7 +7,7 @@ resource "azurerm_user_assigned_identity" "aks_user_assigned_identity" {
 }
 
 resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {
-  count = var.enable_private_cluster && var.private_dns_zone_type == "Custom" ? 1 : 0
+  count = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? 1 : 0
 
   scope                = var.private_dns_zone_id
   role_definition_name = "Private DNS Zone Contributor"
@@ -15,7 +15,7 @@ resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {
 }
 
 resource "azurerm_role_assignment" "aks_uai_vnet_network_contributor" {
-  count = var.enable_private_cluster && var.private_dns_zone_type == "Custom" ? 1 : 0
+  count = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? 1 : 0
 
   scope                = var.vnet_id
   role_definition_name = "Network Contributor"
@@ -26,7 +26,7 @@ resource "azurerm_role_assignment" "aks_uai_vnet_network_contributor" {
 # https://github.com/Azure/application-gateway-kubernetes-ingress/issues/999
 # https://github.com/Azure/application-gateway-kubernetes-ingress/blob/master/docs/features/appgw-ssl-certificate.md#configure-certificate-from-key-vault-to-appgw
 resource "azurerm_user_assigned_identity" "appgw_assigned_identity" {
-  count = var.enable_appgw_msi ? 1 : 0
+  count = var.appgw_identity_enabled ? 1 : 0
 
   name                = coalesce(var.appgw_user_assigned_identity_custom_name, local.appgw_user_assigned_identity_name)
   resource_group_name = var.appgw_user_assigned_identity_resource_group_name == null ? var.resource_group_name : var.appgw_user_assigned_identity_resource_group_name
@@ -34,7 +34,7 @@ resource "azurerm_user_assigned_identity" "appgw_assigned_identity" {
 }
 
 resource "azurerm_role_assignment" "aad_pod_identity_mio_appgw_identity" {
-  count = var.enable_appgw_msi ? 1 : 0
+  count = var.appgw_identity_enabled ? 1 : 0
 
   scope                = azurerm_user_assigned_identity.appgw_assigned_identity[0].id
   role_definition_name = "Managed Identity Operator"

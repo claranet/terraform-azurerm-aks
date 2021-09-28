@@ -1,5 +1,5 @@
 resource "azurerm_application_gateway" "app_gateway" {
-  count               = var.enable_agic ? 1 : 0
+  count               = var.agic_enabled ? 1 : 0
   location            = var.location
   name                = var.name
   resource_group_name = var.resource_group_name
@@ -153,7 +153,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = toset(var.ssl_certificates_configs)
     content {
       name                = lookup(ssl_certificate.value, "name")
-      data                = lookup(ssl_certificate.value, "key_vault_secret_id") == "" ? filebase64((lookup(ssl_certificate.value, "data"))) : null
+      data                = lookup(ssl_certificate.value, "key_vault_secret_id") == "" ? base64((lookup(ssl_certificate.value, "data"))) : null
       password            = lookup(ssl_certificate.value, "key_vault_secret_id") == "" ? lookup(ssl_certificate.value, "password") : null
       key_vault_secret_id = lookup(ssl_certificate.value, "data") == "" ? lookup(ssl_certificate.value, "key_vault_secret_id") : null
     }

@@ -69,7 +69,7 @@ locals {
       port = 80
     }]
     ssl_certificates_configs = []
-    identity                 = var.enable_appgw_msi ? azurerm_user_assigned_identity.appgw_assigned_identity[0].id : null
+    identity                 = var.appgw_identity_enabled ? azurerm_user_assigned_identity.appgw_assigned_identity[0].id : null
   }
 
   appgw_settings                 = merge(local.appgw_default_settings, var.appgw_settings)
