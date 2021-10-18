@@ -5,9 +5,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name             = var.resource_group_name
   dns_prefix                      = replace(coalesce(var.custom_aks_name, local.aks_name), "/[\\W_]/", "-")
   kubernetes_version              = var.kubernetes_version
-  api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
+  sku_tier                        = var.aks_sku_tier
+  api_server_authorized_ip_ranges = var.private_cluster_enabled ? null : var.api_server_authorized_ip_ranges
   node_resource_group             = var.node_resource_group
   enable_pod_security_policy      = var.enable_pod_security_policy
+
+  private_cluster_enabled = var.private_cluster_enabled
+  private_dns_zone_id     = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? var.private_dns_zone_id : var.private_dns_zone_type
 
   default_node_pool {
     name                = local.default_node_pool.name
@@ -25,7 +29,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   identity {
-    type = "SystemAssigned"
+    type                      = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? "UserAssigned" : "SystemAssigned"
+    user_assigned_identity_id = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? azurerm_user_assigned_identity.aks_user_assigned_identity[0].id : null
   }
 
   addon_profile {
@@ -70,6 +75,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     enabled = true
   }
 
+  depends_on = [
+    azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
+  ]
+
   tags = merge(local.default_tags, var.extra_tags)
 }
 
@@ -95,3 +104,4 @@ resource "azurerm_role_assignment" "aks_user_assigned" {
   scope                = format("/subscriptions/%s/resourceGroups/%s", data.azurerm_subscription.current.subscription_id, azurerm_kubernetes_cluster.aks.node_resource_group)
   role_definition_name = "Contributor"
 }
+

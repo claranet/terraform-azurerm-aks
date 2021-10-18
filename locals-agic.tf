@@ -4,7 +4,6 @@ locals {
 
   appgw_default_settings = {
     ip_name                             = "${local.appgw_name}-pip"
-    ip_label                            = "${local.appgw_name}-pip"
     ip_sku                              = "Standard"
     ip_allocation_method                = "Static"
     frontend_ip_configuration_name      = "${local.appgw_name}-frontipconfig"
@@ -16,8 +15,15 @@ locals {
     zones                               = ["1", "2", "3"]
     policy_name                         = "AppGwSslPolicy20170401S"
     enabled_waf                         = false
-    app_gateway_tags                    = local.default_tags
-    ip_tags                             = local.default_tags
+    file_upload_limit_mb                = "100"
+    max_request_body_size_kb            = "128"
+    request_body_check                  = true
+    rule_set_type                       = "OWASP"
+    rule_set_version                    = "3.0"
+    firewall_mode                       = "Detection"
+
+    app_gateway_tags = local.default_tags
+    ip_tags          = local.default_tags
     appgw_backend_http_settings = [{
       name                  = "dummy"
       cookie_based_affinity = "Disabled"
@@ -63,6 +69,7 @@ locals {
       port = 80
     }]
     ssl_certificates_configs = []
+    identity                 = var.appgw_identity_enabled ? azurerm_user_assigned_identity.appgw_assigned_identity[0].id : null
   }
 
   appgw_settings                 = merge(local.appgw_default_settings, var.appgw_settings)

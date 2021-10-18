@@ -18,7 +18,7 @@ output "aad_pod_identity_client_id" {
   value       = azurerm_user_assigned_identity.aad_pod_identity.client_id
 }
 
-output "add_pod_identity_principal_id" {
+output "aad_pod_identity_principal_id" {
   description = "Principal ID of the User MSI used for AAD Pod Identity"
   value       = azurerm_user_assigned_identity.aad_pod_identity.principal_id
 }

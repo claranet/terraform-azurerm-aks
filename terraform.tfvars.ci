@@ -1,0 +1,37 @@
+location            = "fr-central"
+location_short      = "frc"
+client_name         = "test"
+environment         = "test"
+stack               = "ci"
+resource_group_name = "test-rg"
+
+extra_tags = {
+  foo = "bar"
+}
+service_cidr = "192.168.1.0/24"
+nodes_pools = [
+  {
+    name                = "nodepool1"
+    vm_size             = "Standard_B4ms"
+    os_type             = "Linux"
+    os_disk_size_gb     = 100
+    vnet_subnet_id      = "subnet_id"
+    max_pods            = 110
+    enable_auto_scaling = true
+    count               = 1
+    min_count           = 1
+    max_count           = 10
+  },
+  {
+    name                = "nodepool2"
+    vm_size             = "Standard_B4ms"
+    os_type             = "Linux"
+    os_disk_size_gb     = 100
+    vnet_subnet_id      = "subnet_id"
+    max_pods            = 110
+    enable_auto_scaling = true
+    count               = 1
+    max_count           = 10
+    min_count           = 1
+  }
+]

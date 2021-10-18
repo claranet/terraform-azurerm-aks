@@ -16,7 +16,7 @@ resource "kubernetes_secret" "velero" {
   count = var.enable_velero ? 1 : 0
   metadata {
     name      = "cloud-credentials"
-    namespace = kubernetes_namespace.velero.0.metadata.0.name
+    namespace = kubernetes_namespace.velero[0].metadata[0].name
   }
   data = {
     cloud = local.velero_credentials
@@ -40,17 +40,17 @@ resource "azurerm_storage_account" "velero" {
 
 resource "azurerm_storage_account_network_rules" "velero" {
   count                      = var.enable_velero ? 1 : 0
-  storage_account_name       = azurerm_storage_account.velero.0.name
-  resource_group_name        = azurerm_storage_account.velero.0.resource_group_name
+  storage_account_name       = azurerm_storage_account.velero[0].name
+  resource_group_name        = azurerm_storage_account.velero[0].resource_group_name
   default_action             = "Deny"
-  virtual_network_subnet_ids = [var.nodes_subnet_id]
+  virtual_network_subnet_ids = concat(local.velero_storage.allowed_subnet_ids, [var.nodes_subnet_id])
   ip_rules                   = local.velero_storage.allowed_cidrs
 }
 
 resource "azurerm_storage_container" "velero" {
   count                 = var.enable_velero ? 1 : 0
   name                  = local.velero_storage.container_name
-  storage_account_name  = azurerm_storage_account.velero.0.name
+  storage_account_name  = azurerm_storage_account.velero[0].name
   container_access_type = "private"
 }
 
@@ -64,7 +64,7 @@ resource "helm_release" "velero" {
   name       = "velero"
   chart      = "velero"
   repository = var.velero_chart_repository
-  namespace  = kubernetes_namespace.velero.0.metadata.0.name
+  namespace  = kubernetes_namespace.velero[0].metadata[0].name
   version    = var.velero_chart_version
 
   dynamic "set" {

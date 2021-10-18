@@ -1,5 +1,5 @@
 resource "azurerm_application_gateway" "app_gateway" {
-  count               = var.enable_agic ? 1 : 0
+  count               = var.agic_enabled ? 1 : 0
   location            = var.location
   name                = var.name
   resource_group_name = var.resource_group_name
@@ -18,7 +18,7 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
-    public_ip_address_id = azurerm_public_ip.ip.0.id
+    public_ip_address_id = azurerm_public_ip.ip[0].id
   }
 
   dynamic "frontend_ip_configuration" {
@@ -38,6 +38,16 @@ resource "azurerm_application_gateway" "app_gateway" {
       port = lookup(frontend_port.value, "port", 80)
     }
   }
+
+  dynamic "identity" {
+    for_each = var.gateway_identity_id != null ? ["fake"] : []
+    content {
+      type         = "UserAssigned"
+      identity_ids = [var.gateway_identity_id]
+    }
+  }
+
+
 
   gateway_ip_configuration {
     name      = local.gateway_ip_configuration_name
@@ -140,11 +150,12 @@ resource "azurerm_application_gateway" "app_gateway" {
   #
 
   dynamic "ssl_certificate" {
-    for_each = var.ssl_certificates_configs
+    for_each = toset(var.ssl_certificates_configs)
     content {
-      name     = lookup(ssl_certificate.value, "name")
-      data     = filebase64(lookup(ssl_certificate.value, "data"))
-      password = lookup(ssl_certificate.value, "password")
+      name                = lookup(ssl_certificate.value, "name")
+      data                = lookup(ssl_certificate.value, "key_vault_secret_id") == "" ? base64((lookup(ssl_certificate.value, "data"))) : null
+      password            = lookup(ssl_certificate.value, "key_vault_secret_id") == "" ? lookup(ssl_certificate.value, "password") : null
+      key_vault_secret_id = lookup(ssl_certificate.value, "data") == "" ? lookup(ssl_certificate.value, "key_vault_secret_id") : null
     }
   }
 
@@ -282,7 +293,7 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   tags = var.app_gateway_tags
 
-  // Ignore most changes as they should be managed by AKS ingress controller
+  # Ignore most changes as they should be managed by AKS ingress controller
   lifecycle {
     ignore_changes = [
       backend_address_pool,

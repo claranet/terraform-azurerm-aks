@@ -1,6 +1,6 @@
 output "namespace" {
   description = "Namespace used for Velero"
-  value       = try(kubernetes_namespace.velero.0.metadata.0.name, "")
+  value       = try(kubernetes_namespace.velero[0].metadata[0].name, "")
 }
 
 output "storage_account" {
@@ -15,5 +15,5 @@ output "storage_account_container" {
 
 output "velero_identity" {
   description = "Azure Identity used for Velero pods"
-  value       = azurerm_user_assigned_identity.velero-identity
+  value       = azurerm_user_assigned_identity.velero_identity
 }

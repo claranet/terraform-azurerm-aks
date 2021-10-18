@@ -24,6 +24,25 @@ module "certmanager" {
 
 ```
 
+<!-- BEGIN_TF_DOCS -->
+## Providers
+
+| Name | Version |
+|------|---------|
+| helm | >= 2.3.0 |
+| kubernetes | >= 1.11.1 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [kubernetes_namespace.cert_manager](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -39,6 +58,7 @@ module "certmanager" {
 | Name | Description |
 |------|-------------|
 | namespace | Namespace used for Cert Manager |
+<!-- END_TF_DOCS -->
 
 ## Related documentation
 

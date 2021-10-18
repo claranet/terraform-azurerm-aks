@@ -36,7 +36,8 @@ map(object({
   account_tier             = string 
   account_replication_type = string 
   tags                     = map(any) 
-  allowed_cirds            = list(string) 
+  allowed_cidrs            = list(string) 
+  allowed_subnet_ids       = list(string) 
   container_name           = string 
 }))
 
@@ -125,10 +126,5 @@ variable "environment" {
 
 variable "stack" {
   description = "Project stack name"
-  type        = string
-}
-
-variable "aks_cluster_name" {
-  description = "Name of the AKS cluster"
   type        = string
 }

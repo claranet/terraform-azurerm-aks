@@ -69,6 +69,34 @@ module "agic" {
 }
 ```
 
+<!-- BEGIN_TF_DOCS -->
+## Providers
+
+| Name | Version |
+|------|---------|
+| azurerm | >= 2.51 |
+| helm | >= 2.3.0 |
+| kubernetes | >= 1.11.1 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 4.0.2 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_application_gateway.app_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_gateway) | resource |
+| [azurerm_public_ip.ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
+| [azurerm_role_assignment.agic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.agic_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [helm_release.agic](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [kubernetes_namespace.agic](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
+| [azurerm_resource_group.resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -79,7 +107,6 @@ module "agic" {
 | aks\_aad\_pod\_identity\_client\_id | AAD Identity client\_id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_id | AAD Identity id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_principal\_id | AAD Identity principal\_id used by AKS | `string` | n/a | yes |
-| aks\_name | Name of the AKS Cluster attached to this APPGW | `string` | n/a | yes |
 | app\_gateway\_subnet\_id | ID of the subnet to use with the application gateway | `string` | n/a | yes |
 | app\_gateway\_tags | Tags to apply on the Application gateway | `map(string)` | n/a | yes |
 | appgw\_backend\_http\_settings | List of maps including backend http settings configurations | `any` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
@@ -94,14 +121,11 @@ module "agic" {
 | appgw\_url\_path\_map | List of maps including url path map configurations | `any` | `[]` | no |
 | authentication\_certificate\_configs | List of maps including authentication certificate configurations | `list(map(string))` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
-| diag\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `null` | no |
-| diagnostic\_settings\_event\_hub\_name | Event hub name used with diagnostics settings | `string` | `null` | no |
-| diagnostic\_settings\_log\_analytics\_destination\_type | When set to 'Dedicated' logs sent to a Log Analytics workspace will go into resource specific tables, instead of the legacy AzureDiagnostics table. This only includes Azure Data Factory | `string` | `"AzureDiagnostics"` | no |
+| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
-| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `null` | no |
+| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `[]` | no |
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
-| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
 | disabled\_rule\_group\_settings | Appgw WAF rules group to disable. | <pre>list(object({<br>    rule_group_name = string<br>    rules           = list(string)<br>  }))</pre> | `[]` | no |
 | enable\_agic | Enable application gateway ingress controller | `bool` | `true` | no |
 | enabled\_waf | Enable WAF or not | `bool` | `false` | no |
@@ -111,14 +135,14 @@ module "agic" {
 | frontend\_ip\_configuration\_name | Name of the appgw frontend ip configuration | `string` | n/a | yes |
 | frontend\_port\_settings | Appgw frontent port settings | `list(map(string))` | <pre>[<br>  {<br>    "fake": "fake"<br>  }<br>]</pre> | no |
 | frontend\_priv\_ip\_configuration\_name | Name of the appgw frontend private ip configuration | `string` | `null` | no |
+| gateway\_identity\_id | Id of the application gateway MSI | `string` | `null` | no |
 | gateway\_ip\_configuration\_name | Name of the appgw gateway ip configuration | `string` | n/a | yes |
 | ip\_allocation\_method | Allocation method of the IP address | `string` | `"Static"` | no |
-| ip\_label | Domain name for the public ip address | `string` | n/a | yes |
 | ip\_name | Name of the applications gateway's public ip address | `string` | n/a | yes |
 | ip\_sku | SKU of the public ip address | `string` | `"Standard"` | no |
 | ip\_tags | Specific tags for the public ip address | `map(string)` | n/a | yes |
 | location | Location of application gateway | `string` | n/a | yes |
-| location\_short | Short name of Azure regions to use | `any` | n/a | yes |
+| location\_short | Short name of Azure regions to use | `string` | n/a | yes |
 | max\_request\_body\_size\_kb | WAF configuration of the max request body size in KB | `number` | `128` | no |
 | name | Name of the application gateway | `string` | n/a | yes |
 | name\_prefix | prefix used in naming | `string` | `""` | no |
@@ -146,7 +170,7 @@ module "agic" {
 | namespace | Namespace used for AGIC |
 | public\_ip\_id | Application gateway public ip Id |
 | public\_ip\_name | Application gateway public ip name |
-
+<!-- END_TF_DOCS -->
 
 ## Related documentation
 

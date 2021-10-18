@@ -10,9 +10,9 @@ locals {
   gateway_ip_configuration_name       = coalesce(var.gateway_ip_configuration_name, "${local.name}-ipconfig")
 
   appgw_ingress_default_values = {
-    "appgw.name"                 = try(azurerm_application_gateway.app_gateway.0.name, "")
-    "appgw.subscriptionId"       = try(data.azurerm_subscription.current.0.subscription_id, "")
-    "appgw.resourceGroup"        = try(azurerm_application_gateway.app_gateway.0.resource_group_name, "")
+    "appgw.name"                 = try(azurerm_application_gateway.app_gateway[0].name, "")
+    "appgw.subscriptionId"       = try(data.azurerm_subscription.current[0].subscription_id, "")
+    "appgw.resourceGroup"        = try(azurerm_application_gateway.app_gateway[0].resource_group_name, "")
     "appgw.subnetID"             = try(var.app_gateway_subnet_id, "")
     "appgw.usePrivateIP"         = "false"
     "armAuth.type"               = "aadPodIdentity"

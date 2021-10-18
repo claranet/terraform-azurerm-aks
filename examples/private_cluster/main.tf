@@ -1,5 +1,5 @@
 terraform {
-  required_version = "> 0.13.0"
+  required_version = ">= 0.13.0"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -11,7 +11,21 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 1.11.1"
+      version = ">= 2.1.0"
     }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
   }
 }

@@ -1,6 +1,6 @@
 locals {
   credentials = <<EOF
-AZURE_SUBSCRIPTION_ID = ${try(data.azurerm_subscription.current.0.subscription_id, "")}
+AZURE_SUBSCRIPTION_ID = ${try(data.azurerm_subscription.current[0].subscription_id, "")}
 AZURE_RESOURCE_GROUP = ${var.aks_nodes_resource_group_name}
 AZURE_CLOUD_NAME = AzurePublicCloud
 EOF
@@ -15,19 +15,20 @@ EOF
     account_replication_type = "LRS"
     tags                     = {}
     allowed_cidrs            = []
+    allowed_subnet_ids       = []
     container_name           = "velero"
   }
 
 
   velero_default_values = {
-    "configuration.backupStorageLocation.bucket"                = try(azurerm_storage_container.velero.0.name, "")
-    "configuration.backupStorageLocation.config.resourceGroup"  = try(azurerm_storage_account.velero.0.resource_group_name, "")
-    "configuration.backupStorageLocation.config.storageAccount" = try(azurerm_storage_account.velero.0.name, "")
+    "configuration.backupStorageLocation.bucket"                = try(azurerm_storage_container.velero[0].name, "")
+    "configuration.backupStorageLocation.config.resourceGroup"  = try(azurerm_storage_account.velero[0].resource_group_name, "")
+    "configuration.backupStorageLocation.config.storageAccount" = try(azurerm_storage_account.velero[0].name, "")
     "configuration.backupStorageLocation.name"                  = "default"
     "configuration.provider"                                    = "azure"
     "configuration.volumeSnapshotLocation.config.resourceGroup" = try(var.aks_nodes_resource_group_name, "")
     "configuration.volumeSnapshotLocation.name"                 = "default"
-    "credentials.existingSecret"                                = try(kubernetes_secret.velero.0.metadata.0.name, "")
+    "credentials.existingSecret"                                = try(kubernetes_secret.velero[0].metadata[0].name, "")
     "credentials.useSecret"                                     = "true"
     "deployRestic"                                              = "false"
     "env.AZURE_CREDENTIALS_FILE"                                = "/credentials"

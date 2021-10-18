@@ -1,12 +1,13 @@
 module "appgw" {
   source = "./tools/agic"
 
+
   providers = {
     kubernetes = kubernetes.aks-module
     helm       = helm.aks-module
   }
 
-  enable_agic           = var.enable_agic
+  agic_enabled          = var.agic_enabled
   agic_chart_repository = var.agic_chart_repository
   agic_chart_version    = coalesce(var.agic_helm_version, var.agic_chart_version)
 
@@ -27,12 +28,12 @@ module "appgw" {
   diagnostic_settings_retention_days       = var.diagnostic_settings_retention_days
 
   ip_name                             = local.appgw_settings.ip_name
-  ip_label                            = local.appgw_settings.ip_label
   ip_sku                              = local.appgw_settings.ip_sku
   ip_allocation_method                = local.appgw_settings.ip_allocation_method
   frontend_ip_configuration_name      = local.appgw_settings.frontend_ip_configuration_name
   frontend_priv_ip_configuration_name = local.appgw_settings.frontend_priv_ip_configuration_name
   gateway_ip_configuration_name       = local.appgw_settings.gateway_ip_configuration_name
+  gateway_identity_id                 = local.appgw_settings.identity
 
   sku_name     = local.appgw_settings.sku_name
   sku_tier     = local.appgw_settings.sku_tier
@@ -42,7 +43,13 @@ module "appgw" {
 
   policy_name = local.appgw_settings.policy_name
 
-  enabled_waf = local.appgw_settings.enabled_waf
+  enabled_waf              = local.appgw_settings.enabled_waf
+  file_upload_limit_mb     = local.appgw_settings.file_upload_limit_mb
+  max_request_body_size_kb = local.appgw_settings.max_request_body_size_kb
+  request_body_check       = local.appgw_settings.request_body_check
+  rule_set_type            = local.appgw_settings.rule_set_type
+  rule_set_version         = local.appgw_settings.rule_set_version
+  firewall_mode            = local.appgw_settings.firewall_mode
 
   appgw_backend_http_settings = local.appgw_settings.appgw_backend_http_settings
   appgw_backend_pools         = local.appgw_settings.appgw_backend_pools
@@ -50,17 +57,17 @@ module "appgw" {
   appgw_routings              = local.appgw_settings.appgw_routings
   appgw_http_listeners        = local.appgw_settings.appgw_http_listeners
   frontend_port_settings      = local.appgw_settings.frontend_port_settings
-  ssl_certificates_configs    = local.appgw_settings.ssl_certificates_configs
+
+  ssl_certificates_configs = var.appgw_ssl_certificates_configs
 
   app_gateway_tags = local.appgw_settings.app_gateway_tags
   ip_tags          = local.appgw_settings.ip_tags
 
   aks_aad_pod_identity_id           = module.infra.aad_pod_identity_id
   aks_aad_pod_identity_client_id    = module.infra.aad_pod_identity_client_id
-  aks_aad_pod_identity_principal_id = module.infra.add_pod_identity_principal_id
+  aks_aad_pod_identity_principal_id = module.infra.aad_pod_identity_principal_id
 
   appgw_ingress_values = var.appgw_ingress_controller_values
-  aks_name             = azurerm_kubernetes_cluster.aks.name
 
   private_ingress  = var.private_ingress
   appgw_private_ip = var.appgw_private_ip
@@ -85,8 +92,7 @@ module "kured" {
   source = "./tools/kured"
 
   providers = {
-    kubernetes = kubernetes.aks-module
-    helm       = helm.aks-module
+    helm = helm.aks-module
   }
 
   enable_kured           = var.enable_kured
@@ -96,6 +102,8 @@ module "kured" {
 }
 
 module "velero" {
+  depends_on = [azurerm_kubernetes_cluster.aks]
+
   source = "./tools/velero"
 
   providers = {
@@ -114,7 +122,6 @@ module "velero" {
 
   resource_group_name           = var.resource_group_name
   aks_nodes_resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
-  aks_cluster_name              = azurerm_kubernetes_cluster.aks.name
   nodes_subnet_id               = var.nodes_subnet_id
 
   velero_namespace        = var.velero_namespace
