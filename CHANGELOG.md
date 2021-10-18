@@ -1,4 +1,4 @@
-# v4.3.0 - unreleased
+# v4.3.0 - 2021-10-18
 
 Breaking
   * AZ-485: Add AKS Private Cluster Feature
