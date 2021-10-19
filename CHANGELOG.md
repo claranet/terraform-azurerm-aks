@@ -1,3 +1,8 @@
+# v4.3.1 - unreleased
+
+Fixed
+  * AZ-587: Fix non-working max_pods parameter on node pools
+
 # v4.3.0 - 2021-10-18
 
 Breaking

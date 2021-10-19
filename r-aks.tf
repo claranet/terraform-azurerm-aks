@@ -94,6 +94,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   node_count            = local.nodes_pools[count.index].count
   min_count             = local.nodes_pools[count.index].min_count
   max_count             = local.nodes_pools[count.index].max_count
+  max_pods              = local.nodes_pools[count.index].max_pods
   enable_node_public_ip = local.nodes_pools[count.index].enable_node_public_ip
   availability_zones    = local.nodes_pools[count.index].availability_zones
 }
