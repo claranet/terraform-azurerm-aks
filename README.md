@@ -219,6 +219,8 @@ module "acr" {
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
+
+  logs_destinations_ids = [module.global_run.log_analytics_workspace_id]
 }
 
 ```
