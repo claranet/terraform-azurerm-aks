@@ -2,7 +2,7 @@ module "diagnostic_settings_appgw" {
   count = var.agic_enabled ? 1 : 0
 
   source  = "claranet/diagnostic-settings/azurerm"
-  version = "4.0.2"
+  version = "4.0.3"
 
   resource_id           = azurerm_application_gateway.app_gateway[0].id
   logs_destinations_ids = var.diagnostic_settings_logs_destination_ids

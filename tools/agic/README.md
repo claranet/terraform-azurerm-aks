@@ -82,7 +82,7 @@ module "agic" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 4.0.2 |
+| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 4.0.3 |
 
 ## Resources
 
@@ -103,6 +103,7 @@ module "agic" {
 |------|-------------|------|---------|:--------:|
 | agic\_chart\_repository | Helm chart repository URL | `string` | `"https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"` | no |
 | agic\_chart\_version | Version of the Helm chart | `string` | `"1.2.0"` | no |
+| agic\_enabled | Enable application gateway ingress controller | `bool` | `true` | no |
 | agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
 | aks\_aad\_pod\_identity\_client\_id | AAD Identity client\_id used by AKS | `string` | n/a | yes |
 | aks\_aad\_pod\_identity\_id | AAD Identity id used by AKS | `string` | n/a | yes |
@@ -127,7 +128,6 @@ module "agic" {
 | diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
 | diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
 | disabled\_rule\_group\_settings | Appgw WAF rules group to disable. | <pre>list(object({<br>    rule_group_name = string<br>    rules           = list(string)<br>  }))</pre> | `[]` | no |
-| enable\_agic | Enable application gateway ingress controller | `bool` | `true` | no |
 | enabled\_waf | Enable WAF or not | `bool` | `false` | no |
 | environment | Project's environment | `string` | n/a | yes |
 | file\_upload\_limit\_mb | WAF configuration of the file upload limit in MB | `number` | `100` | no |
