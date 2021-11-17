@@ -26,6 +26,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     os_disk_size_gb     = local.default_node_pool.os_disk_size_gb
     type                = local.default_node_pool.type
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
+    pod_cidr            = var.aks_network_plugin == "azure" ? null : var.pod_cidr
     node_taints         = local.default_node_pool.node_taints
   }
 
@@ -62,14 +63,15 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    network_plugin     = "azure"
-    network_policy     = "azure"
+    network_plugin     = var.aks_network_plugin
+    network_policy     = var.aks_network_plugin == "azure" ? "azure" : var.aks_network_policy
+    network_mode       = var.aks_network_plugin == "azure" ? "transparent" : null
     dns_service_ip     = cidrhost(var.service_cidr, 10)
     docker_bridge_cidr = var.docker_bridge_cidr
     service_cidr       = var.service_cidr
     load_balancer_sku  = "standard"
     outbound_type      = var.outbound_type
-
+    pod_cidr           = var.aks_network_plugin == "kubenet" ? var.aks_pod_cidr : null
   }
 
   role_based_access_control {

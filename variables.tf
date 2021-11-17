@@ -121,6 +121,18 @@ variable "aks_sku_tier" {
   default     = "Free"
 }
 
+variable "aks_network_plugin" {
+  description = "aks network plugin. Possible values are azure and kubenet. Changing this forces a new resource to be created"
+  type        = string
+  default     = "azure"
+}
+
+variable "aks_network_policy" {
+  description = "Sets up network policy to be used with Azure AKS."
+  type        = string
+  default     = "calico"
+}
+
 variable "appgw_user_assigned_identity_custom_name" {
   description = "Custom name for the application gateway user assigned identity resource"
   type        = string
@@ -196,6 +208,13 @@ variable "service_cidr" {
   description = "CIDR used by kubernetes services (kubectl get svc)."
   type        = string
 }
+
+variable "pod_cidr" {
+  description = "CIDR used by pods when network mode is kubenet"
+  type        = string
+}
+
+
 
 variable "outbound_type" {
   description = "The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`."
