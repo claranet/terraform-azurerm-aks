@@ -28,7 +28,7 @@ resource "helm_release" "aad_pod_identity" {
 
 resource "azurerm_user_assigned_identity" "aad_pod_identity" {
   location            = var.location
-  name                = "aad-pod-identity"
+  name                = var.aadpodidentity_custom_name
   resource_group_name = var.aks_resource_group_name
 }
 

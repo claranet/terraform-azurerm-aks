@@ -493,6 +493,12 @@ variable "aadpodidentity_namespace" {
   default     = "system-aadpodid"
 }
 
+variable "aadpodidentity_custom_name" {
+  description = "Custom name for aad pod identity MSI"
+  type        = string
+  default     = "aad-pod-identity"
+}
+
 variable "aadpodidentity_chart_repository" {
   description = "AAD Pod Identity Helm chart repository URL"
   type        = string

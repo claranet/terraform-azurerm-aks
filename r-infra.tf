@@ -13,4 +13,5 @@ module "infra" {
   aadpodidentity_chart_repository = var.aadpodidentity_chart_repository
   aadpodidentity_namespace        = var.aadpodidentity_namespace
   aadpodidentity_values           = var.aadpodidentity_values
+  aadpodidentity_custom_name      = var.aadpodidentity_custom_name
 }
