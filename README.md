@@ -272,9 +272,9 @@ module "acr" {
 | agic\_chart\_version | Version of the Helm chart | `string` | `"1.2.0"` | no |
 | agic\_enabled | Enable Application gateway ingress controller | `bool` | `true` | no |
 | agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
-| aks\_network\_plugin | aks network plugin. Possible values are azure and kubenet. Changing this forces a new resource to be created | `string` | `"azure"` | no |
-| aks\_network\_policy | Sets up network policy to be used with Azure AKS. | `string` | `"calico"` | no |
-| aks\_pod\_cidr | CIDR used by pods when network mode is kubenet | `string` | `"172.17.0.0/16"` | no |
+| aks\_network\_plugin | AKS network plugin to use. Possible values are `azure` and `kubenet`. Changing this forces a new resource to be created | `string` | `"azure"` | no |
+| aks\_network\_policy | AKS network policy to use. | `string` | `"calico"` | no |
+| aks\_pod\_cidr | CIDR used by pods when network plugin is set to `kubenet`. https://docs.microsoft.com/en-us/azure/aks/configure-kubenet | `string` | `"172.17.0.0/16"` | no |
 | aks\_sku\_tier | aks sku tier. Possible values are Free ou Paid | `string` | `"Free"` | no |
 | aks\_user\_assigned\_identity\_custom\_name | Custom name for the aks user assigned identity resource | `string` | `null` | no |
 | aks\_user\_assigned\_identity\_resource\_group\_name | Resource Group where to deploy the aks user assigned identity resource. Used when private cluster is enabled and when Azure private dns zone is not managed by aks | `string` | `null` | no |

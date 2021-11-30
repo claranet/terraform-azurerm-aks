@@ -122,13 +122,13 @@ variable "aks_sku_tier" {
 }
 
 variable "aks_network_plugin" {
-  description = "aks network plugin. Possible values are azure and kubenet. Changing this forces a new resource to be created"
+  description = "AKS network plugin to use. Possible values are `azure` and `kubenet`. Changing this forces a new resource to be created"
   type        = string
   default     = "azure"
 }
 
 variable "aks_network_policy" {
-  description = "Sets up network policy to be used with Azure AKS."
+  description = "AKS network policy to use."
   type        = string
   default     = "calico"
 }
@@ -210,7 +210,7 @@ variable "service_cidr" {
 }
 
 variable "aks_pod_cidr" {
-  description = "CIDR used by pods when network mode is kubenet"
+  description = "CIDR used by pods when network plugin is set to `kubenet`. https://docs.microsoft.com/en-us/azure/aks/configure-kubenet"
   type        = string
   default     = "172.17.0.0/16"
 }
