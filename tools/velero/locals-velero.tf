@@ -53,7 +53,7 @@ EOF
 
 
   velero_credentials = local.credentials
-  velero_storage     = merge(local.storage_defaults_settings, var.velero_storage_settings)
+  velero_storage     = merge(local.storage_defaults_settings, values(var.velero_storage_settings)[0])
   velero_values      = merge(local.velero_default_values, var.velero_values)
 
   velero_identity_name = "velero"
