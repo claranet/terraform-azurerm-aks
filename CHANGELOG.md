@@ -15,7 +15,7 @@ Added
   * AZ-605: Add Kubenet implementation
   * AZ-605: Allow aad pod identity MSI custom naming
 
-Changed
+Fixed
   * AZ-605: Fix Velero_storage_settings variable
 
 # v4.4.0 - 2021-12-28
