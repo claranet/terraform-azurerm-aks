@@ -26,7 +26,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     os_disk_size_gb     = local.default_node_pool.os_disk_size_gb
     type                = local.default_node_pool.type
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
-    pod_cidr            = var.aks_network_plugin == "azure" ? null : var.pod_cidr
     node_taints         = local.default_node_pool.node_taints
   }
 

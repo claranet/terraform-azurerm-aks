@@ -209,7 +209,7 @@ variable "service_cidr" {
   type        = string
 }
 
-variable "pod_cidr" {
+variable "aks_pod_cidr" {
   description = "CIDR used by pods when network mode is kubenet"
   type        = string
 }
