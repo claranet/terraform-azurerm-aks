@@ -212,9 +212,8 @@ variable "service_cidr" {
 variable "aks_pod_cidr" {
   description = "CIDR used by pods when network mode is kubenet"
   type        = string
+  default     = "172.17.0.0/16"
 }
-
-
 
 variable "outbound_type" {
   description = "The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`."

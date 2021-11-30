@@ -174,6 +174,8 @@ module "acr" {
   resource_group_name = module.rg.resource_group_name
   sku                 = "Standard"
 
+  logs_destinations_ids = [module.global_run.log_analytics_workspace_id]
+
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack

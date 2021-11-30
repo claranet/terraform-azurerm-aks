@@ -218,6 +218,8 @@ module "acr" {
   resource_group_name = module.rg.resource_group_name
   sku                 = "Standard"
 
+  logs_destinations_ids = [module.global_run.log_analytics_workspace_id]
+
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
@@ -264,6 +266,7 @@ module "acr" {
 |------|-------------|------|---------|:--------:|
 | aadpodidentity\_chart\_repository | AAD Pod Identity Helm chart repository URL | `string` | `"https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"` | no |
 | aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"2.0.0"` | no |
+| aadpodidentity\_custom\_name | Custom name for aad pod identity MSI | `string` | `"aad-pod-identity"` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart:<pre>map(object({<br>  nmi.nodeSelector.agentpool  = string<br>  mic.nodeSelector.agentpool  = string<br>  azureIdentity.enabled       = bool<br>  azureIdentity.type          = string<br>  azureIdentity.resourceID    = string<br>  azureIdentity.clientID      = string<br>  nmi.micNamespace            = string<br>}))</pre> | `map(string)` | `{}` | no |
 | addons | Kubernetes addons to enable /disable | <pre>object({<br>    dashboard              = bool,<br>    oms_agent              = bool,<br>    oms_agent_workspace_id = string,<br>    policy                 = bool<br>  })</pre> | <pre>{<br>  "dashboard": false,<br>  "oms_agent": true,<br>  "oms_agent_workspace_id": null,<br>  "policy": false<br>}</pre> | no |
@@ -271,6 +274,9 @@ module "acr" {
 | agic\_chart\_version | Version of the Helm chart | `string` | `"1.2.0"` | no |
 | agic\_enabled | Enable Application gateway ingress controller | `bool` | `true` | no |
 | agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
+| aks\_network\_plugin | aks network plugin. Possible values are azure and kubenet. Changing this forces a new resource to be created | `string` | `"azure"` | no |
+| aks\_network\_policy | Sets up network policy to be used with Azure AKS. | `string` | `"calico"` | no |
+| aks\_pod\_cidr | CIDR used by pods when network mode is kubenet | `string` | `"172.17.0.0/16"` | no |
 | aks\_sku\_tier | aks sku tier. Possible values are Free ou Paid | `string` | `"Free"` | no |
 | aks\_user\_assigned\_identity\_custom\_name | Custom name for the aks user assigned identity resource | `string` | `null` | no |
 | aks\_user\_assigned\_identity\_resource\_group\_name | Resource Group where to deploy the aks user assigned identity resource. Used when private cluster is enabled and when Azure private dns zone is not managed by aks | `string` | `null` | no |
