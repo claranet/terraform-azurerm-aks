@@ -383,6 +383,12 @@ variable "enable_velero" {
   default     = true
 }
 
+variable "velero_identity_custom_name" {
+  description = "Name of the Velero MSI"
+  type        = string
+  default     = "velero"
+}
+
 variable "velero_storage_settings" {
   description = <<EOVS
 Settings for Storage account and blob container for Velero

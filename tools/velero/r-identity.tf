@@ -6,7 +6,7 @@ data "azurerm_resource_group" "aks_nodes_rg" {
 resource "azurerm_user_assigned_identity" "velero_identity" {
   count               = var.enable_velero ? 1 : 0
   location            = var.location
-  name                = local.velero_identity_name
+  name                = var.velero_identity_name
   resource_group_name = var.aks_nodes_resource_group_name
 }
 

@@ -47,8 +47,8 @@ EOF
     "image.repository"                                          = "velero/velero"
     "image.tag"                                                 = "v1.4.0"
     "image.pullPolicy"                                          = "IfNotPresent"
-    "podAnnotations.aadpodidbinding"                            = local.velero_identity_name
-    "podLabels.aadpodidbinding"                                 = local.velero_identity_name
+    "podAnnotations.aadpodidbinding"                            = var.velero_identity_custom_name
+    "podLabels.aadpodidbinding"                                 = var.velero_identity_custom_name
   }
 
 
@@ -56,5 +56,4 @@ EOF
   velero_storage     = merge(local.storage_defaults_settings, values(var.velero_storage_settings)[0])
   velero_values      = merge(local.velero_default_values, var.velero_values)
 
-  velero_identity_name = "velero"
 }

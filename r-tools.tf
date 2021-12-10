@@ -123,9 +123,10 @@ module "velero" {
   aks_nodes_resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
   nodes_subnet_id               = var.nodes_subnet_id
 
-  velero_namespace        = var.velero_namespace
-  velero_chart_repository = var.velero_chart_repository
-  velero_chart_version    = var.velero_chart_version
-  velero_values           = var.velero_values
-  velero_storage_settings = var.velero_storage_settings
+  velero_namespace            = var.velero_namespace
+  velero_chart_repository     = var.velero_chart_repository
+  velero_chart_version        = var.velero_chart_version
+  velero_values               = var.velero_values
+  velero_storage_settings     = var.velero_storage_settings
+  velero_identity_custom_name = var.velero_identity_custom_name
 }

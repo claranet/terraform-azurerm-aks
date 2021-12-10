@@ -25,6 +25,11 @@ variable "velero_chart_repository" {
   default     = "https://vmware-tanzu.github.io/helm-charts"
 }
 
+variable "velero_identity_custom_name" {
+  description = "Name of the Velero MSI"
+  type        = string
+}
+
 variable "velero_storage_settings" {
   description = "Settings for Storage account and blob container for Velero"
   default     = null
