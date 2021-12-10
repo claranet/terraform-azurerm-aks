@@ -18,7 +18,7 @@ locals {
     node_taints           = null
     vnet_subnet_id        = var.nodes_subnet_id
     max_pods              = 30
-    os_disk_size_gb       = 32
+    os_disk_size_gb       = 128
     enable_node_public_ip = false
   }
 
@@ -26,14 +26,14 @@ locals {
   # Generally smaller images so can run more pods and require smaller HD
   default_linux_node_profile = {
     max_pods        = 30
-    os_disk_size_gb = 60
+    os_disk_size_gb = 128
   }
 
   # Defaults for Windows profile
   # Do not want to run same number of pods and some images can be quite large
   default_windows_node_profile = {
     max_pods        = 20
-    os_disk_size_gb = 200
+    os_disk_size_gb = 256
   }
 
   default_node_pool = merge(local.default_agent_profile, var.default_node_pool)
