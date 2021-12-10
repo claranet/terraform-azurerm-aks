@@ -129,4 +129,7 @@ module "velero" {
   velero_values               = var.velero_values
   velero_storage_settings     = var.velero_storage_settings
   velero_identity_custom_name = var.velero_identity_custom_name
+
+  velero_identity_tags = merge(local.default_tags, var.velero_identity_extra_tags)
+
 }

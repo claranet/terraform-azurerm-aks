@@ -9,3 +9,19 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "velero_identity_extra_tags" {
+  description = "Extra tags to add to velero MSI"
+  type        = map(string)
+  default     = {}
+}
+variable "aks_user_assigned_identity_tags" {
+  description = "Tags to add to AKS MSI"
+  type        = map(string)
+  default     = {}
+}
+variable "aadpodidentity_extra_tags" {
+  description = "Extra Tags to add to aad pod identity MSI"
+  type        = map(string)
+  default     = {}
+}

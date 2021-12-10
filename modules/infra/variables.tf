@@ -32,6 +32,12 @@ variable "aadpodidentity_custom_name" {
   default     = "aad-pod-identity"
 }
 
+variable "aadpodidentity_extra_tags" {
+  description = "Extra tags to add to aad pod identity MSI"
+  type        = map(string)
+  default     = {}
+}
+
 variable "aadpodidentity_values" {
   description = <<EOD
 Settings for AAD Pod identity helm Chart <br />

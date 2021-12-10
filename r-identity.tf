@@ -4,6 +4,8 @@ resource "azurerm_user_assigned_identity" "aks_user_assigned_identity" {
   name                = coalesce(var.aks_user_assigned_identity_custom_name, local.aks_user_assigned_identity_name)
   resource_group_name = var.aks_user_assigned_identity_resource_group_name == null ? var.resource_group_name : var.aks_user_assigned_identity_resource_group_name
   location            = var.location
+
+  tags = merge(local.default_tags, var.aks_user_assigned_identity_tags)
 }
 
 resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {

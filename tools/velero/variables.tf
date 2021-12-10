@@ -30,6 +30,12 @@ variable "velero_identity_custom_name" {
   type        = string
 }
 
+variable "velero_identity_tags" {
+  description = "Tags to add to velero MSI"
+  type        = map(string)
+  default     = {}
+}
+
 variable "velero_storage_settings" {
   description = "Settings for Storage account and blob container for Velero"
   default     = null

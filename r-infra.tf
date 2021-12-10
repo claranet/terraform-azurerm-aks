@@ -14,4 +14,7 @@ module "infra" {
   aadpodidentity_namespace        = var.aadpodidentity_namespace
   aadpodidentity_values           = var.aadpodidentity_values
   aadpodidentity_custom_name      = var.aadpodidentity_custom_name
+
+  aadpodidentity_extra_tags = var.aadpodidentity_extra_tags
+
 }
