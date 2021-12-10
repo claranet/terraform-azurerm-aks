@@ -330,7 +330,7 @@ module "acr" {
 | stack | Project stack name | `string` | n/a | yes |
 | velero\_chart\_repository | URL of the Helm chart repository | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
 | velero\_chart\_version | Velero helm chart version to use | `string` | `"2.12.13"` | no |
-| velero\_identity\_name | Name of the Velero MSI | `string` | `"velero"` | no |
+| velero\_identity\_custom\_name | Name of the Velero MSI | `string` | `"velero"` | no |
 | velero\_namespace | Kubernetes namespace in which to deploy Velero | `string` | `"system-velero"` | no |
 <<<<<<< HEAD
 | velero\_storage\_settings | Settings for Storage account and blob container for Velero | <pre>object({<br>    name                     = optional(string)<br>    resource_group_name      = optional(string)<br>    location                 = optional(string)<br>    account_tier             = optional(string)<br>    account_replication_type = optional(string)<br>    tags                     = optional(map(any))<br>    allowed_cidrs            = optional(list(string))<br>    allowed_subnet_ids       = optional(list(string))<br>    container_name           = optional(string)<br>  })</pre> | `null` | no |
