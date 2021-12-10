@@ -31,7 +31,7 @@ resource "azurerm_user_assigned_identity" "aad_pod_identity" {
   name                = var.aadpodidentity_custom_name
   resource_group_name = var.aks_resource_group_name
 
-  tags = merge(local.default_tags, var.aadpodidentity_extra_tags)
+  tags = var.aadpodidentity_extra_tags
 }
 
 resource "azurerm_role_assignment" "aad_pod_identity_msi" {
