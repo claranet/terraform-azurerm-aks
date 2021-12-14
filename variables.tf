@@ -115,6 +115,12 @@ variable "aks_user_assigned_identity_custom_name" {
   default     = null
 }
 
+variable "route_table_id" {
+  description = "Provide an existing route table when using userdefinedrouting with kubenet : https://docs.microsoft.com/fr-fr/azure/aks/configure-kubenet#bring-your-own-subnet-and-route-table-with-kubenet"
+  type        = string
+  default     = null
+}
+
 variable "aks_sku_tier" {
   description = "aks sku tier. Possible values are Free ou Paid"
   type        = string

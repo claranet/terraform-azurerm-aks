@@ -30,8 +30,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   identity {
-    type                      = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? "UserAssigned" : "SystemAssigned"
-    user_assigned_identity_id = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? azurerm_user_assigned_identity.aks_user_assigned_identity[0].id : null
+    type                      = "UserAssigned"
+    user_assigned_identity_id = azurerm_user_assigned_identity.aks_user_assigned_identity.id
   }
 
   addon_profile {
