@@ -27,7 +27,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type                = local.default_node_pool.type
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
     node_taints         = local.default_node_pool.node_taints
-    tags                = local.default_node_pool.tags
+    tags                = merge(default_tags, var.default_node_pool_tags)
   }
 
   identity {
@@ -102,7 +102,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   max_pods              = local.nodes_pools[count.index].max_pods
   enable_node_public_ip = local.nodes_pools[count.index].enable_node_public_ip
   availability_zones    = local.nodes_pools[count.index].availability_zones
-  tags                  = local.nodes_pools[count.index].tags
+  tags                  = merge(default_tags, var.node_pool_tags)
+
 }
 
 # Allow user assigned identity to manage AKS items in MC_xxx RG
