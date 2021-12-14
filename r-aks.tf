@@ -79,6 +79,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   depends_on = [
     azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
+    azurerm_role_assignment.aks_uai_route_table_contributor
   ]
 
   tags = merge(local.default_tags, var.extra_tags)

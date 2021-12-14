@@ -14,6 +14,8 @@ Added
   * AZ-615: Add an option to enable or disable default tags
   * AZ-605: Add Kubenet implementation
   * AZ-605: Allow aad pod identity MSI custom naming
+  * AZ-605: Allow to configure tags on MSIs
+  * AZ-605: Allow to configure permissions on route table when using kubenet and UDR egress 
 
 Fixed
   * AZ-605: Fix Velero_storage_settings variable
