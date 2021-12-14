@@ -27,6 +27,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type                = local.default_node_pool.type
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
     node_taints         = local.default_node_pool.node_taints
+    tags                = local.default_node_pool.tags
   }
 
   identity {
