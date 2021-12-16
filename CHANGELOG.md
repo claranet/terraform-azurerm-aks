@@ -1,7 +1,7 @@
 # Unreleased
 
 Changed
-  * AZ-632: Increase default disk size to 128G for Linux nodes and 256 for Windows nodes to comply with Microsoft recommandations
+  * AZ-632: Increased default disk size to 128GB for Linux nodes and 256GB for Windows nodes to comply with Microsoft recommendations
 
 # v4.3.2 - 2021-11-15
 
