@@ -2,6 +2,7 @@
 
 Changed
   * AZ-632: Increased default disk size to 128GB for Linux nodes and 256GB for Windows nodes to comply with Microsoft recommendations
+  * AZ-637: Add os disk type option to enable the Ephemeral disks
 
 # v4.3.2 - 2021-11-15
 

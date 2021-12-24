@@ -119,6 +119,7 @@ module "aks" {
       count           = 1
       vm_size         = "Standard_D1_v2"
       os_type         = "Linux"
+      os_disk_type    = "Ephemeral"
       os_disk_size_gb = 30
       vnet_subnet_id  = module.node_network_subnet.subnet_id
     },

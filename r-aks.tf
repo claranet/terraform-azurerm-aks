@@ -22,6 +22,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     min_count           = local.default_node_pool.min_count
     max_count           = local.default_node_pool.max_count
     max_pods            = local.default_node_pool.max_pods
+    os_disk_type        = local.default_node_pool.os_disk_type
     os_disk_size_gb     = local.default_node_pool.os_disk_size_gb
     type                = local.default_node_pool.type
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
@@ -88,6 +89,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   name                  = local.nodes_pools[count.index].name
   vm_size               = local.nodes_pools[count.index].vm_size
   os_type               = local.nodes_pools[count.index].os_type
+  os_disk_type          = local.nodes_pools[count.index].os_disk_type
   os_disk_size_gb       = local.nodes_pools[count.index].os_disk_size_gb
   vnet_subnet_id        = local.nodes_pools[count.index].vnet_subnet_id
   enable_auto_scaling   = local.nodes_pools[count.index].enable_auto_scaling
