@@ -18,6 +18,7 @@ locals {
     node_taints           = null
     vnet_subnet_id        = var.nodes_subnet_id
     max_pods              = 30
+    os_disk_type          = "Managed"
     os_disk_size_gb       = 128
     enable_node_public_ip = false
   }

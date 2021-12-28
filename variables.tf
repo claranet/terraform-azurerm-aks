@@ -157,6 +157,7 @@ map(object({
     node_taints           = list(string)
     vnet_subnet_id        = string
     max_pods              = number
+    os_disk_type          = string
     os_disk_size_gb       = number
     enable_node_public_ip = bool
 }))

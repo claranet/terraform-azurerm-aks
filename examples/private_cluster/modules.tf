@@ -133,6 +133,7 @@ module "aks" {
       name                = "nodepool1"
       vm_size             = "Standard_B4ms"
       os_type             = "Linux"
+      os_disk_type        = "Ephemeral"
       os_disk_size_gb     = 100
       vnet_subnet_id      = module.node_network_subnet.subnet_id
       max_pods            = 110
