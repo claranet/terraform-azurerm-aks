@@ -39,12 +39,6 @@ locals {
 
   default_node_pool = merge(local.default_agent_profile, var.default_node_pool)
 
-  default_tags = {
-    env   = var.environment
-    stack = var.stack
-  }
-
-
   nodes_pools_with_defaults = [for ap in var.nodes_pools : merge(local.default_agent_profile, ap)]
   nodes_pools               = [for ap in local.nodes_pools_with_defaults : ap.os_type == "Linux" ? merge(local.default_linux_node_profile, ap) : merge(local.default_windows_node_profile, ap)]
 

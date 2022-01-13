@@ -3,6 +3,9 @@
 Changed
   * Fix `velero_storage_settings` type, and make attributes optional 
 
+Added
+  * AZ-615: Add an option to enable or disable default tags
+
 # v4.4.0 - 2021-12-28
 
 Changed
@@ -23,7 +26,7 @@ Fixed
 
 Breaking
   * AZ-485: Add AKS Private Cluster Feature
-  
+
 Added
   * AZ-485: Add Msi Identity for Applicationg Gateway with Agic
   * AZ-485: Add Private DNS Zone support
@@ -63,7 +66,7 @@ Updated
   * AZ-381: Harmonize variables and add outputs
   * AZ-380: AKS module: pin velero azure image
   * AZ-382: Update of Kured chart version
- 
+
 Fixed
   * AZ-379: Fix kured chart repository
   * AZ-357: Fix issue with AKS user role assignment
@@ -78,10 +81,10 @@ Fixed
   * AZ-251: Remove hack for velero pod labels since it's now supported in chart v2.12.13
   * AZ-252: Update AGIC helm chart to 1.2.0 final
   * AZ-254: Application gateway creation fail with default parameters
-  
+
 Added
   * AZ-253: Update to last stable version of AKS by default
-  
+
 # v3.1.0 - 2020-07-31
 
 Breaking
@@ -89,7 +92,7 @@ Breaking
 
 Fixed
   * AZ-237: `appgw_subnet_id` variable must not be mandatory
-  
+
 # v3.0.0 - 2020-07-03
 
 Added
