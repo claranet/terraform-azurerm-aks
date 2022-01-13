@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # v4.5.0 - 2022-03-11
 
 Breaking
@@ -5,6 +6,9 @@ Breaking
 
 Changed
   * [GITHUB-3](https://github.com/claranet/terraform-azurerm-aks/pull/3): Fix `velero_storage_settings` type, and make attributes optional
+=======
+# Unreleased
+>>>>>>> AZ-615: Add an option to enable or disable default tags
 
 Added
   * AZ-615: Add an option to enable or disable default tags
