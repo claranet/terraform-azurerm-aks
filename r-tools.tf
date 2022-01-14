@@ -1,7 +1,6 @@
 module "appgw" {
   source = "./tools/agic"
 
-
   providers = {
     kubernetes = kubernetes.aks-module
     helm       = helm.aks-module
@@ -71,6 +70,9 @@ module "appgw" {
 
   private_ingress  = var.private_ingress
   appgw_private_ip = var.appgw_private_ip
+
+  # The option has to be integrated in this module beforehand (waiting for the new version of the module)
+  # default_tags_enabled = var.default_tags_enabled
 }
 
 module "certmanager" {
