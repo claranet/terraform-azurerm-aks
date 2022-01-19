@@ -522,6 +522,17 @@ variable "aadpodidentity_chart_version" {
   default     = "2.0.0"
 }
 
+variable "aadpodidentity_kubenet_policy_enabled" {
+  description = <<EOD
+  Boolean to wether deploy or not a built-in Azure Policy at the cluster level 
+  to mitigate potential security issue with aadpodidentity used with kubenet : 
+  https://docs.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities "
+EOD
+
+  type    = bool
+  default = false
+}
+
 variable "private_ingress" {
   description = "Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP."
   type        = bool
