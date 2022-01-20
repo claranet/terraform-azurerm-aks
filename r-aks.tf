@@ -11,7 +11,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   enable_pod_security_policy      = var.enable_pod_security_policy
 
   private_cluster_enabled = var.private_cluster_enabled
-  private_dns_zone_id     = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? var.private_dns_zone_id : var.private_dns_zone_type
+  private_dns_zone_id     = var.private_cluster_enabled ? local.private_dns_zone : null
 
   default_node_pool {
     name                = local.default_node_pool.name

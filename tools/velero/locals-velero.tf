@@ -53,7 +53,6 @@ EOF
 
 
   velero_credentials = local.credentials
-  velero_storage     = merge(local.storage_defaults_settings, values(var.velero_storage_settings)[0])
-  velero_values      = merge(local.velero_default_values, var.velero_values)
-
+  velero_storage     = var.enable_velero ? merge(local.storage_defaults_settings, values(var.velero_storage_settings)[0]) : null
+  velero_values      = var.enable_velero ? merge(local.velero_default_values, var.velero_values) : null
 }

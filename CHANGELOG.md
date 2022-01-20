@@ -19,6 +19,8 @@ Added
 
 Fixed
   * AZ-605: Fix Velero_storage_settings variable
+    * AZ-605: Fix Velero azurerm_storage_account_network_rules : use storage_account_id instead of storage_account_id to avoid deprecation in azurerm provider v3
+  * AZ-605: Fix Aks Private DNS zone configuration
 
 # v4.4.0 - 2021-12-28
 

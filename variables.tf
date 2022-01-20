@@ -116,7 +116,7 @@ variable "aks_user_assigned_identity_custom_name" {
 }
 
 variable "aks_route_table_id" {
-  description = "Provide an existing route table when using userdefinedrouting with kubenet : https://docs.microsoft.com/fr-fr/azure/aks/configure-kubenet#bring-your-own-subnet-and-route-table-with-kubenet"
+  description = "Provide an existing route table when `outbound_type variable` is set to `userdefinedrouting` with kubenet : https://docs.microsoft.com/fr-fr/azure/aks/configure-kubenet#bring-your-own-subnet-and-route-table-with-kubenet"
   type        = string
   default     = null
 }
