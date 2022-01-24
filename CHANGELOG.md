@@ -13,16 +13,18 @@ Changed
 Added
   * AZ-615: Add an option to enable or disable default tags
   * AZ-605: Add Kubenet implementation
-  * AZ-605: Allow aad pod identity MSI custom naming
+  * AZ-605: Allow aadpodidentity and Velero MSI custom naming
   * AZ-605: Allow to configure tags on MSIs and node pools
   * AZ-605: Allow to configure permissions on route table when using kubenet and UDR egress 
-  * AZ-605: Add  `Kubernetes cluster containers should only use allowed capabilities` when using Kubenet to avoid security issue 
+  * AZ-605: Add  `Kubernetes cluster containers should only use allowed capabilities` policy when using Kubenet to avoid security issue 
 
 Fixed
   * AZ-605: Fix Velero_storage_settings variable
   * AZ-605: Fix aks_pod_cidr variable
-  * AZ-605: Fix Velero azurerm_storage_account_network_rules : use storage_account_id instead of storage_account_id to avoid deprecation in azurerm provider v3
   * AZ-605: Fix Aks Private DNS zone configuration
+
+Changed
+  * AZ-605: Change azurerm provider minimal version
 
 # v4.4.0 - 2021-12-28
 
