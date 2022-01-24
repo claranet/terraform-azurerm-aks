@@ -7,7 +7,9 @@ module "infra" {
   }
 
   aks_resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
-  location                = var.location
+  aks_network_plugin      = var.aks_network_plugin
+
+  location = var.location
 
   aadpodidentity_chart_version    = var.aadpodidentity_chart_version
   aadpodidentity_chart_repository = var.aadpodidentity_chart_repository

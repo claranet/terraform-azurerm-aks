@@ -102,8 +102,10 @@ No modules.
 | aadpodidentity\_chart\_repository | URL of the Helm chart repository | `string` | `"https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"` | no |
 | aadpodidentity\_chart\_version | Azure Active Directory Pod Identity Chart version | `string` | `"2.0.0"` | no |
 | aadpodidentity\_custom\_name | Custom name for aad pod identity MSI | `string` | `"aad-pod-identity"` | no |
+| aadpodidentity\_extra\_tags | Extra tags to add to aad pod identity MSI | `map(string)` | `{}` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart <br /><br><pre>map(object({ <br /><br>  nmi.nodeSelector.agentpool  = string <br /><br>  mic.nodeSelector.agentpool  = string <br /><br>  azureIdentity.enabled       = bool <br /><br>  azureIdentity.type          = string <br /><br>  azureIdentity.resourceID    = string <br /><br>  azureIdentity.clientID      = string <br /><br>  nmi.micNamespace            = string <br /><br>}))<br /><br></pre> | `map(string)` | `{}` | no |
+| aks\_network\_plugin | AKS network plugin to use. Possible values are `azure` and `kubenet`. <br>  Changing this forces a new resource to be created. | `string` | `"azure"` | no |
 | aks\_resource\_group\_name | Name of the AKS Managed resource group. Eg MC\_xxxx | `string` | n/a | yes |
 | location | AKS Cluster location | `string` | n/a | yes |
 

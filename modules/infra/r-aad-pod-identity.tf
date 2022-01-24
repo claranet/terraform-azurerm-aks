@@ -24,6 +24,11 @@ resource "helm_release" "aad_pod_identity" {
       value = setting.value
     }
   }
+
+  set {
+    name  = "nmi.allowNetworkPluginKubenet"
+    value = var.aks_network_plugin == "kubenet" ? "true" : "false"
+  }
 }
 
 resource "azurerm_user_assigned_identity" "aad_pod_identity" {
