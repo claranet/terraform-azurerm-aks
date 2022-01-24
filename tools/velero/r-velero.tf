@@ -39,8 +39,8 @@ resource "azurerm_storage_account" "velero" {
 }
 
 resource "azurerm_storage_account_network_rules" "velero" {
-  count                      = var.enable_velero ? 1 : 0
-  storage_account_id         = azurerm_storage_account.velero[0].id
+  count = var.enable_velero ? 1 : 0
+
   storage_account_name       = azurerm_storage_account.velero[0].name
   resource_group_name        = azurerm_storage_account.velero[0].resource_group_name
   default_action             = "Deny"
