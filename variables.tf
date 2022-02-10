@@ -35,12 +35,6 @@ variable "name_prefix" {
   default     = ""
 }
 
-variable "extra_tags" {
-  description = "Extra tags to add"
-  type        = map(string)
-  default     = {}
-}
-
 variable "resource_group_name" {
   description = "Name of the AKS resource group"
   type        = string
@@ -227,36 +221,6 @@ variable "container_registries_id" {
   default     = []
 }
 
-variable "diagnostic_settings_custom_name" {
-  description = "Custom name for Azure Diagnostics for AKS."
-  type        = string
-  default     = "default"
-}
-
-variable "diagnostic_settings_logs_destination_ids" {
-  description = "List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set."
-  type        = list(string)
-  default     = []
-}
-
-variable "diagnostic_settings_retention_days" {
-  description = "The number of days to keep diagnostic logs."
-  type        = number
-  default     = 30
-}
-
-variable "diagnostic_settings_log_categories" {
-  description = "List of log categories"
-  type        = list(string)
-  default     = null
-}
-
-variable "diagnostic_settings_metric_categories" {
-  description = "List of metric categories"
-  type        = list(string)
-  default     = null
-}
-
 ##########################
 # AGIC variables
 ##########################
@@ -373,18 +337,18 @@ variable "kured_settings" {
 Settings for kured helm chart:
 
 ```
-map(object({ 
-  image.repository         = string 
-  image.tag                = string 
-  image.pullPolicy         = string 
-  extraArgs.reboot-days    = string 
-  extraArgs.start-time     = string 
-  extraArgs.end-time       = string 
-  extraArgs.time-zone      = string 
-  rbac.create              = string 
-  podSecurityPolicy.create = string 
-  serviceAccount.create    = string 
-  autolock.enabled         = string 
+map(object({
+  image.repository         = string
+  image.tag                = string
+  image.pullPolicy         = string
+  extraArgs.reboot-days    = string
+  extraArgs.start-time     = string
+  extraArgs.end-time       = string
+  extraArgs.time-zone      = string
+  rbac.create              = string
+  podSecurityPolicy.create = string
+  serviceAccount.create    = string
+  autolock.enabled         = string
 }))
 ```
 EODK
@@ -423,32 +387,32 @@ Settings for Velero helm chart:
 
 ```
 map(object({
-  configuration.backupStorageLocation.bucket                = string 
-  configuration.backupStorageLocation.config.resourceGroup  = string 
-  configuration.backupStorageLocation.config.storageAccount = string 
-  configuration.backupStorageLocation.name                  = string 
-  configuration.provider                                    = string 
-  configuration.volumeSnapshotLocation.config.resourceGroup = string 
-  configuration.volumeSnapshotLocation.name                 = string 
-  credential.exstingSecret                                  = string 
-  credentials.useSecret                                     = string 
-  deployRestic                                              = string 
-  env.AZURE_CREDENTIALS_FILE                                = string 
-  metrics.enabled                                           = string 
-  rbac.create                                               = string 
-  schedules.daily.schedule                                  = string 
-  schedules.daily.template.includedNamespaces               = string 
-  schedules.daily.template.snapshotVolumes                  = string 
-  schedules.daily.template.ttl                              = string 
-  serviceAccount.server.create                              = string 
-  snapshotsEnabled                                          = string 
-  initContainers[0].name                                    = string 
-  initContainers[0].image                                   = string 
-  initContainers[0].volumeMounts[0].mountPath               = string 
-  initContainers[0].volumeMounts[0].name                    = string 
-  image.repository                                          = string 
-  image.tag                                                 = string 
-  image.pullPolicy                                          = string 
+  configuration.backupStorageLocation.bucket                = string
+  configuration.backupStorageLocation.config.resourceGroup  = string
+  configuration.backupStorageLocation.config.storageAccount = string
+  configuration.backupStorageLocation.name                  = string
+  configuration.provider                                    = string
+  configuration.volumeSnapshotLocation.config.resourceGroup = string
+  configuration.volumeSnapshotLocation.name                 = string
+  credential.exstingSecret                                  = string
+  credentials.useSecret                                     = string
+  deployRestic                                              = string
+  env.AZURE_CREDENTIALS_FILE                                = string
+  metrics.enabled                                           = string
+  rbac.create                                               = string
+  schedules.daily.schedule                                  = string
+  schedules.daily.template.includedNamespaces               = string
+  schedules.daily.template.snapshotVolumes                  = string
+  schedules.daily.template.ttl                              = string
+  serviceAccount.server.create                              = string
+  snapshotsEnabled                                          = string
+  initContainers[0].name                                    = string
+  initContainers[0].image                                   = string
+  initContainers[0].volumeMounts[0].mountPath               = string
+  initContainers[0].volumeMounts[0].name                    = string
+  image.repository                                          = string
+  image.tag                                                 = string
+  image.pullPolicy                                          = string
 
 }))
 ```
@@ -478,19 +442,20 @@ variable "velero_chart_repository" {
 ##########################
 # AAD Pod Identity variables
 ##########################
+
 variable "aadpodidentity_values" {
   description = <<EOD
 Settings for AAD Pod identity helm Chart:
 
 ```
-map(object({ 
-  nmi.nodeSelector.agentpool  = string 
-  mic.nodeSelector.agentpool  = string 
-  azureIdentity.enabled       = bool 
-  azureIdentity.type          = string 
-  azureIdentity.resourceID    = string 
-  azureIdentity.clientID      = string 
-  nmi.micNamespace            = string 
+map(object({
+  nmi.nodeSelector.agentpool  = string
+  mic.nodeSelector.agentpool  = string
+  azureIdentity.enabled       = bool
+  azureIdentity.type          = string
+  azureIdentity.resourceID    = string
+  azureIdentity.clientID      = string
+  nmi.micNamespace            = string
 }))
 ```
 EOD
@@ -527,5 +492,3 @@ variable "appgw_private_ip" {
   type        = string
   default     = null
 }
-
-

@@ -1,7 +1,6 @@
 module "appgw" {
   source = "./tools/agic"
 
-
   providers = {
     kubernetes = kubernetes.aks-module
     helm       = helm.aks-module

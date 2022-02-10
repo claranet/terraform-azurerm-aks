@@ -23,5 +23,4 @@ locals {
   }
 
   appgw_ingress_settings = merge(local.appgw_ingress_default_values, var.appgw_ingress_values)
-
 }
