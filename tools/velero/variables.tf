@@ -42,8 +42,18 @@ map(object({
 }))
 
 EOVS
-  type        = map(any)
-  default     = {}
+  type = object({
+    name                     = string 
+    resource_group_name      = string 
+    location                 = string 
+    account_tier             = string 
+    account_replication_type = string 
+    tags                     = map(any) 
+    allowed_cidrs            = list(string) 
+    allowed_subnet_ids       = list(string) 
+    container_name           = string 
+  })
+  default     = null
 }
 
 variable "velero_values" {
