@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * Fix `velero_storage_settings` type, and make attributes optional 
+
 # v4.4.0 - 2021-12-28
 
 Changed
