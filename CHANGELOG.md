@@ -1,7 +1,10 @@
 # Unreleased
 
+Breaking
+  * GITHUB-3: `[module_variable_optional_attrs]` requires terraform `v0.14+`
+
 Changed
-  * Fix `velero_storage_settings` type, and make attributes optional 
+  * [GITHUB-3](https://github.com/claranet/terraform-azurerm-aks/pull/3): Fix `velero_storage_settings` type, and make attributes optional
 
 Added
   * AZ-615: Add an option to enable or disable default tags
