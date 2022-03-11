@@ -1,4 +1,4 @@
-# Unreleased
+# v4.5.0 - 2022-03-11
 
 Breaking
   * GITHUB-3: `[module_variable_optional_attrs]` requires terraform `v0.14+`
