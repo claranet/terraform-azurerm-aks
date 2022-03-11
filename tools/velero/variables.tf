@@ -26,24 +26,19 @@ variable "velero_chart_repository" {
 }
 
 variable "velero_storage_settings" {
-  description = <<EOVS
-Settings for Storage account and blob container for Velero
-
-map(object({
-  name                     = string 
-  resource_group_name      = string 
-  location                 = string 
-  account_tier             = string 
-  account_replication_type = string 
-  tags                     = map(any) 
-  allowed_cidrs            = list(string) 
-  allowed_subnet_ids       = list(string) 
-  container_name           = string 
-}))
-
-EOVS
-  type        = map(any)
-  default     = {}
+  description = "Settings for Storage account and blob container for Velero"
+  default     = null
+  type = object({
+    name                     = optional(string)
+    resource_group_name      = optional(string)
+    location                 = optional(string)
+    account_tier             = optional(string)
+    account_replication_type = optional(string)
+    tags                     = optional(map(any))
+    allowed_cidrs            = optional(list(string))
+    allowed_subnet_ids       = optional(list(string))
+    container_name           = optional(string)
+  })
 }
 
 variable "velero_values" {
