@@ -4,7 +4,6 @@ data "azurerm_policy_definition" "aks_policy_kubenet_aadpodidentity_definition" 
   for_each = toset(var.aadpodidentity_kubenet_policy_enabled ? ["enabled"] : [])
 
   name = "c26596ff-4d70-4e6a-9a30-c2506bd2f80c"
-  # display_name = "Kubernetes cluster containers should only use allowed capabilities"
 }
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/8527

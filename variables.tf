@@ -471,19 +471,15 @@ variable "aadpodidentity_values" {
   description = <<EOD
 Settings for AAD Pod identity helm Chart:
 
-If `Aadpodidentity` is used within an Aks Cluster with Kubenet network Plugin, 
-`nmi.allowNetworkPluginKubenet` parameter is set to `true`.
-https://github.com/Azure/aad-pod-identity/issues/949
-
 ```
 map(object({
-  nmi.nodeSelector.agentpool  = string
-  mic.nodeSelector.agentpool  = string
-  azureIdentity.enabled       = bool
-  azureIdentity.type          = string
-  azureIdentity.resourceID    = string
-  azureIdentity.clientID      = string
-  nmi.micNamespace            = string
+  nmi.nodeSelector.agentpool    = string
+  mic.nodeSelector.agentpool    = string
+  azureIdentity.enabled         = bool
+  azureIdentity.type            = string
+  azureIdentity.resourceID      = string
+  azureIdentity.clientID        = string
+  nmi.micNamespace              = string
 }))
 ```
 EOD
