@@ -28,6 +28,7 @@ variable "velero_chart_repository" {
 variable "velero_identity_custom_name" {
   description = "Name of the Velero MSI"
   type        = string
+  default     = ""
 }
 
 variable "velero_identity_tags" {
