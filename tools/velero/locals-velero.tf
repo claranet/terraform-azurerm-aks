@@ -5,6 +5,8 @@ AZURE_RESOURCE_GROUP = ${var.aks_nodes_resource_group_name}
 AZURE_CLOUD_NAME = AzurePublicCloud
 EOF
 
+  velero_identity_name = coalesce(var.velero_identity_custom_name, "velero")
+
   name_prefix = var.name_prefix != "" ? replace(var.name_prefix, "/[a-z0-9]/", "$0-") : ""
 
   storage_defaults_settings = {
@@ -47,8 +49,8 @@ EOF
     "image.repository"                                          = "velero/velero"
     "image.tag"                                                 = "v1.4.0"
     "image.pullPolicy"                                          = "IfNotPresent"
-    "podAnnotations.aadpodidbinding"                            = var.velero_identity_custom_name
-    "podLabels.aadpodidbinding"                                 = var.velero_identity_custom_name
+    "podAnnotations.aadpodidbinding"                            = local.velero_identity_name
+    "podLabels.aadpodidbinding"                                 = local.velero_identity_name
   }
 
 
