@@ -23,11 +23,6 @@ variable "stack" {
   type        = string
 }
 
-variable "custom_aks_name" {
-  description = "Custom AKS name"
-  type        = string
-  default     = ""
-}
 
 variable "name_prefix" {
   description = "Prefix used in naming"
@@ -109,11 +104,6 @@ variable "aks_user_assigned_identity_resource_group_name" {
   default     = null
 }
 
-variable "aks_user_assigned_identity_custom_name" {
-  description = "Custom name for the aks user assigned identity resource"
-  type        = string
-  default     = null
-}
 
 variable "aks_route_table_id" {
   description = "Provide an existing route table when `outbound_type variable` is set to `userdefinedrouting` with kubenet : https://docs.microsoft.com/fr-fr/azure/aks/configure-kubenet#bring-your-own-subnet-and-route-table-with-kubenet"
@@ -144,11 +134,6 @@ variable "aks_network_policy" {
   default     = "calico"
 }
 
-variable "appgw_user_assigned_identity_custom_name" {
-  description = "Custom name for the application gateway user assigned identity resource"
-  type        = string
-  default     = null
-}
 
 variable "appgw_user_assigned_identity_resource_group_name" {
   description = "Resource Group where to deploy the application gateway user assigned identity resource"
@@ -453,7 +438,6 @@ map(object({
   image.repository                                          = string
   image.tag                                                 = string
   image.pullPolicy                                          = string
-
 }))
 ```
 EOVV
@@ -513,11 +497,7 @@ variable "aadpodidentity_namespace" {
   default     = "system-aadpodid"
 }
 
-variable "aadpodidentity_custom_name" {
-  description = "Custom name for aad pod identity MSI"
-  type        = string
-  default     = "aad-pod-identity"
-}
+
 
 variable "aadpodidentity_chart_repository" {
   description = "AAD Pod Identity Helm chart repository URL"
