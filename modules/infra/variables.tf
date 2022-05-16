@@ -10,6 +10,11 @@ variable "aks_network_plugin" {
 EOD
   type        = string
   default     = "azure"
+
+  validation {
+    condition     = contains(["azure", "kubenet"], var.aks_network_plugin)
+    error_message = "The network plugin value must be \"azure\" or \"kubenet\""
+  }
 }
 
 variable "location" {
