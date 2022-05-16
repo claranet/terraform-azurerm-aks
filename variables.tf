@@ -131,6 +131,11 @@ variable "aks_network_plugin" {
   description = "AKS network plugin to use. Possible values are `azure` and `kubenet`. Changing this forces a new resource to be created"
   type        = string
   default     = "azure"
+
+  validation {
+    condition     = contains(["azure", "kubenet"], var.aks_network_plugin)
+    error_message = "The network plugin value must be \"azure\" or \"kubenet\""
+  }
 }
 
 variable "aks_network_policy" {
