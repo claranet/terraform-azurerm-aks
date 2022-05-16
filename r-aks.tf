@@ -103,7 +103,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   enable_node_public_ip = local.nodes_pools[count.index].enable_node_public_ip
   availability_zones    = local.nodes_pools[count.index].availability_zones
   tags                  = merge(local.default_tags, var.node_pool_tags)
-
 }
 
 # Allow user assigned identity to manage AKS items in MC_xxx RG
