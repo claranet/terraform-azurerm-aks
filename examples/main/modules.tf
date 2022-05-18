@@ -4,12 +4,6 @@ locals {
 
 }
 
-data "azurerm_kubernetes_cluster" "aks" {
-  depends_on          = [module.aks] # refresh cluster state before reading
-  name                = module.aks.aks_name
-  resource_group_name = module.rg.resource_group_name
-}
-
 module "azure_region" {
   source  = "claranet/regions/azurerm"
   version = "x.x.x"
@@ -100,6 +94,11 @@ module "aks" {
   source  = "claranet/aks/azurerm"
   version = "x.x.x"
 
+  providers = {
+    kubernetes = kubernetes.aks-module
+    helm       = helm.aks-module
+  }
+
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
@@ -142,12 +141,8 @@ module "aks" {
     ssh_key  = "ssh_priv_key"
   }
 
-  addons = {
-    dashboard              = false
-    oms_agent              = true
-    oms_agent_workspace_id = module.global_run.log_analytics_workspace_id
-    policy                 = false
-  }
+  log_analytics_workspace_id = module.global_run.log_analytics_workspace_id
+  azure_policy_enabled       = false
 
   diagnostic_settings_logs_destination_ids = [module.global_run.log_analytics_workspace_id]
 

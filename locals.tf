@@ -10,7 +10,7 @@ locals {
     count                 = 1
     vm_size               = "Standard_D2_v3"
     os_type               = "Linux"
-    availability_zones    = [1, 2, 3]
+    zones                 = [1, 2, 3]
     enable_auto_scaling   = false
     min_count             = null
     max_count             = null

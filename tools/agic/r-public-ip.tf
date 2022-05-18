@@ -7,6 +7,7 @@ resource "azurerm_public_ip" "ip" {
   sku                 = var.ip_sku
 
   domain_name_label = lower(replace(local.ip_label, "/[\\W_]/", "-"))
+  zones             = var.zones
 
   tags = var.ip_tags
 }

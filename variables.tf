@@ -124,7 +124,7 @@ variable "aks_network_plugin" {
 
   validation {
     condition     = contains(["azure", "kubenet"], var.aks_network_plugin)
-    error_message = "The network plugin value must be \"azure\" or \"kubenet\""
+    error_message = "The network plugin value must be \"azure\" or \"kubenet\"."
   }
 }
 
@@ -151,7 +151,7 @@ map(object({
     count                 = number
     vm_size               = string
     os_type               = string
-    availability_zones    = list(number)
+    zones                 = list(number)
     enable_auto_scaling   = bool
     min_count             = number
     max_count             = number
@@ -175,20 +175,15 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "addons" {
-  description = "Kubernetes addons to enable /disable"
-  type = object({
-    dashboard              = bool,
-    oms_agent              = bool,
-    oms_agent_workspace_id = string,
-    policy                 = bool
-  })
-  default = {
-    dashboard              = false,
-    oms_agent              = true,
-    oms_agent_workspace_id = null,
-    policy                 = false
-  }
+variable "log_analytics_workspace_id" {
+  description = "The ID of the Log Analytics Workspace used to send logs"
+  type        = string
+}
+
+variable "azure_policy_enabled" {
+  description = "Should the Azure Policy Add-On be enabled?"
+  type        = bool
+  default     = false
 }
 
 variable "linux_profile" {
@@ -260,7 +255,7 @@ variable "agic_chart_repository" {
 variable "agic_chart_version" {
   description = "Version of the Helm chart"
   type        = string
-  default     = "1.2.0"
+  default     = "1.5.2"
 }
 
 variable "custom_appgw_name" {
@@ -322,7 +317,7 @@ variable "cert_manager_chart_repository" {
 variable "cert_manager_chart_version" {
   description = "Cert Manager helm chart version to use"
   type        = string
-  default     = "v0.13.0"
+  default     = "v1.8.0"
 }
 
 ##########################
@@ -386,24 +381,19 @@ variable "velero_identity_custom_name" {
 }
 
 variable "velero_storage_settings" {
-  description = <<EOVS
-Settings for Storage account and blob container for Velero
-```
-map(object({
-  name                     = string
-  resource_group_name      = string
-  location                 = string
-  account_tier             = string
-  account_replication_type = string
-  tags                     = map(any)
-  allowed_cidrs            = list(string)
-  allowed_subnet_ids       = list(string)
-  container_name           = string
-}))
-```
-EOVS
-  type        = map(any)
-  default     = {}
+  description = "Settings for Storage account and blob container for Velero"
+  default     = null
+  type = object({
+    name                     = optional(string)
+    resource_group_name      = optional(string)
+    location                 = optional(string)
+    account_tier             = optional(string)
+    account_replication_type = optional(string)
+    tags                     = optional(map(any))
+    allowed_cidrs            = optional(list(string))
+    allowed_subnet_ids       = optional(list(string))
+    container_name           = optional(string)
+  })
 }
 
 variable "velero_values" {
@@ -454,7 +444,7 @@ variable "velero_namespace" {
 variable "velero_chart_version" {
   description = "Velero helm chart version to use"
   type        = string
-  default     = "2.12.13"
+  default     = "2.29.5"
 }
 
 variable "velero_chart_repository" {
@@ -504,7 +494,7 @@ variable "aadpodidentity_chart_repository" {
 variable "aadpodidentity_chart_version" {
   description = "AAD Pod Identity helm chart version to use"
   type        = string
-  default     = "2.0.0"
+  default     = "4.1.9"
 }
 
 variable "aadpodidentity_kubenet_policy_enabled" {

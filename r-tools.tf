@@ -1,10 +1,10 @@
 module "appgw" {
   source = "./tools/agic"
 
-  providers = {
-    kubernetes = kubernetes.aks-module
-    helm       = helm.aks-module
-  }
+  #  providers = {
+  #    kubernetes = kubernetes.aks-module
+  #    helm       = helm.aks-module
+  #  }
 
   agic_enabled          = var.agic_enabled
   agic_chart_repository = var.agic_chart_repository
@@ -75,10 +75,10 @@ module "appgw" {
 module "certmanager" {
   source = "./tools/cert-manager"
 
-  providers = {
-    kubernetes = kubernetes.aks-module
-    helm       = helm.aks-module
-  }
+  #  providers = {
+  #    kubernetes = kubernetes.aks-module
+  #    helm       = helm.aks-module
+  #  }
 
   enable_cert_manager           = var.enable_cert_manager
   cert_manager_namespace        = var.cert_manager_namespace
@@ -90,9 +90,9 @@ module "certmanager" {
 module "kured" {
   source = "./tools/kured"
 
-  providers = {
-    helm = helm.aks-module
-  }
+  #  providers = {
+  #    helm = helm.aks-module
+  #  }
 
   enable_kured           = var.enable_kured
   kured_settings         = var.kured_settings
@@ -105,10 +105,10 @@ module "velero" {
 
   source = "./tools/velero"
 
-  providers = {
-    kubernetes = kubernetes.aks-module
-    helm       = helm.aks-module
-  }
+  #  providers = {
+  #    kubernetes = kubernetes.aks-module
+  #    helm       = helm.aks-module
+  #  }
 
   enable_velero = var.enable_velero
 

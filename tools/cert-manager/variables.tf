@@ -25,5 +25,5 @@ variable "cert_manager_chart_repository" {
 variable "cert_manager_chart_version" {
   description = "Cert Manager helm chart version to use"
   type        = string
-  default     = "v0.13.0"
+  default     = "v1.8.0"
 }

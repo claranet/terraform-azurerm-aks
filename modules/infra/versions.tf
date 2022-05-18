@@ -1,17 +1,19 @@
 terraform {
-  required_version = ">= 0.13.0"
+  required_version = ">= 1.1"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = ">= 2.51"
     }
+    # tflint-ignore: terraform_unused_required_providers
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.3.0"
+      version = ">= 2.5.1"
     }
+    # tflint-ignore: terraform_unused_required_providers
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 1.11.1"
+      version = ">= 2.11.0"
     }
   }
 }

@@ -13,7 +13,7 @@ EOD
 
   validation {
     condition     = contains(["azure", "kubenet"], var.aks_network_plugin)
-    error_message = "The network plugin value must be \"azure\" or \"kubenet\""
+    error_message = "The network plugin value must be \"azure\" or \"kubenet\"."
   }
 }
 
@@ -31,7 +31,7 @@ variable "aadpodidentity_chart_repository" {
 variable "aadpodidentity_chart_version" {
   description = "Azure Active Directory Pod Identity Chart version"
   type        = string
-  default     = "2.0.0"
+  default     = "4.1.9"
 }
 
 variable "aadpodidentity_namespace" {

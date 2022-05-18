@@ -75,8 +75,8 @@ module "agic" {
 | Name | Version |
 |------|---------|
 | azurerm | >= 2.51 |
-| helm | >= 2.3.0 |
-| kubernetes | >= 1.11.1 |
+| helm | >= 2.5.1 |
+| kubernetes | >= 2.11.0 |
 
 ## Modules
 
@@ -102,7 +102,7 @@ module "agic" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | agic\_chart\_repository | Helm chart repository URL | `string` | `"https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"` | no |
-| agic\_chart\_version | Version of the Helm chart | `string` | `"1.2.0"` | no |
+| agic\_chart\_version | Version of the Helm chart | `string` | `"1.5.2"` | no |
 | agic\_enabled | Enable application gateway ingress controller | `bool` | `true` | no |
 | agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
 | aks\_aad\_pod\_identity\_client\_id | AAD Identity client\_id used by AKS | `string` | n/a | yes |

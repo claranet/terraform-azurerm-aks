@@ -47,14 +47,14 @@ EOF
     "initContainers[0].volumeMounts[0].mountPath"               = "/target"
     "initContainers[0].volumeMounts[0].name"                    = "plugins"
     "image.repository"                                          = "velero/velero"
-    "image.tag"                                                 = "v1.4.0"
-    "image.pullPolicy"                                          = "IfNotPresent"
-    "podAnnotations.aadpodidbinding"                            = local.velero_identity_name
-    "podLabels.aadpodidbinding"                                 = local.velero_identity_name
+    #    "image.tag"                                                 = "v1.4.0"
+    "image.pullPolicy"               = "IfNotPresent"
+    "podAnnotations.aadpodidbinding" = local.velero_identity_name
+    "podLabels.aadpodidbinding"      = local.velero_identity_name
   }
 
 
   velero_credentials = local.credentials
-  velero_storage     = var.enable_velero ? merge(local.storage_defaults_settings, values(var.velero_storage_settings)[0]) : null
+  velero_storage     = var.enable_velero ? merge(local.storage_defaults_settings, { for k, v in var.velero_storage_settings : k => v if v != null }) : null
   velero_values      = var.enable_velero ? merge(local.velero_default_values, var.velero_values) : null
 }

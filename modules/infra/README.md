@@ -72,8 +72,8 @@ module "aks2_infra" {
 | Name | Version |
 |------|---------|
 | azurerm | >= 2.51 |
-| helm | >= 2.3.0 |
-| kubernetes | >= 1.11.1 |
+| helm | >= 2.5.1 |
+| kubernetes | >= 2.11.0 |
 
 ## Modules
 
@@ -100,7 +100,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | aadpodidentity\_chart\_repository | URL of the Helm chart repository | `string` | `"https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts"` | no |
-| aadpodidentity\_chart\_version | Azure Active Directory Pod Identity Chart version | `string` | `"2.0.0"` | no |
+| aadpodidentity\_chart\_version | Azure Active Directory Pod Identity Chart version | `string` | `"4.1.9"` | no |
 | aadpodidentity\_custom\_name | Custom name for aad pod identity MSI | `string` | `"aad-pod-identity"` | no |
 | aadpodidentity\_extra\_tags | Extra tags to add to aad pod identity MSI | `map(string)` | `{}` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
