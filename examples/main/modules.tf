@@ -141,8 +141,8 @@ module "aks" {
     ssh_key  = "ssh_priv_key"
   }
 
-  log_analytics_workspace_id = module.global_run.log_analytics_workspace_id
-  azure_policy_enabled       = false
+  oms_log_analytics_workspace_id = module.global_run.log_analytics_workspace_id
+  azure_policy_enabled           = false
 
   diagnostic_settings_logs_destination_ids = [module.global_run.log_analytics_workspace_id]
 
