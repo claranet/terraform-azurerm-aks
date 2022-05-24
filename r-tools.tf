@@ -1,11 +1,6 @@
 module "appgw" {
   source = "./tools/agic"
 
-  #  providers = {
-  #    kubernetes = kubernetes.aks-module
-  #    helm       = helm.aks-module
-  #  }
-
   agic_enabled          = var.agic_enabled
   agic_chart_repository = var.agic_chart_repository
   agic_chart_version    = coalesce(var.agic_helm_version, var.agic_chart_version)
@@ -75,11 +70,6 @@ module "appgw" {
 module "certmanager" {
   source = "./tools/cert-manager"
 
-  #  providers = {
-  #    kubernetes = kubernetes.aks-module
-  #    helm       = helm.aks-module
-  #  }
-
   enable_cert_manager           = var.enable_cert_manager
   cert_manager_namespace        = var.cert_manager_namespace
   cert_manager_chart_repository = var.cert_manager_chart_repository
@@ -89,10 +79,6 @@ module "certmanager" {
 
 module "kured" {
   source = "./tools/kured"
-
-  #  providers = {
-  #    helm = helm.aks-module
-  #  }
 
   enable_kured           = var.enable_kured
   kured_settings         = var.kured_settings
@@ -104,11 +90,6 @@ module "velero" {
   depends_on = [azurerm_kubernetes_cluster.aks]
 
   source = "./tools/velero"
-
-  #  providers = {
-  #    kubernetes = kubernetes.aks-module
-  #    helm       = helm.aks-module
-  #  }
 
   enable_velero = var.enable_velero
 

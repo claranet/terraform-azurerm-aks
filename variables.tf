@@ -175,8 +175,8 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "log_analytics_workspace_id" {
-  description = "The ID of the Log Analytics Workspace used to send logs"
+variable "oms_log_analytics_workspace_id" {
+  description = "The ID of the Log Analytics Workspace used to send OMS logs"
   type        = string
 }
 

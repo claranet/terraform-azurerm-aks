@@ -1,11 +1,6 @@
 module "infra" {
   source = "./modules/infra"
 
-  #  providers = {
-  #    kubernetes = kubernetes.aks-module
-  #    helm       = helm.aks-module
-  #  }
-
   aks_resource_group_name = azurerm_kubernetes_cluster.aks.node_resource_group
   aks_network_plugin      = var.aks_network_plugin
 

@@ -320,12 +320,12 @@ module "acr" {
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
 | location | Azure region to use | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use | `string` | n/a | yes |
-| log\_analytics\_workspace\_id | The ID of the Log Analytics Workspace used to send logs | `string` | n/a | yes |
 | name\_prefix | Prefix used in naming | `string` | `""` | no |
 | node\_pool\_tags | Specific tags for node pool | `map(string)` | `{}` | no |
 | node\_resource\_group | Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | `null` | no |
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
 | nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
+| oms\_log\_analytics\_workspace\_id | The ID of the Log Analytics Workspace used to send OMS logs | `string` | n/a | yes |
 | outbound\_type | The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`. | `string` | `"loadBalancer"` | no |
 | private\_cluster\_enabled | Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled | `bool` | `false` | no |
 | private\_dns\_zone\_id | Id of the private DNS Zone when <private\_dns\_zone\_type> is custom | `string` | `null` | no |
