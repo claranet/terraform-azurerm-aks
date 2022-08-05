@@ -1,4 +1,4 @@
-# Unreleased
+# v6.0.0 - 2022-08-05
 
 Breaking
   * AZ-717: Remove providers configurations from module/sub-modules to be compatible with terraform 1.2
