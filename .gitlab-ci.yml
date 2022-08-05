@@ -1,6 +1,7 @@
 ---
 variables:
   TF_MIN_VERSION: "1.1"
+  TF_MAX_VERSION: "1.2"
   AZURERM_PROVIDER_MIN_VERSION: "3.0"
 
 include:
