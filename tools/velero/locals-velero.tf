@@ -47,10 +47,9 @@ EOF
     "initContainers[0].volumeMounts[0].mountPath"               = "/target"
     "initContainers[0].volumeMounts[0].name"                    = "plugins"
     "image.repository"                                          = "velero/velero"
-    #    "image.tag"                                                 = "v1.4.0"
-    "image.pullPolicy"               = "IfNotPresent"
-    "podAnnotations.aadpodidbinding" = local.velero_identity_name
-    "podLabels.aadpodidbinding"      = local.velero_identity_name
+    "image.pullPolicy"                                          = "IfNotPresent"
+    "podAnnotations.aadpodidbinding"                            = local.velero_identity_name
+    "podLabels.aadpodidbinding"                                 = local.velero_identity_name
   }
 
 
