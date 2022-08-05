@@ -24,12 +24,22 @@ resource "helm_release" "aad_pod_identity" {
       value = setting.value
     }
   }
+
+  # If `Aadpodidentity` is used within an Aks Cluster with Kubenet network Plugin, 
+  # `nmi.allowNetworkPluginKubenet` parameter is set to `true`.
+  # https://github.com/Azure/aad-pod-identity/issues/949
+  set {
+    name  = "nmi.allowNetworkPluginKubenet"
+    value = var.aks_network_plugin == "kubenet" ? "true" : "false"
+  }
 }
 
 resource "azurerm_user_assigned_identity" "aad_pod_identity" {
   location            = var.location
-  name                = "aad-pod-identity"
+  name                = var.aadpodidentity_custom_name
   resource_group_name = var.aks_resource_group_name
+
+  tags = var.aadpodidentity_extra_tags
 }
 
 resource "azurerm_role_assignment" "aad_pod_identity_msi" {

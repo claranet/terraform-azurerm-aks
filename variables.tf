@@ -23,11 +23,6 @@ variable "stack" {
   type        = string
 }
 
-variable "custom_aks_name" {
-  description = "Custom AKS name"
-  type        = string
-  default     = ""
-}
 
 variable "name_prefix" {
   description = "Prefix used in naming"
@@ -109,8 +104,9 @@ variable "aks_user_assigned_identity_resource_group_name" {
   default     = null
 }
 
-variable "aks_user_assigned_identity_custom_name" {
-  description = "Custom name for the aks user assigned identity resource"
+
+variable "aks_route_table_id" {
+  description = "Provide an existing route table when `outbound_type variable` is set to `userdefinedrouting` with kubenet : https://docs.microsoft.com/fr-fr/azure/aks/configure-kubenet#bring-your-own-subnet-and-route-table-with-kubenet"
   type        = string
   default     = null
 }
@@ -121,11 +117,23 @@ variable "aks_sku_tier" {
   default     = "Free"
 }
 
-variable "appgw_user_assigned_identity_custom_name" {
-  description = "Custom name for the application gateway user assigned identity resource"
+variable "aks_network_plugin" {
+  description = "AKS network plugin to use. Possible values are `azure` and `kubenet`. Changing this forces a new resource to be created"
   type        = string
-  default     = null
+  default     = "azure"
+
+  validation {
+    condition     = contains(["azure", "kubenet"], var.aks_network_plugin)
+    error_message = "The network plugin value must be \"azure\" or \"kubenet\"."
+  }
 }
+
+variable "aks_network_policy" {
+  description = "AKS network policy to use."
+  type        = string
+  default     = "calico"
+}
+
 
 variable "appgw_user_assigned_identity_resource_group_name" {
   description = "Resource Group where to deploy the application gateway user assigned identity resource"
@@ -143,7 +151,7 @@ map(object({
     count                 = number
     vm_size               = string
     os_type               = string
-    availability_zones    = list(number)
+    zones                 = list(number)
     enable_auto_scaling   = bool
     min_count             = number
     max_count             = number
@@ -167,20 +175,15 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "addons" {
-  description = "Kubernetes addons to enable /disable"
-  type = object({
-    dashboard              = bool,
-    oms_agent              = bool,
-    oms_agent_workspace_id = string,
-    policy                 = bool
-  })
-  default = {
-    dashboard              = false,
-    oms_agent              = true,
-    oms_agent_workspace_id = null,
-    policy                 = false
-  }
+variable "oms_log_analytics_workspace_id" {
+  description = "The ID of the Log Analytics Workspace used to send OMS logs"
+  type        = string
+}
+
+variable "azure_policy_enabled" {
+  description = "Should the Azure Policy Add-On be enabled?"
+  type        = bool
+  default     = false
 }
 
 variable "linux_profile" {
@@ -195,6 +198,12 @@ variable "linux_profile" {
 variable "service_cidr" {
   description = "CIDR used by kubernetes services (kubectl get svc)."
   type        = string
+}
+
+variable "aks_pod_cidr" {
+  description = "CIDR used by pods when network plugin is set to `kubenet`. https://docs.microsoft.com/en-us/azure/aks/configure-kubenet"
+  type        = string
+  default     = "172.17.0.0/16"
 }
 
 variable "outbound_type" {
@@ -246,7 +255,7 @@ variable "agic_chart_repository" {
 variable "agic_chart_version" {
   description = "Version of the Helm chart"
   type        = string
-  default     = "1.2.0"
+  default     = "1.5.2"
 }
 
 variable "custom_appgw_name" {
@@ -308,7 +317,7 @@ variable "cert_manager_chart_repository" {
 variable "cert_manager_chart_version" {
   description = "Cert Manager helm chart version to use"
   type        = string
-  default     = "v0.13.0"
+  default     = "v1.8.0"
 }
 
 ##########################
@@ -365,6 +374,12 @@ variable "enable_velero" {
   default     = true
 }
 
+variable "velero_identity_custom_name" {
+  description = "Name of the Velero MSI"
+  type        = string
+  default     = "velero"
+}
+
 variable "velero_storage_settings" {
   description = "Settings for Storage account and blob container for Velero"
   default     = null
@@ -413,7 +428,6 @@ map(object({
   image.repository                                          = string
   image.tag                                                 = string
   image.pullPolicy                                          = string
-
 }))
 ```
 EOVV
@@ -430,7 +444,7 @@ variable "velero_namespace" {
 variable "velero_chart_version" {
   description = "Velero helm chart version to use"
   type        = string
-  default     = "2.12.13"
+  default     = "2.29.5"
 }
 
 variable "velero_chart_repository" {
@@ -449,13 +463,13 @@ Settings for AAD Pod identity helm Chart:
 
 ```
 map(object({
-  nmi.nodeSelector.agentpool  = string
-  mic.nodeSelector.agentpool  = string
-  azureIdentity.enabled       = bool
-  azureIdentity.type          = string
-  azureIdentity.resourceID    = string
-  azureIdentity.clientID      = string
-  nmi.micNamespace            = string
+  nmi.nodeSelector.agentpool    = string
+  mic.nodeSelector.agentpool    = string
+  azureIdentity.enabled         = bool
+  azureIdentity.type            = string
+  azureIdentity.resourceID      = string
+  azureIdentity.clientID        = string
+  nmi.micNamespace              = string
 }))
 ```
 EOD
@@ -469,6 +483,8 @@ variable "aadpodidentity_namespace" {
   default     = "system-aadpodid"
 }
 
+
+
 variable "aadpodidentity_chart_repository" {
   description = "AAD Pod Identity Helm chart repository URL"
   type        = string
@@ -478,7 +494,18 @@ variable "aadpodidentity_chart_repository" {
 variable "aadpodidentity_chart_version" {
   description = "AAD Pod Identity helm chart version to use"
   type        = string
-  default     = "2.0.0"
+  default     = "4.1.9"
+}
+
+variable "aadpodidentity_kubenet_policy_enabled" {
+  description = <<EOD
+  Boolean to wether deploy or not a built-in Azure Policy at the cluster level 
+  to mitigate potential security issue with aadpodidentity used with kubenet : 
+  https://docs.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities "
+EOD
+
+  type    = bool
+  default = false
 }
 
 variable "private_ingress" {

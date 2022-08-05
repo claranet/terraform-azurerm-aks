@@ -29,8 +29,8 @@ module "certmanager" {
 
 | Name | Version |
 |------|---------|
-| helm | >= 2.3.0 |
-| kubernetes | >= 1.11.1 |
+| helm | >= 2.5.1 |
+| kubernetes | >= 2.11.0 |
 
 ## Modules
 
@@ -48,7 +48,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | cert\_manager\_chart\_repository | Helm chart repository URL | `string` | `"https://charts.jetstack.io"` | no |
-| cert\_manager\_chart\_version | Cert Manager helm chart version to use | `string` | `"v0.13.0"` | no |
+| cert\_manager\_chart\_version | Cert Manager helm chart version to use | `string` | `"v1.8.0"` | no |
 | cert\_manager\_namespace | Kubernetes namespace in which to deploy Cert Manager | `string` | `"system-cert-manager"` | no |
 | cert\_manager\_settings | Settings for cert-manager helm chart | `map(string)` | `{}` | no |
 | enable\_cert\_manager | Enable cert-manager on AKS cluster | `bool` | `true` | no |

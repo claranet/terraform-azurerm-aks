@@ -330,7 +330,7 @@ variable "agic_chart_repository" {
 variable "agic_chart_version" {
   description = "Version of the Helm chart"
   type        = string
-  default     = "1.2.0"
+  default     = "1.5.2"
 }
 
 variable "private_ingress" {

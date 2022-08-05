@@ -11,13 +11,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
   enable_pod_security_policy      = var.enable_pod_security_policy
 
   private_cluster_enabled = var.private_cluster_enabled
-  private_dns_zone_id     = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? var.private_dns_zone_id : var.private_dns_zone_type
+  private_dns_zone_id     = var.private_cluster_enabled ? local.private_dns_zone : null
 
   default_node_pool {
     name                = local.default_node_pool.name
     node_count          = local.default_node_pool.count
     vm_size             = local.default_node_pool.vm_size
-    availability_zones  = local.default_node_pool.availability_zones
+    zones               = local.default_node_pool.zones
     enable_auto_scaling = local.default_node_pool.enable_auto_scaling
     min_count           = local.default_node_pool.min_count
     max_count           = local.default_node_pool.max_count
@@ -27,27 +27,20 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type                = local.default_node_pool.type
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
     node_taints         = local.default_node_pool.node_taints
+    tags                = merge(local.default_tags, var.default_node_pool_tags)
   }
 
   identity {
-    type                      = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? "UserAssigned" : "SystemAssigned"
-    user_assigned_identity_id = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? azurerm_user_assigned_identity.aks_user_assigned_identity[0].id : null
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.aks_user_assigned_identity.id]
   }
 
-  addon_profile {
-    oms_agent {
-      enabled                    = var.addons.oms_agent
-      log_analytics_workspace_id = var.addons.oms_agent_workspace_id
-    }
-
-    kube_dashboard {
-      enabled = var.addons.dashboard
-    }
-
-    azure_policy {
-      enabled = var.addons.policy
-    }
+  oms_agent {
+    log_analytics_workspace_id = var.oms_log_analytics_workspace_id
   }
+
+  azure_policy_enabled = var.azure_policy_enabled
+
 
   dynamic "linux_profile" {
     for_each = var.linux_profile != null ? [true] : []
@@ -62,22 +55,21 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    network_plugin     = "azure"
-    network_policy     = "azure"
+    network_plugin     = var.aks_network_plugin
+    network_policy     = var.aks_network_plugin == "azure" ? "azure" : var.aks_network_policy
+    network_mode       = var.aks_network_plugin == "azure" ? "transparent" : null
     dns_service_ip     = cidrhost(var.service_cidr, 10)
     docker_bridge_cidr = var.docker_bridge_cidr
     service_cidr       = var.service_cidr
     load_balancer_sku  = "standard"
     outbound_type      = var.outbound_type
-
+    pod_cidr           = var.aks_network_plugin == "kubenet" ? var.aks_pod_cidr : null
   }
 
-  role_based_access_control {
-    enabled = true
-  }
 
   depends_on = [
     azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
+    azurerm_role_assignment.aks_uai_route_table_contributor
   ]
 
   tags = merge(local.default_tags, var.extra_tags)
@@ -98,7 +90,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   max_count             = local.nodes_pools[count.index].max_count
   max_pods              = local.nodes_pools[count.index].max_pods
   enable_node_public_ip = local.nodes_pools[count.index].enable_node_public_ip
-  availability_zones    = local.nodes_pools[count.index].availability_zones
+  zones                 = local.nodes_pools[count.index].zones
+  tags                  = merge(local.default_tags, var.node_pool_tags)
 }
 
 # Allow user assigned identity to manage AKS items in MC_xxx RG

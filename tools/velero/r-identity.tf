@@ -8,6 +8,8 @@ resource "azurerm_user_assigned_identity" "velero_identity" {
   location            = var.location
   name                = local.velero_identity_name
   resource_group_name = var.aks_nodes_resource_group_name
+
+  tags = var.velero_identity_tags
 }
 
 resource "azurerm_role_assignment" "velero_identity_role_aks" {

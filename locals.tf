@@ -10,7 +10,7 @@ locals {
     count                 = 1
     vm_size               = "Standard_D2_v3"
     os_type               = "Linux"
-    availability_zones    = [1, 2, 3]
+    zones                 = [1, 2, 3]
     enable_auto_scaling   = false
     min_count             = null
     max_count             = null
@@ -38,6 +38,8 @@ locals {
   }
 
   default_node_pool = merge(local.default_agent_profile, var.default_node_pool)
+
+  private_dns_zone = var.private_dns_zone_type == "Custom" ? var.private_dns_zone_id : var.private_dns_zone_type
 
   nodes_pools_with_defaults = [for ap in var.nodes_pools : merge(local.default_agent_profile, ap)]
   nodes_pools               = [for ap in local.nodes_pools_with_defaults : ap.os_type == "Linux" ? merge(local.default_linux_node_profile, ap) : merge(local.default_windows_node_profile, ap)]

@@ -1,3 +1,32 @@
+# Unreleased
+
+Breaking
+  * AZ-717: Remove providers configurations from module/sub-modules to be compatible with terraform 1.2
+
+Added
+  * AZ-615: Add an option to enable or disable default tags
+  * AZ-605: Add Kubenet implementation
+  * AZ-605: Allow aadpodidentity and Velero MSI custom naming
+  * AZ-605: Allow to configure tags on MSIs and node pools
+  * AZ-605: Allow to configure permissions on route table when using kubenet and UDR egress 
+  * AZ-605: Add  `Kubernetes cluster containers should only use allowed capabilities` policy when using Kubenet to avoid security issue 
+
+Fixed
+  * AZ-605: Fix Velero_storage_settings variable
+  * AZ-605: Fix aks_pod_cidr variable
+  * AZ-605: Fix Aks Private DNS zone configuration
+
+Changed
+  * AZ-605: Change azurerm provider minimal version
+  * AZ-717: Bump `aad-pod-identity` helm chart to `4.1.9`
+  * AZ-717: Bump `cert-manager` helm chart to `1.8.0`
+  * AZ-717: Bump `velero` helm chart to `2.29.5`
+  * AZ-717: Bump `agic` helm chart to `1.5.2`
+  * AZ-717: Bump `helm` provider min version to `2.5.1`
+  * AZ-717: Bump `kubernetes` provider min version to `2.11.0`
+  * AZ-717: Add mandatory priority on AGIC Application gateway `request_routing_rule`
+  * AZ-717: Add `installCRDs` value to true in `cert-manager` deployment
+
 # v4.5.0 - 2022-03-11
 
 Breaking
@@ -6,8 +35,6 @@ Breaking
 Changed
   * [GITHUB-3](https://github.com/claranet/terraform-azurerm-aks/pull/3): Fix `velero_storage_settings` type, and make attributes optional
 
-Added
-  * AZ-615: Add an option to enable or disable default tags
 
 # v4.4.0 - 2021-12-28
 

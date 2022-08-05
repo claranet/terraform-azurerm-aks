@@ -1,9 +1,10 @@
 resource "azurerm_user_assigned_identity" "aks_user_assigned_identity" {
-  count = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? 1 : 0
 
   name                = coalesce(var.aks_user_assigned_identity_custom_name, local.aks_user_assigned_identity_name)
   resource_group_name = var.aks_user_assigned_identity_resource_group_name == null ? var.resource_group_name : var.aks_user_assigned_identity_resource_group_name
   location            = var.location
+
+  tags = merge(local.default_tags, var.aks_user_assigned_identity_tags)
 }
 
 resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {
@@ -11,7 +12,7 @@ resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {
 
   scope                = var.private_dns_zone_id
   role_definition_name = "Private DNS Zone Contributor"
-  principal_id         = azurerm_user_assigned_identity.aks_user_assigned_identity[0].principal_id
+  principal_id         = azurerm_user_assigned_identity.aks_user_assigned_identity.principal_id
 }
 
 resource "azurerm_role_assignment" "aks_uai_vnet_network_contributor" {
@@ -19,7 +20,7 @@ resource "azurerm_role_assignment" "aks_uai_vnet_network_contributor" {
 
   scope                = var.vnet_id
   role_definition_name = "Network Contributor"
-  principal_id         = azurerm_user_assigned_identity.aks_user_assigned_identity[0].principal_id
+  principal_id         = azurerm_user_assigned_identity.aks_user_assigned_identity.principal_id
 }
 
 # Application gateway identity stuff, used to gather ssl certificate from keyvault
