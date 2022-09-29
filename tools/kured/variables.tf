@@ -7,7 +7,7 @@ variable "enable_kured" {
 variable "kured_chart_repository" {
   description = "Helm chart repository URL"
   type        = string
-  default     = "https://weaveworks.github.io/kured"
+  default     = "https://kubereboot.github.io/charts"
 }
 
 variable "kured_chart_version" {

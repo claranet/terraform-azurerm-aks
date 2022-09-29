@@ -3,6 +3,9 @@
 Breaking
   * AZ-840: Update to Terraform `v1.3`
 
+Fixed
+  * AZ-856: Fix kured_chart_repository variable
+
 # v6.0.0 - 2022-08-05
 
 Breaking
