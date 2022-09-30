@@ -315,7 +315,7 @@ module "acr" {
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
 | kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.17.9"` | no |
-| kured\_chart\_repository | Helm chart repository URL | `string` | `"https://weaveworks.github.io/kured"` | no |
+| kured\_chart\_repository | Helm chart repository URL | `string` | `"https://kubereboot.github.io/charts"` | no |
 | kured\_chart\_version | Version of the Helm chart | `string` | `"2.2.0"` | no |
 | kured\_settings | Settings for kured helm chart:<pre>map(object({<br>  image.repository         = string<br>  image.tag                = string<br>  image.pullPolicy         = string<br>  extraArgs.reboot-days    = string<br>  extraArgs.start-time     = string<br>  extraArgs.end-time       = string<br>  extraArgs.time-zone      = string<br>  rbac.create              = string<br>  podSecurityPolicy.create = string<br>  serviceAccount.create    = string<br>  autolock.enabled         = string<br>}))</pre> | `map(string)` | `{}` | no |
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
