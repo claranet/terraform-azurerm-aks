@@ -35,6 +35,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
     identity_ids = [azurerm_user_assigned_identity.aks_user_assigned_identity.id]
   }
 
+  dynamic "auto_scaler_profile" {
+    for_each = var.auto_scaler_expander_name
+    content {
+      expander = auto_scaler_expander_name.value
+    }
+  }
+
   oms_agent {
     log_analytics_workspace_id = var.oms_log_analytics_workspace_id
   }

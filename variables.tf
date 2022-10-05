@@ -175,6 +175,12 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
+variable "auto_scaler_expander_name" {
+  description = "Cluster autoscaler Expander to use. Possible values are least-waste, priority, most-pods and random. Defaults to random. See more details on https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/expander"
+  type        = string
+  default     = null
+}
+
 variable "oms_log_analytics_workspace_id" {
   description = "The ID of the Log Analytics Workspace used to send OMS logs"
   type        = string
