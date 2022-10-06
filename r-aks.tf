@@ -36,9 +36,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   dynamic "auto_scaler_profile" {
-    for_each = var.auto_scaler_expander_name
+    for_each = var.auto_scaler_expander_name != null ? [true] : []
     content {
-      expander = auto_scaler_expander_name.value
+      expander = var.auto_scaler_expander_name
     }
   }
 
