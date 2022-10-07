@@ -11,7 +11,7 @@ resource "kubernetes_namespace" "agic" {
 resource "azurerm_role_assignment" "agic" {
   count                = var.agic_enabled ? 1 : 0
   principal_id         = var.aks_aad_pod_identity_principal_id
-  scope                = azurerm_application_gateway.app_gateway[0].id
+  scope                = try(azurerm_application_gateway.app_gateway[0].id, var.application_gateway_id)
   role_definition_name = "Contributor"
 }
 

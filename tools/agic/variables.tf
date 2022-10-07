@@ -1,6 +1,6 @@
 # Common inputs
 variable "location_short" {
-  description = "Short name of Azure regions to use"
+  description = "Short name of Azure regions to use."
   type        = string
 }
 
@@ -10,12 +10,12 @@ variable "client_name" {
 }
 
 variable "location" {
-  description = "Location of application gateway"
+  description = "Location of application gateway."
   type        = string
 }
 
 variable "resource_group_name" {
-  description = "Name of the resource group in which to deploy the application gateway"
+  description = "Name of the resource group in which to deploy the application gateway."
   type        = string
 }
 
@@ -27,76 +27,87 @@ variable "ip_name" {
 }
 
 variable "ip_tags" {
-  description = "Specific tags for the public ip address"
+  description = "Specific tags for the public ip address."
   type        = map(string)
 }
 
 variable "ip_sku" {
-  description = "SKU of the public ip address"
+  description = "SKU of the public ip address."
   type        = string
   default     = "Standard"
 }
 
 variable "ip_allocation_method" {
-  description = "Allocation method of the IP address"
+  description = "Allocation method of the IP address."
   type        = string
   default     = "Static"
 }
 
 variable "app_gateway_subnet_id" {
-  description = "ID of the subnet to use with the application gateway"
+  description = "ID of the subnet to use with the application gateway."
   type        = string
 }
 
 # Application gateway inputs
+variable "use_existing_application_gateway" {
+  description = "True to use an existing Application Gateway instead of creating a new one."
+  type        = bool
+  default     = false
+}
+
+variable "application_gateway_id" {
+  description = "ID of an existing Application Gateway to use as an AGIC. `use_existing_application_gateway` must be set to `true`."
+  type        = string
+  default     = null
+}
 
 variable "name" {
-  description = "Name of the application gateway"
+  description = "Name of the application gateway."
   type        = string
 }
 
 variable "sku_capacity" {
-  description = "Application gateway's SKU capacity"
+  description = "Application gateway's SKU capacity."
   type        = string
   default     = 2
 }
 
 variable "sku_name" {
-  description = "Application gateway's SKU name"
+  description = "Application gateway's SKU name."
   type        = string
   default     = "Standard_v2"
 }
 
 variable "sku_tier" {
-  description = "Application gateway's SKU tier"
+  description = "Application gateway's SKU tier."
   type        = string
   default     = "Standard_v2"
 }
 
 variable "zones" {
-  description = "Application gateway's Zones to use"
+  description = "Application gateway's Zones to use."
   type        = list(string)
   default     = ["1", "2", "3"]
 }
 
 variable "frontend_ip_configuration_name" {
-  description = "Name of the appgw frontend ip configuration"
+  description = "Name of the appgw frontend ip configuration."
   type        = string
 }
 
 variable "gateway_ip_configuration_name" {
-  description = "Name of the appgw gateway ip configuration"
+  description = "Name of the appgw gateway ip configuration."
   type        = string
 }
 
 variable "gateway_identity_id" {
-  description = "Id of the application gateway MSI"
+  description = "Id of the application gateway MSI."
   type        = string
   default     = null
 }
 
 variable "frontend_port_settings" {
-  description = "Appgw frontent port settings"
+  description = "Appgw frontent port settings."
   type        = list(map(string))
   default = [{
     fake = "fake"
@@ -104,7 +115,7 @@ variable "frontend_port_settings" {
 }
 
 variable "firewall_mode" {
-  description = "Appgw WAF mode"
+  description = "Appgw WAF mode."
   type        = string
   default     = "Detection"
 }
@@ -119,56 +130,56 @@ variable "disabled_rule_group_settings" {
 }
 
 variable "waf_exclusion_settings" {
-  description = "Appgw WAF exclusion settings"
+  description = "Appgw WAF exclusion settings."
   type        = list(map(string))
   default     = []
 }
 
 variable "policy_name" {
-  description = "Name of the SSLPolicy to use with Appgw"
+  description = "Name of the SSLPolicy to use with Appgw."
   type        = string
   default     = "AppGwSslPolicy20170401S"
 }
 
 variable "authentication_certificate_configs" {
   type        = list(map(string))
-  description = "List of maps including authentication certificate configurations"
+  description = "List of maps including authentication certificate configurations."
   default     = []
 }
 
 variable "trusted_root_certificate_configs" {
   type        = list(map(string))
-  description = "Trusted root certificate configurations"
+  description = "Trusted root certificate configurations."
   default     = []
 }
 
 variable "appgw_backend_pools" {
   type        = any
-  description = "List of maps including backend pool configurations"
+  description = "List of maps including backend pool configurations."
   default     = [{ fake = "fake" }]
 }
 
 variable "appgw_http_listeners" {
   type        = list(map(string))
-  description = "List of maps including http listeners configurations"
+  description = "List of maps including http listeners configurations."
   default     = [{ fake = "fake" }]
 }
 
 variable "ssl_certificates_configs" {
   type        = list(map(string))
-  description = "List of maps including ssl certificates configurations"
+  description = "List of maps including ssl certificates configurations."
   default     = []
 }
 
 variable "appgw_routings" {
   type        = list(map(string))
-  description = "List of maps including request routing rules configurations"
+  description = "List of maps including request routing rules configurations."
   default     = [{ fake = "fake" }]
 }
 
 variable "appgw_probes" {
   type        = any
-  description = "List of maps including request probes configurations"
+  description = "List of maps including request probes configurations."
   default = [
     {
       fake = "fake"
@@ -177,19 +188,19 @@ variable "appgw_probes" {
 
 variable "appgw_backend_http_settings" {
   type        = any
-  description = "List of maps including backend http settings configurations"
+  description = "List of maps including backend http settings configurations."
   default     = [{ fake = "fake" }]
 }
 
 variable "appgw_url_path_map" {
   type        = any
-  description = "List of maps including url path map configurations"
+  description = "List of maps including url path map configurations."
   default     = []
 }
 
 variable "appgw_redirect_configuration" {
   type        = list(map(string))
-  description = "List of maps including redirect configurations"
+  description = "List of maps including redirect configurations."
   default     = []
 }
 
@@ -200,76 +211,76 @@ variable "appgw_rewrite_rule_set" {
 }
 
 variable "app_gateway_tags" {
-  description = "Tags to apply on the Application gateway"
+  description = "Tags to apply on the Application gateway."
   type        = map(string)
 }
 
 variable "environment" {
-  description = "Project's environment"
+  description = "Project's environment."
   type        = string
 }
 
 variable "stack" {
-  description = "Project's stack"
+  description = "Project's stack."
   type        = string
 }
 
 # WAF Values
 variable "enabled_waf" {
-  description = "Enable WAF or not"
+  description = "Enable WAF or not."
   type        = bool
   default     = false
 }
 
 variable "file_upload_limit_mb" {
-  description = "WAF configuration of the file upload limit in MB"
+  description = "WAF configuration of the file upload limit in MB."
   type        = number
   default     = 100
 }
 
 variable "max_request_body_size_kb" {
-  description = "WAF configuration of the max request body size in KB"
+  description = "WAF configuration of the max request body size in KB."
   default     = 128
   type        = number
 }
 
 variable "request_body_check" {
-  description = "WAF should check the request body"
+  description = "WAF should check the request body."
   default     = true
   type        = bool
 }
 
 variable "rule_set_type" {
-  description = "WAF rules set type"
+  description = "WAF rules set type."
   default     = "OWASP"
   type        = string
 }
 
 variable "rule_set_version" {
-  description = "WAF rules set version"
+  description = "WAF rules set version."
   default     = "3.0"
   type        = string
 }
 
 # AGIC Values
 variable "appgw_ingress_values" {
-  description = "Application Gateway Ingress Controller settings"
+  description = "Application Gateway Ingress Controller settings."
   type        = map(string)
   default     = {}
 }
 
 variable "aks_aad_pod_identity_id" {
-  description = "AAD Identity id used by AKS"
+  description = "AAD Identity id used by AKS."
   type        = string
 }
 
 variable "aks_aad_pod_identity_client_id" {
-  description = "AAD Identity client_id used by AKS"
+  description = "AAD Identity client_id used by AKS."
   type        = string
 }
 
 variable "aks_aad_pod_identity_principal_id" {
-  description = "AAD Identity principal_id used by AKS"
+  description = "AAD Identity principal_id used by AKS."
   type        = string
 }
 
@@ -292,43 +303,43 @@ variable "diagnostic_settings_retention_days" {
 }
 
 variable "diagnostic_settings_log_categories" {
-  description = "List of log categories"
+  description = "List of log categories."
   type        = list(string)
   default     = null
 }
 
 variable "diagnostic_settings_metric_categories" {
-  description = "List of metric categories"
+  description = "List of metric categories."
   type        = list(string)
   default     = null
 }
 
 variable "name_prefix" {
-  description = "prefix used in naming"
+  description = "prefix used in naming."
   type        = string
   default     = ""
 }
 
 variable "agic_enabled" {
-  description = "Enable application gateway ingress controller"
+  description = "Enable application gateway ingress controller."
   type        = bool
   default     = true
 }
 
 variable "agic_helm_version" {
-  description = "[DEPRECATED] Version of Helm chart to deploy"
+  description = "[DEPRECATED] Version of Helm chart to deploy."
   type        = string
   default     = null
 }
 
 variable "agic_chart_repository" {
-  description = "Helm chart repository URL"
+  description = "Helm chart repository URL."
   type        = string
   default     = "https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"
 }
 
 variable "agic_chart_version" {
-  description = "Version of the Helm chart"
+  description = "Version of the Helm chart."
   type        = string
   default     = "1.5.2"
 }
@@ -346,7 +357,7 @@ variable "appgw_private_ip" {
 }
 
 variable "frontend_priv_ip_configuration_name" {
-  description = "Name of the appgw frontend private ip configuration"
+  description = "Name of the appgw frontend private ip configuration."
   type        = string
   default     = null
 }

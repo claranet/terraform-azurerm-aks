@@ -1,5 +1,5 @@
 resource "azurerm_application_gateway" "app_gateway" {
-  count               = var.agic_enabled ? 1 : 0
+  count               = var.agic_enabled && !var.use_existing_application_gateway ? 1 : 0
   location            = var.location
   name                = var.name
   resource_group_name = var.resource_group_name

@@ -264,6 +264,18 @@ variable "agic_enabled" {
   default     = true
 }
 
+variable "use_existing_application_gateway" {
+  description = "True to use an existing Application Gateway instead of creating a new one."
+  type        = bool
+  default     = false
+}
+
+variable "application_gateway_id" {
+  description = "ID of an existing Application Gateway to use as an AGIC. `use_existing_application_gateway` must be set to `true`."
+  type        = string
+  default     = null
+}
+
 variable "agic_helm_version" {
   description = "[DEPRECATED] Version of Helm chart to deploy"
   type        = string
