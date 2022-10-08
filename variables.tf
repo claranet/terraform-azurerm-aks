@@ -198,6 +198,7 @@ variable "auto_scaler_profile" {
   }))
   default = null
 }
+
 variable "oms_log_analytics_workspace_id" {
   description = "The ID of the Log Analytics Workspace used to send OMS logs"
   type        = string
