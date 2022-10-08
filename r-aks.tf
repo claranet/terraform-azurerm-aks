@@ -55,7 +55,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
       empty_bulk_delete_max = auto_scaler_profile.value.empty_bulk_delete_max
       skip_nodes_with_local_storage = auto_scaler_profile.value.skip_nodes_with_local_storage
       skip_nodes_with_system_pods = auto_scaler_profile.value.skip_nodes_with_system_pods
-      expander = var.auto_scaler_expander_name
     }
   }
 
