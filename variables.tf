@@ -175,12 +175,29 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "auto_scaler_expander_name" {
-  description = "Cluster autoscaler Expander to use. Possible values are least-waste, priority, most-pods and random. Defaults to random. See more details on https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/expander"
-  type        = string
-  default     = null
+variable "auto_scaler_profile" {
+  description = "Map to configure `auto_scaler_profile` block."
+  type = map(object({
+    balance_similar_node_groups      = optional(bool, false)
+    expander                         = optional(string, "random")
+    max_graceful_termination_sec     = optional(number, 600)
+    max_node_provisioning_time       = optional(string, "15m")
+    max_unready_nodes                = optional(number, 3)
+    max_unready_percentage           = optional(number, 45)
+    new_pod_scale_up_delay           = optional(string, "10s")
+    scale_down_delay_after_add       = optional(string, "10m")
+    scale_down_delay_after_delete    = optional(string, "10s")
+    scale_down_delay_after_failure   = optional(string, "3m")
+    scan_interval                    = optional(string, "10s")
+    scale_down_unneeded              = optional(string, "10m")
+    scale_down_unready               = optional(string, "20m")
+    scale_down_utilization_threshold = optional(number, 0.5)
+    empty_bulk_delete_max            = optional(number, 10)
+    skip_nodes_with_local_storage    = optional(bool, true)
+    skip_nodes_with_system_pods      = optional(bool, true)
+  }))
+  default = null
 }
-
 variable "oms_log_analytics_workspace_id" {
   description = "The ID of the Log Analytics Workspace used to send OMS logs"
   type        = string
