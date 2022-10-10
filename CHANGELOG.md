@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * [GH-6](https://github.com/claranet/terraform-azurerm-aks/pull/6): Allow to choose which expander to use in autoscaler profile
+
 # v7.0.0 - 2022-09-30
 
 Breaking
