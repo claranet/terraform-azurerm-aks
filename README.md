@@ -337,7 +337,7 @@ module "acr" {
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
 | service\_cidr | CIDR used by kubernetes services (kubectl get svc). | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
-| use\_existing\_application\_gateway | True to use an existing Application Gateway instead of creating a new one. | `bool` | `false` | no |
+| use\_existing\_application\_gateway | True to use an existing Application Gateway instead of creating a new one.<br>If true you may use `appgw_ingress_controller_values = { appgw.shared = true }` to tell AGIC to not erase the whole Application Gateway configuration with its own configuration.<br>You also have to deploy AzureIngressProhibitedTarget CRD.<br>https://github.com/Azure/application-gateway-kubernetes-ingress/blob/072626cb4e37f7b7a1b0c4578c38d1eadc3e8701/docs/setup/install-existing.md#multi-cluster--shared-app-gateway | `bool` | `false` | no |
 | velero\_chart\_repository | URL of the Helm chart repository | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
 | velero\_chart\_version | Velero helm chart version to use | `string` | `"2.29.5"` | no |
 | velero\_identity\_custom\_name | Name of the Velero MSI | `string` | `"velero"` | no |

@@ -50,7 +50,12 @@ variable "app_gateway_subnet_id" {
 
 # Application gateway inputs
 variable "use_existing_application_gateway" {
-  description = "True to use an existing Application Gateway instead of creating a new one."
+  description = <<DESC
+True to use an existing Application Gateway instead of creating a new one.
+If true you may use appgw_ingress_controller_values = { appgw.shared = true } to tell AGIC to not erase the whole Application Gateway configuration with its own configuration.
+You also have to deploy AzureIngressProhibitedTarget CRD.
+https://github.com/Azure/application-gateway-kubernetes-ingress/blob/072626cb4e37f7b7a1b0c4578c38d1eadc3e8701/docs/setup/install-existing.md#multi-cluster--shared-app-gateway
+DESC
   type        = bool
   default     = false
 }

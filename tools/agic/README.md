@@ -159,7 +159,7 @@ module "agic" {
 | ssl\_certificates\_configs | List of maps including ssl certificates configurations. | `list(map(string))` | `[]` | no |
 | stack | Project's stack. | `string` | n/a | yes |
 | trusted\_root\_certificate\_configs | Trusted root certificate configurations. | `list(map(string))` | `[]` | no |
-| use\_existing\_application\_gateway | True to use an existing Application Gateway instead of creating a new one. | `bool` | `false` | no |
+| use\_existing\_application\_gateway | True to use an existing Application Gateway instead of creating a new one.<br>If true you may use appgw\_ingress\_controller\_values = { appgw.shared = true } to tell AGIC to not erase the whole Application Gateway configuration with its own configuration.<br>You also have to deploy AzureIngressProhibitedTarget CRD.<br>https://github.com/Azure/application-gateway-kubernetes-ingress/blob/072626cb4e37f7b7a1b0c4578c38d1eadc3e8701/docs/setup/install-existing.md#multi-cluster--shared-app-gateway | `bool` | `false` | no |
 | waf\_exclusion\_settings | Appgw WAF exclusion settings. | `list(map(string))` | `[]` | no |
 | zones | Application gateway's Zones to use. | `list(string)` | <pre>[<br>  "1",<br>  "2",<br>  "3"<br>]</pre> | no |
 
