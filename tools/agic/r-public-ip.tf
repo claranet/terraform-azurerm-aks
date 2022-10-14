@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "ip" {
-  count               = var.agic_enabled ? 1 : 0
+  count               = var.agic_enabled && !var.use_existing_application_gateway ? 1 : 0
   location            = var.location
   name                = local.ip_name
   allocation_method   = var.ip_allocation_method

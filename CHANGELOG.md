@@ -2,6 +2,7 @@
 
 Added
   * [GH-6](https://github.com/claranet/terraform-azurerm-aks/pull/6): Allow to choose which expander to use in autoscaler profile
+  * AZ-867: Allow to use existing Application Gateway as AGIC
 
 # v7.0.0 - 2022-09-30
 

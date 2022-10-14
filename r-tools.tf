@@ -45,6 +45,9 @@ module "appgw" {
   rule_set_version         = local.appgw_settings.rule_set_version
   firewall_mode            = local.appgw_settings.firewall_mode
 
+  use_existing_application_gateway = var.use_existing_application_gateway
+  application_gateway_id           = var.application_gateway_id
+
   appgw_backend_http_settings = local.appgw_settings.appgw_backend_http_settings
   appgw_backend_pools         = local.appgw_settings.appgw_backend_pools
   appgw_probes                = local.appgw_settings.appgw_probes
