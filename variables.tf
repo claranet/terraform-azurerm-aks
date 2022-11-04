@@ -423,7 +423,7 @@ variable "velero_identity_custom_name" {
 
 variable "velero_storage_settings" {
   description = "Settings for Storage account and blob container for Velero"
-  default     = null
+  default     = {}
   type = object({
     name                     = optional(string)
     resource_group_name      = optional(string)

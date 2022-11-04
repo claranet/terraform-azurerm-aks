@@ -15,12 +15,12 @@ output "aks_nodes_rg" {
 
 output "aks_nodes_pools_ids" {
   description = "Ids of AKS nodes pools"
-  value       = azurerm_kubernetes_cluster_node_pool.node_pools.*.id
+  value       = azurerm_kubernetes_cluster_node_pool.node_pools[*].id
 }
 
 output "aks_nodes_pools_names" {
   description = "Names of AKS nodes pools"
-  value       = azurerm_kubernetes_cluster_node_pool.node_pools.*.name
+  value       = azurerm_kubernetes_cluster_node_pool.node_pools[*].name
 }
 
 output "aks_kube_config_raw" {
