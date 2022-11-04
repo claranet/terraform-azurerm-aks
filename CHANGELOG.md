@@ -1,4 +1,4 @@
-# Unreleased
+# v7.1.1 - 2022-11-04
 
 Fixed
   * AZ-883 Fix syntax to pass checks with new tflint version
