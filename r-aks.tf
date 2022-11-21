@@ -77,6 +77,17 @@ resource "azurerm_kubernetes_cluster" "aks" {
     }
   }
 
+  dynamic "http_proxy_config" {
+    for_each = var.aks_http_proxy_settings != null ? ["enabled"] : []
+
+    content {
+      http_proxy  = var.aks_http_proxy_settings.http_proxy_url
+      https_proxy = var.aks_http_proxy_settings.https_proxy_url
+      no_proxy    = var.aks_http_proxy_settings.no_proxy_url_list
+      trusted_ca  = var.aks_http_proxy_settings.trusted_ca
+    }
+  }
+
   network_profile {
     network_plugin     = var.aks_network_plugin
     network_policy     = var.aks_network_plugin == "azure" ? "azure" : var.aks_network_policy

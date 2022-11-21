@@ -128,6 +128,17 @@ variable "aks_network_policy" {
 }
 
 
+variable "aks_http_proxy_settings" {
+  description = "aks http proxy settings. Urls should be in format http(s)://fqdn:port/"
+  type = object({
+    http_proxy_url    = optional(string)
+    https_proxy_url   = optional(string)
+    no_proxy_url_list = optional(list(string))
+    trusted_ca        = optional(string)
+  })
+  default = null
+}
+
 variable "appgw_user_assigned_identity_resource_group_name" {
   description = "Resource Group where to deploy the application gateway user assigned identity resource"
   type        = string

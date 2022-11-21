@@ -2,11 +2,17 @@
 
 Added
   * AZ-908/AZ-515: Implement Azure CAF naming (using Microsoft provider)
+  * AZ-914 add aks http_proxy feature
 
 Changed
   * AZ-908: Bump `diagnostic-settings`, uses standard variables names
   * AZ-908: AzureRM provider updated to `v3.22+`
   * AZ-901: Code security check/hardening - change variable default values
+  * AZ-914 Update azurerm in provider version to avoid https://github.com/Azure/AKS/issues/3044
+
+Fixed
+  * AZ-914 Update kured image tag and repository
+  * AZ-914 Fix agic default values
 
 # v7.1.1 - 2022-11-04
 
