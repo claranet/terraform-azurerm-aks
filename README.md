@@ -227,7 +227,7 @@ module "acr" {
 
 | Name | Version |
 |------|---------|
-| azurerm | ~> 3.0 |
+| azurerm | ~> 3.22 |
 
 ## Modules
 
@@ -235,7 +235,7 @@ module "acr" {
 |------|--------|---------|
 | appgw | ./tools/agic | n/a |
 | certmanager | ./tools/cert-manager | n/a |
-| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 4.0.3 |
+| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 6.2.0 |
 | infra | ./modules/infra | n/a |
 | kured | ./tools/kured | n/a |
 | velero | ./tools/velero | n/a |
