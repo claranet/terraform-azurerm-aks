@@ -74,7 +74,7 @@ module "agic" {
 
 | Name | Version |
 |------|---------|
-| azurerm | ~> 3.0 |
+| azurerm | ~> 3.22 |
 | helm | >= 2.5.1 |
 | kubernetes | >= 2.11.0 |
 
@@ -82,7 +82,7 @@ module "agic" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 4.0.3 |
+| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 6.2.0 |
 
 ## Resources
 
@@ -123,11 +123,7 @@ module "agic" {
 | application\_gateway\_id | ID of an existing Application Gateway to use as an AGIC. `use_existing_application_gateway` must be set to `true`. | `string` | `null` | no |
 | authentication\_certificate\_configs | List of maps including authentication certificate configurations. | `list(map(string))` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
-| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
-| diagnostic\_settings\_log\_categories | List of log categories. | `list(string)` | `null` | no |
-| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `[]` | no |
-| diagnostic\_settings\_metric\_categories | List of metric categories. | `list(string)` | `null` | no |
-| diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
+| custom\_diagnostic\_settings\_name | Custom name of the diagnostics settings, name will be 'default' if not set. | `string` | `"default"` | no |
 | disabled\_rule\_group\_settings | Appgw WAF rules group to disable. | <pre>list(object({<br>    rule_group_name = string<br>    rules           = list(string)<br>  }))</pre> | `[]` | no |
 | enabled\_waf | Enable WAF or not. | `bool` | `false` | no |
 | environment | Project's environment. | `string` | n/a | yes |
@@ -144,6 +140,10 @@ module "agic" {
 | ip\_tags | Specific tags for the public ip address. | `map(string)` | n/a | yes |
 | location | Location of application gateway. | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use. | `string` | n/a | yes |
+| logs\_categories | Log categories to send to destinations. | `list(string)` | `null` | no |
+| logs\_destinations\_ids | List of destination resources IDs for logs diagnostic destination.<br>Can be `Storage Account`, `Log Analytics Workspace` and `Event Hub`. No more than one of each can be set.<br>If you want to specify an Azure EventHub to send logs and metrics to, you need to provide a formated string with both the EventHub Namespace authorization send ID and the EventHub name (name of the queue to use in the Namespace) separated by the `|` character. | `list(string)` | n/a | yes |
+| logs\_metrics\_categories | Metrics categories to send to destinations. | `list(string)` | `null` | no |
+| logs\_retention\_days | Number of days to keep logs on storage account. | `number` | `30` | no |
 | max\_request\_body\_size\_kb | WAF configuration of the max request body size in KB. | `number` | `128` | no |
 | name | Name of the application gateway. | `string` | n/a | yes |
 | name\_prefix | prefix used in naming. | `string` | `""` | no |
