@@ -113,6 +113,7 @@ output "velero_namespace" {
 output "velero_storage_account" {
   description = "Storage Account on which Velero data is stored."
   value       = module.velero.storage_account
+  sensitive = true
 }
 
 output "velero_storage_account_container" {
