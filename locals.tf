@@ -1,10 +1,4 @@
 locals {
-
-  name_prefix                       = var.name_prefix != "" ? replace(var.name_prefix, "/[a-z0-9]/", "$0-") : ""
-  aks_name                          = "${local.name_prefix}${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-aks"
-  aks_user_assigned_identity_name   = "aks-${var.client_name}-${var.location_short}-${var.environment}-identity"
-  appgw_user_assigned_identity_name = "appgw-${var.client_name}-${var.location_short}-${var.environment}-identity"
-
   default_agent_profile = {
     name                  = "default"
     count                 = 1

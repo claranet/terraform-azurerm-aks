@@ -1,7 +1,6 @@
 resource "azurerm_user_assigned_identity" "aks_user_assigned_identity" {
-
-  name                = coalesce(var.aks_user_assigned_identity_custom_name, local.aks_user_assigned_identity_name)
-  resource_group_name = var.aks_user_assigned_identity_resource_group_name == null ? var.resource_group_name : var.aks_user_assigned_identity_resource_group_name
+  name                = local.aks_identity_name
+  resource_group_name = coalesce(var.aks_user_assigned_identity_resource_group_name, var.resource_group_name)
   location            = var.location
 
   tags = merge(local.default_tags, var.aks_user_assigned_identity_tags)
@@ -29,8 +28,8 @@ resource "azurerm_role_assignment" "aks_uai_vnet_network_contributor" {
 resource "azurerm_user_assigned_identity" "appgw_assigned_identity" {
   count = var.appgw_identity_enabled ? 1 : 0
 
-  name                = coalesce(var.appgw_user_assigned_identity_custom_name, local.appgw_user_assigned_identity_name)
-  resource_group_name = var.appgw_user_assigned_identity_resource_group_name == null ? var.resource_group_name : var.appgw_user_assigned_identity_resource_group_name
+  name                = local.appgw_identity_name
+  resource_group_name = coalesce(var.appgw_user_assigned_identity_resource_group_name, var.resource_group_name)
   location            = var.location
 }
 
