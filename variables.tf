@@ -53,9 +53,9 @@ variable "enable_pod_security_policy" {
 }
 
 variable "private_cluster_enabled" {
-  description = "Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled"
+  description = "Configure AKS as a Private Cluster: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "vnet_id" {

@@ -6,6 +6,7 @@ Added
 Changed
   * AZ-908: Bump `diagnostic-settings`, uses standard variables names
   * AZ-908: AzureRM provider updated to `v3.22+`
+  * AZ-901: Code security check/hardening - change variable default values
 
 # v7.1.1 - 2022-11-04
 

@@ -31,6 +31,7 @@ resource "azurerm_storage_account" "velero" {
   account_tier             = local.velero_storage.account_tier
   account_replication_type = local.velero_storage.account_replication_type
   account_kind             = "BlockBlobStorage"
+  min_tls_version          = "TLS1_2"
   tags                     = local.velero_storage.tags
 
   lifecycle {
@@ -41,8 +42,10 @@ resource "azurerm_storage_account" "velero" {
 resource "azurerm_storage_account_network_rules" "velero" {
   count = var.enable_velero ? 1 : 0
 
-  storage_account_id         = azurerm_storage_account.velero[0].id
+  storage_account_id = azurerm_storage_account.velero[0].id
+
   default_action             = "Deny"
+  bypass                     = local.velero_storage.bypass
   virtual_network_subnet_ids = concat(local.velero_storage.allowed_subnet_ids, [var.nodes_subnet_id])
   ip_rules                   = local.velero_storage.allowed_cidrs
 }

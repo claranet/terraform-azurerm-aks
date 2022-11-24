@@ -150,8 +150,9 @@ module "aks" {
   location            = module.azure_region.location
   location_short      = module.azure_region.location_short
 
-  service_cidr       = "10.0.16.0/22"
-  kubernetes_version = "1.19.7"
+  private_cluster_enabled = false
+  service_cidr            = "10.0.16.0/22"
+  kubernetes_version      = "1.19.7"
 
   vnet_id         = module.azure_virtual_network.virtual_network_id
   nodes_subnet_id = module.node_network_subnet.subnet_id
@@ -327,7 +328,7 @@ module "acr" {
 | nodes\_subnet\_id | ID of the subnet used for nodes | `string` | n/a | yes |
 | oms\_log\_analytics\_workspace\_id | The ID of the Log Analytics Workspace used to send OMS logs | `string` | n/a | yes |
 | outbound\_type | The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`. | `string` | `"loadBalancer"` | no |
-| private\_cluster\_enabled | Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled | `bool` | `false` | no |
+| private\_cluster\_enabled | Configure AKS as a Private Cluster: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled | `bool` | `true` | no |
 | private\_dns\_zone\_id | Id of the private DNS Zone when <private\_dns\_zone\_type> is custom | `string` | `null` | no |
 | private\_dns\_zone\_type | Set AKS private dns zone if needed and if private cluster is enabled (privatelink.<region>.azmk8s.io)<br>- "Custom" : You will have to deploy a private Dns Zone on your own and pass the id with <private\_dns\_zone\_id> variable<br>If this settings is used, aks user assigned identity will be "userassigned" instead of "systemassigned"<br>and the aks user must have "Private DNS Zone Contributor" role on the private DNS Zone<br>- "System" : AKS will manage the private zone and create it in the same resource group as the Node Resource Group<br>- "None" : In case of None you will need to bring your own DNS server and set up resolving, otherwise cluster will have issues after provisioning.<br><br>https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_dns_zone_id | `string` | `"System"` | no |
 | private\_ingress | Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP. | `bool` | `false` | no |
