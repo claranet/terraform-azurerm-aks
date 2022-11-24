@@ -146,7 +146,8 @@ module "agic" {
 | logs\_retention\_days | Number of days to keep logs on storage account. | `number` | `30` | no |
 | max\_request\_body\_size\_kb | WAF configuration of the max request body size in KB. | `number` | `128` | no |
 | name | Name of the application gateway. | `string` | n/a | yes |
-| name\_prefix | prefix used in naming. | `string` | `""` | no |
+| name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
+| name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
 | policy\_name | Name of the SSLPolicy to use with Appgw. | `string` | `"AppGwSslPolicy20170401S"` | no |
 | private\_ingress | Private ingress boolean variable. When `true`, the default http listener will listen on private IP instead of the public IP. | `bool` | `false` | no |
 | request\_body\_check | WAF should check the request body. | `bool` | `true` | no |
@@ -159,6 +160,7 @@ module "agic" {
 | ssl\_certificates\_configs | List of maps including ssl certificates configurations. | `list(map(string))` | `[]` | no |
 | stack | Project's stack. | `string` | n/a | yes |
 | trusted\_root\_certificate\_configs | Trusted root certificate configurations. | `list(map(string))` | `[]` | no |
+| use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_aks_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
 | use\_existing\_application\_gateway | True to use an existing Application Gateway instead of creating a new one.<br>If true you may use appgw\_ingress\_controller\_values = { appgw.shared = true } to tell AGIC to not erase the whole Application Gateway configuration with its own configuration.<br>You also have to deploy AzureIngressProhibitedTarget CRD.<br>https://github.com/Azure/application-gateway-kubernetes-ingress/blob/072626cb4e37f7b7a1b0c4578c38d1eadc3e8701/docs/setup/install-existing.md#multi-cluster--shared-app-gateway | `bool` | `false` | no |
 | waf\_exclusion\_settings | Appgw WAF exclusion settings. | `list(map(string))` | `[]` | no |
 | zones | Application gateway's Zones to use. | `list(string)` | <pre>[<br>  "1",<br>  "2",<br>  "3"<br>]</pre> | no |

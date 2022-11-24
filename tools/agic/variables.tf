@@ -1,9 +1,4 @@
 # Common inputs
-variable "location_short" {
-  description = "Short name of Azure regions to use."
-  type        = string
-}
-
 variable "client_name" {
   description = "Client name/account used in naming"
   type        = string
@@ -14,18 +9,28 @@ variable "location" {
   type        = string
 }
 
+variable "location_short" {
+  description = "Short name of Azure regions to use."
+  type        = string
+}
+
 variable "resource_group_name" {
   description = "Name of the resource group in which to deploy the application gateway."
   type        = string
 }
 
-# Network inputs
-
-variable "ip_name" {
-  description = "Name of the applications gateway's public ip address"
+variable "environment" {
+  description = "Project's environment."
   type        = string
 }
 
+variable "stack" {
+  description = "Project's stack."
+  type        = string
+}
+
+
+# Network inputs
 variable "ip_tags" {
   description = "Specific tags for the public ip address."
   type        = map(string)
@@ -66,11 +71,6 @@ variable "application_gateway_id" {
   default     = null
 }
 
-variable "name" {
-  description = "Name of the application gateway."
-  type        = string
-}
-
 variable "sku_capacity" {
   description = "Application gateway's SKU capacity."
   type        = string
@@ -93,16 +93,6 @@ variable "zones" {
   description = "Application gateway's Zones to use."
   type        = list(string)
   default     = ["1", "2", "3"]
-}
-
-variable "frontend_ip_configuration_name" {
-  description = "Name of the appgw frontend ip configuration."
-  type        = string
-}
-
-variable "gateway_ip_configuration_name" {
-  description = "Name of the appgw gateway ip configuration."
-  type        = string
 }
 
 variable "gateway_identity_id" {
@@ -220,16 +210,6 @@ variable "app_gateway_tags" {
   type        = map(string)
 }
 
-variable "environment" {
-  description = "Project's environment."
-  type        = string
-}
-
-variable "stack" {
-  description = "Project's stack."
-  type        = string
-}
-
 # WAF Values
 variable "enabled_waf" {
   description = "Enable WAF or not."
@@ -289,12 +269,6 @@ variable "aks_aad_pod_identity_principal_id" {
   type        = string
 }
 
-variable "name_prefix" {
-  description = "prefix used in naming."
-  type        = string
-  default     = ""
-}
-
 variable "agic_enabled" {
   description = "Enable application gateway ingress controller."
   type        = bool
@@ -327,12 +301,6 @@ variable "private_ingress" {
 
 variable "appgw_private_ip" {
   description = "Private IP for Application Gateway. Used when variable `private_ingress` is set to `true`."
-  type        = string
-  default     = null
-}
-
-variable "frontend_priv_ip_configuration_name" {
-  description = "Name of the appgw frontend private ip configuration."
   type        = string
   default     = null
 }
