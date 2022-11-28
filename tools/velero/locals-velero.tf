@@ -18,6 +18,7 @@ EOF
     tags                     = {}
     allowed_cidrs            = []
     allowed_subnet_ids       = []
+    bypass                   = ["Logging", "Metrics", "AzureServices"]
     container_name           = "velero"
   }
 

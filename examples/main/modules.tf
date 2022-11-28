@@ -100,8 +100,9 @@ module "aks" {
   location            = module.azure_region.location
   location_short      = module.azure_region.location_short
 
-  service_cidr       = "10.0.16.0/22"
-  kubernetes_version = "1.19.7"
+  private_cluster_enabled = false
+  service_cidr            = "10.0.16.0/22"
+  kubernetes_version      = "1.19.7"
 
   vnet_id         = module.azure_virtual_network.virtual_network_id
   nodes_subnet_id = module.node_network_subnet.subnet_id
