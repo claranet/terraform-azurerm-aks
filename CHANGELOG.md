@@ -1,3 +1,12 @@
+# Unreleased
+
+Added
+  * AZ-908/AZ-515: Implement Azure CAF naming (using Microsoft provider)
+
+Changed
+  * AZ-908: Bump `diagnostic-settings`, uses standard variables names
+  * AZ-908: AzureRM provider updated to `v3.22+`
+
 # v7.1.1 - 2022-11-04
 
 Fixed

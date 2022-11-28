@@ -4,9 +4,12 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0"
+      version = "~> 3.22"
     }
-
+    azurecaf = {
+      source  = "aztfmod/azurecaf"
+      version = "~> 1.2, >= 1.2.22"
+    }
     # tflint-ignore: terraform_unused_required_providers
     helm = {
       source  = "hashicorp/helm"

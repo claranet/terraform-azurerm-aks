@@ -23,13 +23,6 @@ variable "stack" {
   type        = string
 }
 
-
-variable "name_prefix" {
-  description = "Prefix used in naming"
-  type        = string
-  default     = ""
-}
-
 variable "resource_group_name" {
   description = "Name of the AKS resource group"
   type        = string
@@ -144,7 +137,6 @@ variable "appgw_user_assigned_identity_resource_group_name" {
 variable "default_node_pool" {
   description = <<EOD
 Default node pool configuration:
-
 ```
 map(object({
     name                  = string
@@ -165,13 +157,12 @@ map(object({
 }))
 ```
 EOD
-
-  type    = map(any)
-  default = {}
+  type        = map(any)
+  default     = {}
 }
 
 variable "nodes_subnet_id" {
-  description = "Id of the subnet used for nodes"
+  description = "ID of the subnet used for nodes"
   type        = string
 }
 
@@ -544,9 +535,8 @@ variable "aadpodidentity_kubenet_policy_enabled" {
   to mitigate potential security issue with aadpodidentity used with kubenet : 
   https://docs.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities "
 EOD
-
-  type    = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "private_ingress" {

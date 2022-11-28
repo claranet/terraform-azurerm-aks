@@ -18,26 +18,28 @@ variable "use_caf_naming" {
 }
 
 # Custom naming override
-variable "aadpodidentity_custom_name" {
-  description = "Custom name for aad pod identity MSI"
+variable "name" {
+  description = "Name of the application gateway."
   type        = string
-  default     = "aad-pod-identity"
 }
 
-variable "custom_aks_name" {
-  description = "Custom AKS name"
+variable "ip_name" {
+  description = "Name of the applications gateway's public ip address"
   type        = string
-  default     = ""
 }
 
-variable "aks_user_assigned_identity_custom_name" {
-  description = "Custom name for the aks user assigned identity resource"
+variable "frontend_ip_configuration_name" {
+  description = "Name of the appgw frontend ip configuration."
   type        = string
-  default     = null
 }
 
-variable "appgw_user_assigned_identity_custom_name" {
-  description = "Custom name for the application gateway user assigned identity resource"
+variable "gateway_ip_configuration_name" {
+  description = "Name of the appgw gateway ip configuration."
+  type        = string
+}
+
+variable "frontend_priv_ip_configuration_name" {
+  description = "Name of the appgw frontend private ip configuration."
   type        = string
   default     = null
 }

@@ -49,9 +49,7 @@ More details about variables set by the `terraform-wrapper` available in the [do
 
 ```hcl
 locals {
-
   allowed_cidrs = ["x.x.x.x", "y.y.y.y"]
-
 }
 
 module "azure_region" {
@@ -84,7 +82,6 @@ module "azure_virtual_network" {
   resource_group_name = module.rg.resource_group_name
 
   vnet_cidr = ["10.0.0.0/19"]
-
 }
 
 module "node_network_subnet" {
@@ -102,7 +99,6 @@ module "node_network_subnet" {
   subnet_cidr_list = ["10.0.0.0/20"]
 
   service_endpoints = ["Microsoft.Storage"]
-
 }
 
 module "appgtw_network_subnet" {
@@ -118,8 +114,6 @@ module "appgtw_network_subnet" {
   virtual_network_name = module.azure_virtual_network.virtual_network_name
 
   subnet_cidr_list = ["10.0.20.0/24"]
-
-
 }
 
 module "global_run" {
@@ -137,7 +131,6 @@ module "global_run" {
   resource_group_name = module.rg.resource_group_name
 
   tenant_id = var.azure_tenant_id
-
 }
 
 module "aks" {
@@ -183,7 +176,6 @@ module "aks" {
       min_count           = 3
       max_count           = 9
     }
-
   ]
 
   linux_profile = {
@@ -194,16 +186,15 @@ module "aks" {
   oms_log_analytics_workspace_id = module.global_run.log_analytics_workspace_id
   azure_policy_enabled           = false
 
-  diagnostic_settings_logs_destination_ids = [module.global_run.log_analytics_workspace_id]
+  logs_destinations_ids = [module.global_run.log_analytics_workspace_id]
 
   appgw_subnet_id = module.appgtw_network_subnet.subnet_id
 
-  appgw_ingress_controller_values = { "verbosityLevel" = "5", "appgw.shared" = "true" }
+  appgw_ingress_controller_values = { "verbosityLevel" = 5, "appgw.shared" = true }
   cert_manager_settings           = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
   velero_storage_settings         = { allowed_cidrs = local.allowed_cidrs }
 
   container_registries_id = [module.acr.acr_id]
-
 }
 
 module "acr" {
@@ -227,7 +218,8 @@ module "acr" {
 
 | Name | Version |
 |------|---------|
-| azurerm | ~> 3.0 |
+| azurecaf | ~> 1.2, >= 1.2.22 |
+| azurerm | ~> 3.22 |
 
 ## Modules
 
@@ -235,7 +227,7 @@ module "acr" {
 |------|--------|---------|
 | appgw | ./tools/agic | n/a |
 | certmanager | ./tools/cert-manager | n/a |
-| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 4.0.3 |
+| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 6.2.0 |
 | infra | ./modules/infra | n/a |
 | kured | ./tools/kured | n/a |
 | velero | ./tools/velero | n/a |
@@ -255,6 +247,10 @@ module "acr" {
 | [azurerm_role_assignment.aks_user_assigned](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_user_assigned_identity.aks_user_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
 | [azurerm_user_assigned_identity.appgw_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azurecaf_name.aks](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
+| [azurecaf_name.aks_identity](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
+| [azurecaf_name.appgw](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
+| [azurecaf_name.appgw_identity](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
 | [azurerm_policy_definition.aks_policy_kubenet_aadpodidentity_definition](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/policy_definition) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
@@ -301,14 +297,10 @@ module "acr" {
 | container\_registries\_id | List of Azure Container Registries ids where AKS needs pull access. | `list(string)` | `[]` | no |
 | custom\_aks\_name | Custom AKS name | `string` | `""` | no |
 | custom\_appgw\_name | Custom name for AKS ingress application gateway | `string` | `""` | no |
+| custom\_diagnostic\_settings\_name | Custom name of the diagnostics settings, name will be 'default' if not set. | `string` | `"default"` | no |
 | default\_node\_pool | Default node pool configuration:<pre>map(object({<br>    name                  = string<br>    count                 = number<br>    vm_size               = string<br>    os_type               = string<br>    zones                 = list(number)<br>    enable_auto_scaling   = bool<br>    min_count             = number<br>    max_count             = number<br>    type                  = string<br>    node_taints           = list(string)<br>    vnet_subnet_id        = string<br>    max_pods              = number<br>    os_disk_type          = string<br>    os_disk_size_gb       = number<br>    enable_node_public_ip = bool<br>}))</pre> | `map(any)` | `{}` | no |
 | default\_node\_pool\_tags | Specific tags for default node pool | `map(string)` | `{}` | no |
 | default\_tags\_enabled | Option to enable or disable default tags | `bool` | `true` | no |
-| diagnostic\_settings\_custom\_name | Custom name for Azure Diagnostics for AKS. | `string` | `"default"` | no |
-| diagnostic\_settings\_log\_categories | List of log categories | `list(string)` | `null` | no |
-| diagnostic\_settings\_logs\_destination\_ids | List of destination resources IDs for logs diagnostic destination. Can be Storage Account, Log Analytics Workspace and Event Hub. No more than one of each can be set. | `list(string)` | `[]` | no |
-| diagnostic\_settings\_metric\_categories | List of metric categories | `list(string)` | `null` | no |
-| diagnostic\_settings\_retention\_days | The number of days to keep diagnostic logs. | `number` | `30` | no |
 | docker\_bridge\_cidr | IP address for docker with Network CIDR. | `string` | `"172.16.0.1/16"` | no |
 | enable\_cert\_manager | Enable cert-manager on AKS cluster | `bool` | `true` | no |
 | enable\_kured | Enable kured daemon on AKS cluster | `bool` | `true` | no |
@@ -323,11 +315,16 @@ module "acr" {
 | linux\_profile | Username and ssh key for accessing AKS Linux nodes with ssh. | <pre>object({<br>    username = string,<br>    ssh_key  = string<br>  })</pre> | `null` | no |
 | location | Azure region to use | `string` | n/a | yes |
 | location\_short | Short name of Azure regions to use | `string` | n/a | yes |
-| name\_prefix | Prefix used in naming | `string` | `""` | no |
+| logs\_categories | Log categories to send to destinations. | `list(string)` | `null` | no |
+| logs\_destinations\_ids | List of destination resources IDs for logs diagnostic destination.<br>Can be `Storage Account`, `Log Analytics Workspace` and `Event Hub`. No more than one of each can be set.<br>If you want to specify an Azure EventHub to send logs and metrics to, you need to provide a formated string with both the EventHub Namespace authorization send ID and the EventHub name (name of the queue to use in the Namespace) separated by the `|` character. | `list(string)` | n/a | yes |
+| logs\_metrics\_categories | Metrics categories to send to destinations. | `list(string)` | `null` | no |
+| logs\_retention\_days | Number of days to keep logs on storage account. | `number` | `30` | no |
+| name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
+| name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
 | node\_pool\_tags | Specific tags for node pool | `map(string)` | `{}` | no |
 | node\_resource\_group | Name of the resource group in which to put AKS nodes. If null default to MC\_<AKS RG Name> | `string` | `null` | no |
 | nodes\_pools | A list of nodes pools to create, each item supports same properties as `local.default_agent_profile` | `list(any)` | n/a | yes |
-| nodes\_subnet\_id | Id of the subnet used for nodes | `string` | n/a | yes |
+| nodes\_subnet\_id | ID of the subnet used for nodes | `string` | n/a | yes |
 | oms\_log\_analytics\_workspace\_id | The ID of the Log Analytics Workspace used to send OMS logs | `string` | n/a | yes |
 | outbound\_type | The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`. | `string` | `"loadBalancer"` | no |
 | private\_cluster\_enabled | Configure AKS as a Private Cluster : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled | `bool` | `false` | no |
@@ -337,6 +334,7 @@ module "acr" {
 | resource\_group\_name | Name of the AKS resource group | `string` | n/a | yes |
 | service\_cidr | CIDR used by kubernetes services (kubectl get svc). | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
+| use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_aks_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
 | use\_existing\_application\_gateway | True to use an existing Application Gateway instead of creating a new one.<br>If true you may use `appgw_ingress_controller_values = { appgw.shared = true }` to tell AGIC to not erase the whole Application Gateway configuration with its own configuration.<br>You also have to deploy AzureIngressProhibitedTarget CRD.<br>https://github.com/Azure/application-gateway-kubernetes-ingress/blob/072626cb4e37f7b7a1b0c4578c38d1eadc3e8701/docs/setup/install-existing.md#multi-cluster--shared-app-gateway | `bool` | `false` | no |
 | velero\_chart\_repository | URL of the Helm chart repository | `string` | `"https://vmware-tanzu.github.io/helm-charts"` | no |
 | velero\_chart\_version | Velero helm chart version to use | `string` | `"2.29.5"` | no |

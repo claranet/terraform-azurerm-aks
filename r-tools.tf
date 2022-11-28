@@ -15,11 +15,12 @@ module "appgw" {
   resource_group_name   = var.resource_group_name
   app_gateway_subnet_id = var.appgw_subnet_id
 
-  diagnostic_settings_logs_destination_ids = var.diagnostic_settings_logs_destination_ids
-  diagnostic_settings_log_categories       = var.diagnostic_settings_log_categories
-  diagnostic_settings_metric_categories    = var.diagnostic_settings_metric_categories
-  diagnostic_settings_custom_name          = var.diagnostic_settings_custom_name
-  diagnostic_settings_retention_days       = var.diagnostic_settings_retention_days
+  custom_diagnostic_settings_name = var.custom_diagnostic_settings_name
+
+  logs_destinations_ids   = var.logs_destinations_ids
+  logs_retention_days     = var.logs_retention_days
+  logs_categories         = var.logs_categories
+  logs_metrics_categories = var.logs_metrics_categories
 
   ip_name                             = local.appgw_settings.ip_name
   ip_sku                              = local.appgw_settings.ip_sku

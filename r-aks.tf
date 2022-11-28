@@ -1,9 +1,9 @@
 resource "azurerm_kubernetes_cluster" "aks" {
 
-  name                            = coalesce(var.custom_aks_name, local.aks_name)
+  name                            = local.aks_name
   location                        = var.location
   resource_group_name             = var.resource_group_name
-  dns_prefix                      = replace(coalesce(var.custom_aks_name, local.aks_name), "/[\\W_]/", "-")
+  dns_prefix                      = replace(local.aks_name, "/[\\W_]/", "-")
   kubernetes_version              = var.kubernetes_version
   sku_tier                        = var.aks_sku_tier
   api_server_authorized_ip_ranges = var.private_cluster_enabled ? null : var.api_server_authorized_ip_ranges
@@ -123,4 +123,3 @@ resource "azurerm_role_assignment" "aks_user_assigned" {
   scope                = format("/subscriptions/%s/resourceGroups/%s", data.azurerm_subscription.current.subscription_id, azurerm_kubernetes_cluster.aks.node_resource_group)
   role_definition_name = "Contributor"
 }
-

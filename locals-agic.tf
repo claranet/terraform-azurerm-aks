@@ -1,7 +1,4 @@
 locals {
-  default_appgw_name = "${local.name_prefix}${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-aks-appgw"
-  appgw_name         = coalesce(var.custom_appgw_name, local.default_appgw_name)
-
   appgw_default_settings = {
     ip_name                             = "${local.appgw_name}-pip"
     ip_sku                              = "Standard"
