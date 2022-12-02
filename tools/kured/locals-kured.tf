@@ -2,8 +2,8 @@ locals {
   # Forced to kube-system due to Chart specificity
   namespace = "kube-system"
   kured_default_values = {
-    "image.repository"         = "weaveworks/kured"
-    "image.tag"                = "1.5.0"
+    "image.repository"         = "ghcr.io/kubereboot/kured"
+    "image.tag"                = "1.11.0"
     "image.pullPolicy"         = "IfNotPresent"
     "extraArgs.reboot-days"    = "mon"
     "extraArgs.start-time"     = "3am"
