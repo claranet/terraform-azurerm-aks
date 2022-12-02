@@ -1,4 +1,4 @@
-# Unreleased
+# v7.2.0 - 2022-12-02
 
 Added
   * AZ-908/AZ-515: Implement Azure CAF naming (using Microsoft provider)
