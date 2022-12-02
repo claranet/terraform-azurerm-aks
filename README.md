@@ -220,7 +220,7 @@ module "acr" {
 | Name | Version |
 |------|---------|
 | azurecaf | ~> 1.2, >= 1.2.22 |
-| azurerm | >= 3.13 |
+| azurerm | ~> 3.22 |
 
 ## Modules
 
@@ -270,7 +270,7 @@ module "acr" {
 | agic\_chart\_version | Version of the Helm chart | `string` | `"1.5.2"` | no |
 | agic\_enabled | Enable Application gateway ingress controller | `bool` | `true` | no |
 | agic\_helm\_version | [DEPRECATED] Version of Helm chart to deploy | `string` | `null` | no |
-| aks\_http\_proxy\_settings | aks http proxy settings. Urls should be in format http(s)://fqdn:port/ | <pre>object({<br>    http_proxy_url    = optional(string)<br>    https_proxy_url   = optional(string)<br>    no_proxy_url_list = optional(list(string))<br>    trusted_ca        = optional(string)<br>  })</pre> | `null` | no |
+| aks\_http\_proxy\_settings | AKS HTTP proxy settings. URLs must be in format `http(s)://fqdn:port/`. | <pre>object({<br>    http_proxy_url    = optional(string)<br>    https_proxy_url   = optional(string)<br>    no_proxy_url_list = optional(list(string))<br>    trusted_ca        = optional(string)<br>  })</pre> | `null` | no |
 | aks\_network\_plugin | AKS network plugin to use. Possible values are `azure` and `kubenet`. Changing this forces a new resource to be created | `string` | `"azure"` | no |
 | aks\_network\_policy | AKS network policy to use. | `string` | `"calico"` | no |
 | aks\_pod\_cidr | CIDR used by pods when network plugin is set to `kubenet`. https://docs.microsoft.com/en-us/azure/aks/configure-kubenet | `string` | `"172.17.0.0/16"` | no |
@@ -287,7 +287,7 @@ module "acr" {
 | appgw\_ssl\_certificates\_configs | Application gateway ssl certificates configuration | `list(map(string))` | `[]` | no |
 | appgw\_subnet\_id | Application gateway subnet id | `string` | `""` | no |
 | appgw\_user\_assigned\_identity\_custom\_name | Custom name for the application gateway user assigned identity resource | `string` | `null` | no |
-| appgw\_user\_assigned\_identity\_resource\_group\_name | Resource Group where to deploy the application gateway user assigned identity resource | `string` | `null` | no |
+| appgw\_user\_assigned\_identity\_resource\_group\_name | Resource Group where to deploy the Application Gateway User Assigned Identity resource. | `string` | `null` | no |
 | application\_gateway\_id | ID of an existing Application Gateway to use as an AGIC. `use_existing_application_gateway` must be set to `true`. | `string` | `null` | no |
 | auto\_scaler\_profile | Map to configure `auto_scaler_profile` block. | <pre>map(object({<br>    balance_similar_node_groups      = optional(bool, false)<br>    expander                         = optional(string, "random")<br>    max_graceful_termination_sec     = optional(number, 600)<br>    max_node_provisioning_time       = optional(string, "15m")<br>    max_unready_nodes                = optional(number, 3)<br>    max_unready_percentage           = optional(number, 45)<br>    new_pod_scale_up_delay           = optional(string, "10s")<br>    scale_down_delay_after_add       = optional(string, "10m")<br>    scale_down_delay_after_delete    = optional(string, "10s")<br>    scale_down_delay_after_failure   = optional(string, "3m")<br>    scan_interval                    = optional(string, "10s")<br>    scale_down_unneeded              = optional(string, "10m")<br>    scale_down_unready               = optional(string, "20m")<br>    scale_down_utilization_threshold = optional(number, 0.5)<br>    empty_bulk_delete_max            = optional(number, 10)<br>    skip_nodes_with_local_storage    = optional(bool, true)<br>    skip_nodes_with_system_pods      = optional(bool, true)<br>  }))</pre> | `null` | no |
 | azure\_policy\_enabled | Should the Azure Policy Add-On be enabled? | `bool` | `false` | no |
