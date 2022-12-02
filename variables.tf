@@ -183,8 +183,8 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
-variable "aci_subnet_name" {
-  description = "Optional subnet Name used for ACI virtual-nodes"
+variable "aci_subnet_id" {
+  description = "Optional subnet Id used for ACI virtual-nodes"
   type        = string
   default     = null
 }
