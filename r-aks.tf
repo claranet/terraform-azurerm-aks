@@ -15,7 +15,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   private_dns_zone_id     = var.private_cluster_enabled ? local.private_dns_zone : null
 
   dynamic "aci_connector_linux" {
-    for_each = var.aci_subnet_id != null ? [true] : []
+    for_each = var.aci_subnet_id != null && var.aks_network_plugin != "kubenet" ? [true] : []
     content {
       subnet_name = var.aci_subnet_id
     }
