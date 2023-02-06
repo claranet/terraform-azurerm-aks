@@ -96,12 +96,14 @@ module "node_network_subnet" {
   resource_group_name  = module.rg.resource_group_name
   virtual_network_name = module.azure_virtual_network.virtual_network_name
 
+  name_suffix = "nodes"
+
   subnet_cidr_list = ["10.0.0.0/20"]
 
   service_endpoints = ["Microsoft.Storage"]
 }
 
-module "appgtw_network_subnet" {
+module "appgw_network_subnet" {
   source  = "claranet/subnet/azurerm"
   version = "x.x.x"
 
@@ -113,11 +115,13 @@ module "appgtw_network_subnet" {
   resource_group_name  = module.rg.resource_group_name
   virtual_network_name = module.azure_virtual_network.virtual_network_name
 
+  name_suffix = "appgw"
+
   subnet_cidr_list = ["10.0.20.0/24"]
 }
 
 module "global_run" {
-  source  = "claranet/run-common/azurerm"
+  source  = "claranet/run/azurerm"
   version = "x.x.x"
 
   client_name    = var.client_name
@@ -131,6 +135,10 @@ module "global_run" {
   resource_group_name = module.rg.resource_group_name
 
   tenant_id = var.azure_tenant_id
+}
+
+resource "tls_private_key" "key" {
+  algorithm = "RSA"
 }
 
 module "aks" {
@@ -180,8 +188,8 @@ module "aks" {
   ]
 
   linux_profile = {
-    username = "user"
-    ssh_key  = "ssh_priv_key"
+    username = "nodeadmin"
+    ssh_key  = tls_private_key.key.public_key_openssh
   }
 
   oms_log_analytics_workspace_id = module.global_run.log_analytics_workspace_id
@@ -189,7 +197,7 @@ module "aks" {
 
   logs_destinations_ids = [module.global_run.log_analytics_workspace_id]
 
-  appgw_subnet_id = module.appgtw_network_subnet.subnet_id
+  appgw_subnet_id = module.appgw_network_subnet.subnet_id
 
   appgw_ingress_controller_values = { "verbosityLevel" = 5, "appgw.shared" = true }
   cert_manager_settings           = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
@@ -228,7 +236,7 @@ module "acr" {
 |------|--------|---------|
 | appgw | ./tools/agic | n/a |
 | certmanager | ./tools/cert-manager | n/a |
-| diagnostic\_settings | claranet/diagnostic-settings/azurerm | 6.2.0 |
+| diagnostic\_settings | claranet/diagnostic-settings/azurerm | ~> 6.3.0 |
 | infra | ./modules/infra | n/a |
 | kured | ./tools/kured | n/a |
 | velero | ./tools/velero | n/a |
@@ -320,6 +328,7 @@ module "acr" {
 | location\_short | Short name of Azure regions to use | `string` | n/a | yes |
 | logs\_categories | Log categories to send to destinations. | `list(string)` | `null` | no |
 | logs\_destinations\_ids | List of destination resources IDs for logs diagnostic destination.<br>Can be `Storage Account`, `Log Analytics Workspace` and `Event Hub`. No more than one of each can be set.<br>If you want to specify an Azure EventHub to send logs and metrics to, you need to provide a formated string with both the EventHub Namespace authorization send ID and the EventHub name (name of the queue to use in the Namespace) separated by the `|` character. | `list(string)` | n/a | yes |
+| logs\_kube\_audit\_enabled | Whether to include `kube-audit` and `kube-audit-admin` logs from diagnostics settings collection. Enabling this can increase your Azure billing. | `bool` | `false` | no |
 | logs\_metrics\_categories | Metrics categories to send to destinations. | `list(string)` | `null` | no |
 | logs\_retention\_days | Number of days to keep logs on storage account. | `number` | `30` | no |
 | name\_prefix | Optional prefix for the generated name | `string` | `""` | no |

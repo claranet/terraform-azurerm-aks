@@ -46,12 +46,14 @@ module "node_network_subnet" {
   resource_group_name  = module.rg.resource_group_name
   virtual_network_name = module.azure_virtual_network.virtual_network_name
 
+  name_suffix = "nodes"
+
   subnet_cidr_list = ["10.0.0.0/20"]
 
   service_endpoints = ["Microsoft.Storage"]
 }
 
-module "appgtw_network_subnet" {
+module "appgw_network_subnet" {
   source  = "claranet/subnet/azurerm"
   version = "x.x.x"
 
@@ -63,11 +65,13 @@ module "appgtw_network_subnet" {
   resource_group_name  = module.rg.resource_group_name
   virtual_network_name = module.azure_virtual_network.virtual_network_name
 
+  name_suffix = "appgw"
+
   subnet_cidr_list = ["10.0.20.0/24"]
 }
 
 module "global_run" {
-  source  = "claranet/run-common/azurerm"
+  source  = "claranet/run/azurerm"
   version = "x.x.x"
 
   client_name    = var.client_name
@@ -81,6 +85,10 @@ module "global_run" {
   resource_group_name = module.rg.resource_group_name
 
   tenant_id = var.azure_tenant_id
+}
+
+resource "tls_private_key" "key" {
+  algorithm = "RSA"
 }
 
 module "aks" {
@@ -130,8 +138,8 @@ module "aks" {
   ]
 
   linux_profile = {
-    username = "user"
-    ssh_key  = "ssh_priv_key"
+    username = "nodeadmin"
+    ssh_key  = tls_private_key.key.public_key_openssh
   }
 
   oms_log_analytics_workspace_id = module.global_run.log_analytics_workspace_id
@@ -139,7 +147,7 @@ module "aks" {
 
   logs_destinations_ids = [module.global_run.log_analytics_workspace_id]
 
-  appgw_subnet_id = module.appgtw_network_subnet.subnet_id
+  appgw_subnet_id = module.appgw_network_subnet.subnet_id
 
   appgw_ingress_controller_values = { "verbosityLevel" = 5, "appgw.shared" = true }
   cert_manager_settings           = { "cainjector.nodeSelector.agentpool" = "default", "nodeSelector.agentpool" = "default", "webhook.nodeSelector.agentpool" = "default" }
