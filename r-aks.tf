@@ -9,7 +9,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   api_server_authorized_ip_ranges  = var.private_cluster_enabled ? null : var.api_server_authorized_ip_ranges
   node_resource_group              = var.node_resource_group
   enable_pod_security_policy       = var.enable_pod_security_policy
-  http_application_routing_enabled = var.enable_http_application_routing
+  http_application_routing_enabled = var.http_application_routing_enabled
 
   private_cluster_enabled = var.private_cluster_enabled
   private_dns_zone_id     = var.private_cluster_enabled ? local.private_dns_zone : null

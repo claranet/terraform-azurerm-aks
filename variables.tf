@@ -52,7 +52,7 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
-variable "enable_http_application_routing" {
+variable "http_application_routing_enabled" {
   description = "Should HTTP Application Routing be enabled?"
   type        = bool
   default     = false
