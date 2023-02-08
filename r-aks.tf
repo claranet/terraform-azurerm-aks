@@ -1,14 +1,15 @@
 #tfsec:ignore:azure-container-use-rbac-permissions
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                            = local.aks_name
-  location                        = var.location
-  resource_group_name             = var.resource_group_name
-  dns_prefix                      = replace(local.aks_name, "/[\\W_]/", "-")
-  kubernetes_version              = var.kubernetes_version
-  sku_tier                        = var.aks_sku_tier
-  api_server_authorized_ip_ranges = var.private_cluster_enabled ? null : var.api_server_authorized_ip_ranges
-  node_resource_group             = var.node_resource_group
-  enable_pod_security_policy      = var.enable_pod_security_policy
+  name                             = local.aks_name
+  location                         = var.location
+  resource_group_name              = var.resource_group_name
+  dns_prefix                       = replace(local.aks_name, "/[\\W_]/", "-")
+  kubernetes_version               = var.kubernetes_version
+  sku_tier                         = var.aks_sku_tier
+  api_server_authorized_ip_ranges  = var.private_cluster_enabled ? null : var.api_server_authorized_ip_ranges
+  node_resource_group              = var.node_resource_group
+  enable_pod_security_policy       = var.enable_pod_security_policy
+  http_application_routing_enabled = var.http_application_routing_enabled
 
   private_cluster_enabled = var.private_cluster_enabled
   private_dns_zone_id     = var.private_cluster_enabled ? local.private_dns_zone : null

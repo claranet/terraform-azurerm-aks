@@ -52,6 +52,12 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
+variable "http_application_routing_enabled" {
+  description = "Should HTTP Application Routing be enabled?"
+  type        = bool
+  default     = false
+}
+
 variable "private_cluster_enabled" {
   description = "Configure AKS as a Private Cluster: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#private_cluster_enabled"
   type        = bool
