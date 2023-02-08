@@ -3,6 +3,12 @@
 Added
   * [GH-8](https://github.com/claranet/terraform-azurerm-aks/pull/8): Add HTTP Application Routing option
 
+Changed
+  * AZ-992: Prevent the gathering of `kube-audit` and `kube-audit-admin` logs by default.
+
+Fixed 
+  * AZ-992: Fix examples
+
 # v7.2.0 - 2022-12-02
 
 Added

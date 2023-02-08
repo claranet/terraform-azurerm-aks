@@ -32,3 +32,9 @@ variable "custom_diagnostic_settings_name" {
   type        = string
   default     = "default"
 }
+
+variable "logs_kube_audit_enabled" {
+  description = "Whether to include `kube-audit` and `kube-audit-admin` logs from diagnostics settings collection. Enabling this can increase your Azure billing."
+  type        = bool
+  default     = false
+}
