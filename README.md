@@ -310,6 +310,7 @@ module "acr" {
 | enable\_velero | Enable velero on AKS cluster | `bool` | `true` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
+| http\_application\_routing\_enabled | Whether HTTP Application Routing is enabled. | `bool` | `false` | no |
 | kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.17.9"` | no |
 | kured\_chart\_repository | Helm chart repository URL | `string` | `"https://kubereboot.github.io/charts"` | no |
 | kured\_chart\_version | Version of the Helm chart | `string` | `"2.2.0"` | no |

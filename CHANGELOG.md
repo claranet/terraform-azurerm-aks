@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * [GH-8](https://github.com/claranet/terraform-azurerm-aks/pull/8): Add HTTP Application Routing option
+
 # v7.2.0 - 2022-12-02
 
 Added
