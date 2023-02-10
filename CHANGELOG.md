@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * [GH-7](https://github.com/claranet/terraform-azurerm-aks/pull/7): Fix issues with output and local variables when agic is disabled
+
 # v7.3.0 - 2023-02-08
 
 Added
