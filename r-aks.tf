@@ -14,6 +14,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
   private_cluster_enabled = var.private_cluster_enabled
   private_dns_zone_id     = var.private_cluster_enabled ? local.private_dns_zone : null
 
+  dynamic "aci_connector_linux" {
+    for_each = var.aci_subnet_id != null && var.aks_network_plugin != "kubenet" ? [true] : []
+    content {
+      subnet_name = element(split("/", var.aci_subnet_id), length(split("/", var.aci_subnet_id)) - 1)
+    }
+  }
+
   default_node_pool {
     name                = local.default_node_pool.name
     node_count          = local.default_node_pool.count

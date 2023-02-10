@@ -227,6 +227,7 @@ module "acr" {
 
 | Name | Version |
 |------|---------|
+| azuread | ~> 2.31 |
 | azurecaf | ~> 1.2, >= 1.2.22 |
 | azurerm | ~> 3.22 |
 
@@ -249,6 +250,7 @@ module "acr" {
 | [azurerm_kubernetes_cluster_node_pool.node_pools](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool) | resource |
 | [azurerm_resource_policy_assignment.aks_policy_kubenet_aadpodidentity_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_policy_assignment) | resource |
 | [azurerm_role_assignment.aad_pod_identity_mio_appgw_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aci_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_acr_pull_allowed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_uai_private_dns_zone_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_uai_route_table_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
@@ -256,6 +258,7 @@ module "acr" {
 | [azurerm_role_assignment.aks_user_assigned](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_user_assigned_identity.aks_user_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
 | [azurerm_user_assigned_identity.appgw_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azuread_service_principal.aci_identity](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 | [azurecaf_name.aks](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
 | [azurecaf_name.aks_identity](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
 | [azurecaf_name.appgw](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
@@ -271,9 +274,10 @@ module "acr" {
 | aadpodidentity\_chart\_version | AAD Pod Identity helm chart version to use | `string` | `"4.1.9"` | no |
 | aadpodidentity\_custom\_name | Custom name for aad pod identity MSI | `string` | `"aad-pod-identity"` | no |
 | aadpodidentity\_extra\_tags | Extra Tags to add to aad pod identity MSI | `map(string)` | `{}` | no |
-| aadpodidentity\_kubenet\_policy\_enabled | Boolean to wether deploy or not a built-in Azure Policy at the cluster level <br>  to mitigate potential security issue with aadpodidentity used with kubenet : <br>  https://docs.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities " | `bool` | `false` | no |
+| aadpodidentity\_kubenet\_policy\_enabled | Boolean to wether deploy or not a built-in Azure Policy at the cluster level<br>  to mitigate potential security issue with aadpodidentity used with kubenet :<br>  https://docs.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities " | `bool` | `false` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart:<pre>map(object({<br>  nmi.nodeSelector.agentpool    = string<br>  mic.nodeSelector.agentpool    = string<br>  azureIdentity.enabled         = bool<br>  azureIdentity.type            = string<br>  azureIdentity.resourceID      = string<br>  azureIdentity.clientID        = string<br>  nmi.micNamespace              = string<br>}))</pre> | `map(string)` | `{}` | no |
+| aci\_subnet\_id | Optional subnet Id used for ACI virtual-nodes | `string` | `null` | no |
 | agic\_chart\_repository | Helm chart repository URL | `string` | `"https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/"` | no |
 | agic\_chart\_version | Version of the Helm chart | `string` | `"1.5.2"` | no |
 | agic\_enabled | Enable Application gateway ingress controller | `bool` | `true` | no |

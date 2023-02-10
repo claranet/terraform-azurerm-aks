@@ -183,6 +183,12 @@ variable "nodes_subnet_id" {
   type        = string
 }
 
+variable "aci_subnet_id" {
+  description = "Optional subnet Id used for ACI virtual-nodes"
+  type        = string
+  default     = null
+}
+
 variable "auto_scaler_profile" {
   description = "Map to configure `auto_scaler_profile` block."
   type = map(object({
@@ -548,8 +554,8 @@ variable "aadpodidentity_chart_version" {
 
 variable "aadpodidentity_kubenet_policy_enabled" {
   description = <<EOD
-  Boolean to wether deploy or not a built-in Azure Policy at the cluster level 
-  to mitigate potential security issue with aadpodidentity used with kubenet : 
+  Boolean to wether deploy or not a built-in Azure Policy at the cluster level
+  to mitigate potential security issue with aadpodidentity used with kubenet :
   https://docs.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities "
 EOD
   type        = bool
