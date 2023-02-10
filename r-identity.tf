@@ -40,3 +40,17 @@ resource "azurerm_role_assignment" "aad_pod_identity_mio_appgw_identity" {
   role_definition_name = "Managed Identity Operator"
   principal_id         = module.infra.aad_pod_identity_principal_id
 }
+
+# Role assignment for ACI, if ACI is enabled
+data "azuread_service_principal" "aci_identity" {
+  count        = var.aci_subnet_id != null ? 1 : 0
+  display_name = "aciconnectorlinux-${coalesce(var.custom_aks_name, local.aks_name)}"
+  depends_on   = [azurerm_kubernetes_cluster.aks]
+}
+
+resource "azurerm_role_assignment" "aci_assignment" {
+  count                = var.aci_subnet_id != null ? 1 : 0
+  scope                = var.aci_subnet_id
+  role_definition_name = "Network Contributor"
+  principal_id         = data.azuread_service_principal.aci_identity[0].id
+}
