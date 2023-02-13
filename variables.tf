@@ -97,6 +97,12 @@ variable "private_dns_zone_id" {
   description = "Id of the private DNS Zone when <private_dns_zone_type> is custom"
 }
 
+variable "private_dns_zone_role_assignment_enabled" {
+  description = "Option to enable or disable Private DNS Zone role assignment."
+  type        = bool
+  default     = true
+}
+
 variable "aks_user_assigned_identity_resource_group_name" {
   description = "Resource Group where to deploy the aks user assigned identity resource. Used when private cluster is enabled and when Azure private dns zone is not managed by aks"
   type        = string
