@@ -2,6 +2,7 @@
 
 Added
   * AZ-1000: Add an option to enable or disable UAI Private DNS Zone role assignment
+  * AZ-1001: Add default `no_proxy_url_list` and some information about the parameter
 
 # v7.4.0 - 2023-02-10
 
