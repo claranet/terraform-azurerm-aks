@@ -1,20 +1,25 @@
 locals {
   default_agent_profile = {
-    name                  = "default"
-    count                 = 1
-    vm_size               = "Standard_D2_v3"
-    os_type               = "Linux"
-    zones                 = [1, 2, 3]
-    enable_auto_scaling   = false
-    min_count             = null
-    max_count             = null
-    type                  = "VirtualMachineScaleSets"
-    node_taints           = null
-    vnet_subnet_id        = var.nodes_subnet_id
-    max_pods              = 30
-    os_disk_type          = "Managed"
-    os_disk_size_gb       = 128
-    enable_node_public_ip = false
+    name                   = "default"
+    count                  = 1
+    vm_size                = "Standard_D2_v3"
+    os_type                = "Linux"
+    zones                  = [1, 2, 3]
+    enable_auto_scaling    = false
+    min_count              = null
+    max_count              = null
+    type                   = "VirtualMachineScaleSets"
+    node_taints            = null
+    node_labels            = null
+    orchestrator_version   = null
+    priority               = null
+    enable_host_encryption = null
+    eviction_policy        = null
+    vnet_subnet_id         = var.nodes_subnet_id
+    max_pods               = 30
+    os_disk_type           = "Managed"
+    os_disk_size_gb        = 128
+    enable_node_public_ip  = false
   }
 
   # Defaults for Linux profile
