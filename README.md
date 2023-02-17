@@ -7,10 +7,10 @@ Inside the cluster default node pool, [velero](https://velero.io/docs/) and [cer
 
 Inside each node pool, [Kured](https://github.com/weaveworks/kured) is installed as a daemonset.
 
-This module also configures logging to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-create-workspace), 
-deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and creates some 
+This module also configures logging to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-create-workspace),
+deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and creates some
 [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) with different types of Azure managed disks (Standard HDD retain and delete, Premium SSD retain and delete).
-  
+
 ## Version compatibility
 
 | Module version | Terraform version | AzureRM version |
@@ -40,6 +40,13 @@ The helm and kubernetes providers must be defined at the root level and then pas
 | >= 3.x.x       | 0.12.x            | >= 2.0          |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
 | <  2.x.x       | 0.11.x            | < 2.0           |
+
+## Contributing
+
+If you want to contribute to this repository, feel free to use our [pre-commit](https://pre-commit.com/) git hook configuration
+which will help you automatically update and format some files for you by enforcing our Terraform code module best-practices.
+
+More details are available in the [CONTRIBUTING.md](./CONTRIBUTING.md#pull-request-process) file.
 
 ## Usage
 
