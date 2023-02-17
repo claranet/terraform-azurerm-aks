@@ -1,25 +1,25 @@
 locals {
   default_agent_profile = {
-    name                   = try(var.default_node_pool.name, "default")
-    count                  = try(var.default_node_pool.count, 1)
-    vm_size                = try(var.default_node_pool.vm_size, "Standard_D2_v3")
-    os_type                = try(var.default_node_pool.os_type, "Linux")
-    zones                  = try(var.default_node_pool.zones, [1, 2, 3])
-    enable_auto_scaling    = try(var.default_node_pool.enable_auto_scaling, false)
-    min_count              = try(var.default_node_pool.min_count, null)
-    max_count              = try(var.default_node_pool.max_count, null)
-    type                   = try(var.default_node_pool.type, "VirtualMachineScaleSets")
-    node_taints            = try(var.default_node_pool.node_taints, null)
-    node_labels            = try(var.default_node_pool.node_labels, null)
-    orchestrator_version   = try(var.default_node_pool.orchestrator_version, null)
-    priority               = try(var.default_node_pool.priority, null)
-    enable_host_encryption = try(var.default_node_pool.enable_host_encryption, null)
-    eviction_policy        = try(var.default_node_pool.eviction_policy, null)
+    name                   = var.default_node_pool.name
+    count                  = var.default_node_pool.count
+    vm_size                = var.default_node_pool.vm_size
+    os_type                = var.default_node_pool.os_type
+    zones                  = var.default_node_pool.zones
+    enable_auto_scaling    = var.default_node_pool.enable_auto_scaling
+    min_count              = var.default_node_pool.min_count
+    max_count              = var.default_node_pool.max_count
+    type                   = var.default_node_pool.type
+    node_taints            = var.default_node_pool.node_taints
+    node_labels            = var.default_node_pool.node_labels
+    orchestrator_version   = var.default_node_pool.orchestrator_version
+    priority               = var.default_node_pool.priority
+    enable_host_encryption = var.default_node_pool.enable_host_encryption
+    eviction_policy        = var.default_node_pool.eviction_policy
     vnet_subnet_id         = var.nodes_subnet_id
-    max_pods               = try(var.default_node_pool.max_pods, 30)
-    os_disk_type           = try(var.default_node_pool.os_disk_type, "Managed")
-    os_disk_size_gb        = try(var.default_node_pool.os_disk_size_gb, 128)
-    enable_node_public_ip  = try(var.default_node_pool.enable_node_public_ip, false)
+    max_pods               = var.default_node_pool.max_pods
+    os_disk_type           = var.default_node_pool.os_disk_type
+    os_disk_size_gb        = var.default_node_pool.os_disk_size_gb
+    enable_node_public_ip  = var.default_node_pool.enable_node_public_ip
   }
 
   # Defaults for Linux profile
