@@ -189,26 +189,26 @@ variable "aci_subnet_id" {
 }
 
 variable "auto_scaler_profile" {
-  description = "Map to configure `auto_scaler_profile` block."
-  type = map(object({
-    balance_similar_node_groups      = optional(bool, false)
-    expander                         = optional(string, "random")
-    max_graceful_termination_sec     = optional(number, 600)
-    max_node_provisioning_time       = optional(string, "15m")
-    max_unready_nodes                = optional(number, 3)
-    max_unready_percentage           = optional(number, 45)
-    new_pod_scale_up_delay           = optional(string, "10s")
-    scale_down_delay_after_add       = optional(string, "10m")
-    scale_down_delay_after_delete    = optional(string, "10s")
-    scale_down_delay_after_failure   = optional(string, "3m")
-    scan_interval                    = optional(string, "10s")
-    scale_down_unneeded              = optional(string, "10m")
-    scale_down_unready               = optional(string, "20m")
-    scale_down_utilization_threshold = optional(number, 0.5)
-    empty_bulk_delete_max            = optional(number, 10)
-    skip_nodes_with_local_storage    = optional(bool, true)
-    skip_nodes_with_system_pods      = optional(bool, true)
-  }))
+  description = "Configuration of `auto_scaler_profile` block object"
+  type = object({
+    balance_similar_node_groups      = optional(bool)
+    expander                         = optional(string)
+    max_graceful_termination_sec     = optional(number)
+    max_node_provisioning_time       = optional(string)
+    max_unready_nodes                = optional(number)
+    max_unready_percentage           = optional(number)
+    new_pod_scale_up_delay           = optional(string)
+    scale_down_delay_after_add       = optional(string)
+    scale_down_delay_after_delete    = optional(string)
+    scale_down_delay_after_failure   = optional(string)
+    scan_interval                    = optional(string)
+    scale_down_unneeded              = optional(string)
+    scale_down_unready               = optional(string)
+    scale_down_utilization_threshold = optional(number)
+    empty_bulk_delete_max            = optional(number)
+    skip_nodes_with_local_storage    = optional(bool)
+    skip_nodes_with_system_pods      = optional(bool)
+  })
   default = null
 }
 
