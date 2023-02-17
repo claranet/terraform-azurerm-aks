@@ -160,6 +160,7 @@ variable "appgw_user_assigned_identity_resource_group_name" {
 variable "default_node_pool" {
   description = "Default node pool configuration"
   type = object({
+    name                   = optional(string)
     count                  = optional(number)
     vm_size                = optional(string)
     os_type                = optional(string)
@@ -174,7 +175,6 @@ variable "default_node_pool" {
     priority               = optional(string)
     enable_host_encryption = optional(bool)
     eviction_policy        = optional(string)
-    vnet_subnet_id         = optional(string)
     max_pods               = optional(number)
     os_disk_type           = optional(string)
     os_disk_size_gb        = optional(number)
