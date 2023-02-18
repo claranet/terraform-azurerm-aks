@@ -1,7 +1,7 @@
 locals {
   default_agent_profile = {
     name                   = var.default_node_pool.name
-    count                  = var.default_node_pool.count
+    node_count             = var.default_node_pool.enable_auto_scaling == true ? var.default_node_pool.min_count : var.default_node_pool.node_count
     vm_size                = var.default_node_pool.vm_size
     os_type                = var.default_node_pool.os_type
     zones                  = var.default_node_pool.zones

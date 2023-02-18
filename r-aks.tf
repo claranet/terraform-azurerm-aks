@@ -23,7 +23,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   default_node_pool {
     name                = local.default_node_pool.name
-    node_count          = local.default_node_pool.count
+    node_count          = local.default_node_pool.node_count
     vm_size             = local.default_node_pool.vm_size
     zones               = local.default_node_pool.zones
     enable_auto_scaling = local.default_node_pool.enable_auto_scaling
@@ -132,7 +132,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   enable_auto_scaling    = local.nodes_pools[count.index].enable_auto_scaling
   enable_host_encryption = local.nodes_pools[count.index].enable_host_encryption
   eviction_policy        = local.nodes_pools[count.index].eviction_policy
-  node_count             = local.nodes_pools[count.index].count
+  node_count             = local.nodes_pools[count.index].node_count
   min_count              = local.nodes_pools[count.index].min_count
   max_count              = local.nodes_pools[count.index].max_count
   max_pods               = local.nodes_pools[count.index].max_pods
