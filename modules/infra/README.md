@@ -1,7 +1,7 @@
 # Azure Kubernetes Service - Core Azure tools
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/aks/azurerm/latest/submodules/infra)
 
-This module deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and creates some 
+This module deploys the [Azure Active Directory Pod Identity](https://github.com/Azure/aad-pod-identity) and creates some
 [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) with different types of Azure managed disks (Standard HDD retain and delete, Premium SSD retain and delete).
 
 ## Version compatibility
@@ -50,7 +50,7 @@ data "azurerm_resource_group" "aks_nodes_rg" {
 module "aks2_infra" {
   source  = "claranet/aks/azurerm//modules/infra"
   version = "3.2.0"
-  
+
   # Use custom providers here if you have multiple clusters
   providers = {
     kubernetes = kubernetes.my_aks
@@ -105,7 +105,7 @@ No modules.
 | aadpodidentity\_extra\_tags | Extra tags to add to aad pod identity MSI | `map(string)` | `{}` | no |
 | aadpodidentity\_namespace | Kubernetes namespace in which to deploy AAD Pod Identity | `string` | `"system-aadpodid"` | no |
 | aadpodidentity\_values | Settings for AAD Pod identity helm Chart <br /><br><pre>map(object({ <br /><br>  nmi.nodeSelector.agentpool  = string <br /><br>  mic.nodeSelector.agentpool  = string <br /><br>  azureIdentity.enabled       = bool <br /><br>  azureIdentity.type          = string <br /><br>  azureIdentity.resourceID    = string <br /><br>  azureIdentity.clientID      = string <br /><br>  nmi.micNamespace            = string <br /><br>}))<br /><br></pre> | `map(string)` | `{}` | no |
-| aks\_network\_plugin | AKS network plugin to use. Possible values are `azure` and `kubenet`. <br>  Changing this forces a new resource to be created. | `string` | `"azure"` | no |
+| aks\_network\_plugin | AKS network plugin to use. Possible values are `azure` and `kubenet`.<br>  Changing this forces a new resource to be created. | `string` | `"azure"` | no |
 | aks\_resource\_group\_name | Name of the AKS Managed resource group. Eg MC\_xxxx | `string` | n/a | yes |
 | location | AKS Cluster location | `string` | n/a | yes |
 

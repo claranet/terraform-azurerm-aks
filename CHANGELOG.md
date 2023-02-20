@@ -17,7 +17,7 @@ Added
 Changed
   * AZ-992: Prevent the gathering of `kube-audit` and `kube-audit-admin` logs by default.
 
-Fixed 
+Fixed
   * AZ-992: Fix examples
 
 # v7.2.0 - 2022-12-02
@@ -65,8 +65,8 @@ Added
   * AZ-605: Add Kubenet implementation
   * AZ-605: Allow aadpodidentity and Velero MSI custom naming
   * AZ-605: Allow to configure tags on MSIs and node pools
-  * AZ-605: Allow to configure permissions on route table when using kubenet and UDR egress 
-  * AZ-605: Add  `Kubernetes cluster containers should only use allowed capabilities` policy when using Kubenet to avoid security issue 
+  * AZ-605: Allow to configure permissions on route table when using kubenet and UDR egress
+  * AZ-605: Add  `Kubernetes cluster containers should only use allowed capabilities` policy when using Kubenet to avoid security issue
 
 Fixed
   * AZ-605: Fix Velero_storage_settings variable

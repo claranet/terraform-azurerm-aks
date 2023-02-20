@@ -27,4 +27,3 @@ variable "azure_tenant_id" {
   description = "Azure Tenant Id"
   type        = string
 }
-
