@@ -141,11 +141,11 @@ variable "aks_network_policy" {
 
 
 variable "aks_http_proxy_settings" {
-  description = "AKS HTTP proxy settings. URLs must be in format `http(s)://fqdn:port/`."
+  description = "AKS HTTP proxy settings. URLs must be in format `http(s)://fqdn:port/`. When setting the `no_proxy_url_list` parameter, the AKS Private Endpoint domain name and the AKS VNet CIDR must be added to the URLs list."
   type = object({
     http_proxy_url    = optional(string)
     https_proxy_url   = optional(string)
-    no_proxy_url_list = optional(list(string))
+    no_proxy_url_list = optional(list(string), [])
     trusted_ca        = optional(string)
   })
   default = null

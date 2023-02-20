@@ -7,7 +7,7 @@ resource "azurerm_user_assigned_identity" "aks_user_assigned_identity" {
 }
 
 resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {
-  count = var.private_cluster_enabled && var.private_dns_zone_role_assignment_enabled && var.private_dns_zone_type == "Custom" ? 1 : 0
+  count = local.is_custom_dns_private_cluster && var.private_dns_zone_role_assignment_enabled ? 1 : 0
 
   scope                = var.private_dns_zone_id
   role_definition_name = "Private DNS Zone Contributor"
@@ -15,7 +15,7 @@ resource "azurerm_role_assignment" "aks_uai_private_dns_zone_contributor" {
 }
 
 resource "azurerm_role_assignment" "aks_uai_vnet_network_contributor" {
-  count = var.private_cluster_enabled && var.private_dns_zone_type == "Custom" ? 1 : 0
+  count = local.is_custom_dns_private_cluster ? 1 : 0
 
   scope                = var.vnet_id
   role_definition_name = "Network Contributor"
