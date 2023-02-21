@@ -155,7 +155,7 @@ variable "default_node_pool" {
   description = "Default node pool configuration"
   type = object({
     name                   = optional(string, "default")
-    count                  = optional(number, 1)
+    node_count             = optional(number, 1)
     vm_size                = optional(string, "Standard_D2_v3")
     os_type                = optional(string, "Linux")
     zones                  = optional(list(number), [1, 2, 3])
