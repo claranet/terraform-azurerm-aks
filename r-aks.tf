@@ -73,7 +73,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   azure_policy_enabled = var.azure_policy_enabled
 
-
   dynamic "linux_profile" {
     for_each = var.linux_profile != null ? [true] : []
     iterator = lp
@@ -88,11 +87,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   dynamic "http_proxy_config" {
     for_each = var.aks_http_proxy_settings != null ? ["enabled"] : []
-
     content {
       http_proxy  = var.aks_http_proxy_settings.http_proxy_url
       https_proxy = var.aks_http_proxy_settings.https_proxy_url
-      no_proxy    = var.aks_http_proxy_settings.no_proxy_url_list
+      no_proxy    = distinct(flatten(concat(local.default_no_proxy_url_list, var.aks_http_proxy_settings.no_proxy_url_list)))
       trusted_ca  = var.aks_http_proxy_settings.trusted_ca
     }
   }
@@ -109,10 +107,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     pod_cidr           = var.aks_network_plugin == "kubenet" ? var.aks_pod_cidr : null
   }
 
-
   depends_on = [
     azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
-    azurerm_role_assignment.aks_uai_route_table_contributor
+    azurerm_role_assignment.aks_uai_route_table_contributor,
   ]
 
   tags = merge(local.default_tags, var.extra_tags)

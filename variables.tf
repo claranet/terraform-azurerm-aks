@@ -97,6 +97,12 @@ variable "private_dns_zone_id" {
   description = "Id of the private DNS Zone when <private_dns_zone_type> is custom"
 }
 
+variable "private_dns_zone_role_assignment_enabled" {
+  description = "Option to enable or disable Private DNS Zone role assignment."
+  type        = bool
+  default     = true
+}
+
 variable "aks_user_assigned_identity_resource_group_name" {
   description = "Resource Group where to deploy the aks user assigned identity resource. Used when private cluster is enabled and when Azure private dns zone is not managed by aks"
   type        = string
@@ -135,11 +141,11 @@ variable "aks_network_policy" {
 
 
 variable "aks_http_proxy_settings" {
-  description = "AKS HTTP proxy settings. URLs must be in format `http(s)://fqdn:port/`."
+  description = "AKS HTTP proxy settings. URLs must be in format `http(s)://fqdn:port/`. When setting the `no_proxy_url_list` parameter, the AKS Private Endpoint domain name and the AKS VNet CIDR must be added to the URLs list."
   type = object({
     http_proxy_url    = optional(string)
     https_proxy_url   = optional(string)
-    no_proxy_url_list = optional(list(string))
+    no_proxy_url_list = optional(list(string), [])
     trusted_ca        = optional(string)
   })
   default = null
