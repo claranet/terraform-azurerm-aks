@@ -22,6 +22,14 @@ resource "azurerm_role_assignment" "aks_uai_vnet_network_contributor" {
   principal_id         = azurerm_user_assigned_identity.aks_user_assigned_identity.principal_id
 }
 
+resource "azurerm_role_assignment" "aks_kubelet_uai_vnet_network_contributor" {
+  count = local.is_custom_dns_private_cluster ? 1 : 0
+
+  scope                = var.vnet_id
+  role_definition_name = "Network Contributor"
+  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+}
+
 # Application gateway identity stuff, used to gather ssl certificate from keyvault
 # https://github.com/Azure/application-gateway-kubernetes-ingress/issues/999
 # https://github.com/Azure/application-gateway-kubernetes-ingress/blob/master/docs/features/appgw-ssl-certificate.md#configure-certificate-from-key-vault-to-appgw

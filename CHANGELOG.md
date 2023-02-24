@@ -4,9 +4,11 @@ Added
   * AZ-1000: Add an option to enable or disable UAI Private DNS Zone role assignment
   * AZ-1001: Add default `no_proxy_url_list` and some information about the parameter
   * [GH-9](https://github.com/claranet/terraform-azurerm-aks/pull/9): Add more configuration options to cluster's node pools
+  * AZ-1011: Add AKS Kubelet identity role assignment
 
 Fixed
   * [GH-10](https://github.com/claranet/terraform-azurerm-aks/pull/10): Auto scaler profile fixes
+  * AZ-1011: Fix identities outputs
 
 # v7.4.0 - 2023-02-10
 

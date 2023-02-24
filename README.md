@@ -259,6 +259,7 @@ module "acr" {
 | [azurerm_role_assignment.aad_pod_identity_mio_appgw_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aci_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_acr_pull_allowed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aks_kubelet_uai_vnet_network_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_uai_private_dns_zone_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_uai_route_table_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.aks_uai_vnet_network_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
@@ -380,11 +381,12 @@ module "acr" {
 | aks\_id | AKS resource id |
 | aks\_kube\_config | Kube configuration of AKS Cluster |
 | aks\_kube\_config\_raw | Raw kube config to be used by kubectl command |
+| aks\_kubelet\_user\_managed\_identity | The Kubelet User Managed Identity used by the AKS cluster. |
 | aks\_name | Name of the AKS cluster |
 | aks\_nodes\_pools\_ids | Ids of AKS nodes pools |
 | aks\_nodes\_pools\_names | Names of AKS nodes pools |
 | aks\_nodes\_rg | Name of the resource group in which AKS nodes are deployed |
-| aks\_user\_managed\_identity | The User Managed Identity used by AKS Agents |
+| aks\_user\_managed\_identity | The User Managed Identity used by the AKS cluster. |
 | application\_gateway\_id | Id of the application gateway used by AKS |
 | application\_gateway\_identity\_principal\_id | Id of the managed service identity of the application gateway used by AKS |
 | application\_gateway\_name | Name of the application gateway used by AKS |
