@@ -158,30 +158,29 @@ variable "appgw_user_assigned_identity_resource_group_name" {
 }
 
 variable "default_node_pool" {
-  description = <<EOD
-Default node pool configuration:
-```
-map(object({
-    name                  = string
-    count                 = number
-    vm_size               = string
-    os_type               = string
-    zones                 = list(number)
-    enable_auto_scaling   = bool
-    min_count             = number
-    max_count             = number
-    type                  = string
-    node_taints           = list(string)
-    vnet_subnet_id        = string
-    max_pods              = number
-    os_disk_type          = string
-    os_disk_size_gb       = number
-    enable_node_public_ip = bool
-}))
-```
-EOD
-  type        = map(any)
-  default     = {}
+  description = "Default node pool configuration"
+  type = object({
+    name                   = optional(string, "default")
+    node_count             = optional(number, 1)
+    vm_size                = optional(string, "Standard_D2_v3")
+    os_type                = optional(string, "Linux")
+    zones                  = optional(list(number), [1, 2, 3])
+    enable_auto_scaling    = optional(bool, false)
+    min_count              = optional(number, 1)
+    max_count              = optional(number, 10)
+    type                   = optional(string, "VirtualMachineScaleSets")
+    node_taints            = optional(list(any), null)
+    node_labels            = optional(map(any), null)
+    orchestrator_version   = optional(string, null)
+    priority               = optional(string, null)
+    enable_host_encryption = optional(bool, null)
+    eviction_policy        = optional(string, null)
+    max_pods               = optional(number, 30)
+    os_disk_type           = optional(string, "Managed")
+    os_disk_size_gb        = optional(number, 128)
+    enable_node_public_ip  = optional(bool, false)
+  })
+  default = {}
 }
 
 variable "nodes_subnet_id" {
@@ -265,7 +264,7 @@ variable "docker_bridge_cidr" {
 variable "nodes_pools" {
   description = "A list of nodes pools to create, each item supports same properties as `local.default_agent_profile`"
   type        = list(any)
-
+  default     = []
 }
 
 variable "container_registries_id" {
