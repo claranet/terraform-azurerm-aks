@@ -195,8 +195,8 @@ variable "aci_subnet_id" {
 }
 
 variable "auto_scaler_profile" {
-  description = "Map to configure `auto_scaler_profile` block."
-  type = map(object({
+  description = "Configuration of `auto_scaler_profile` block object"
+  type = object({
     balance_similar_node_groups      = optional(bool, false)
     expander                         = optional(string, "random")
     max_graceful_termination_sec     = optional(number, 600)
@@ -214,7 +214,7 @@ variable "auto_scaler_profile" {
     empty_bulk_delete_max            = optional(number, 10)
     skip_nodes_with_local_storage    = optional(bool, true)
     skip_nodes_with_system_pods      = optional(bool, true)
-  }))
+  })
   default = null
 }
 

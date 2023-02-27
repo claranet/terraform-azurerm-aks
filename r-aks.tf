@@ -45,25 +45,25 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   dynamic "auto_scaler_profile" {
-    for_each = var.auto_scaler_profile != null ? [true] : []
+    for_each = var.auto_scaler_profile != null ? [var.auto_scaler_profile] : []
     content {
-      balance_similar_node_groups      = auto_scaler_profile.value.balance_similar_node_groups
-      expander                         = auto_scaler_profile.value.expander
-      max_graceful_termination_sec     = auto_scaler_profile.value.max_graceful_termination_sec
-      max_node_provisioning_time       = auto_scaler_profile.value.max_node_provisioning_time
-      max_unready_nodes                = auto_scaler_profile.value.max_unready_nodes
-      max_unready_percentage           = auto_scaler_profile.value.max_unready_percentage
-      new_pod_scale_up_delay           = auto_scaler_profile.value.new_pod_scale_up_delay
-      scale_down_delay_after_add       = auto_scaler_profile.value.scale_down_delay_after_add
-      scale_down_delay_after_delete    = auto_scaler_profile.value.scale_down_delay_after_delete
-      scale_down_delay_after_failure   = auto_scaler_profile.value.scale_down_delay_after_failure
-      scan_interval                    = auto_scaler_profile.value.scan_interval
-      scale_down_unneeded              = auto_scaler_profile.value.scale_down_unneeded
-      scale_down_unready               = auto_scaler_profile.value.scale_down_unready
-      scale_down_utilization_threshold = auto_scaler_profile.value.scale_down_utilization_threshold
-      empty_bulk_delete_max            = auto_scaler_profile.value.empty_bulk_delete_max
-      skip_nodes_with_local_storage    = auto_scaler_profile.value.skip_nodes_with_local_storage
-      skip_nodes_with_system_pods      = auto_scaler_profile.value.skip_nodes_with_system_pods
+      balance_similar_node_groups      = try(auto_scaler_profile.value.balance_similar_node_groups, null)
+      expander                         = try(auto_scaler_profile.value.expander, null)
+      max_graceful_termination_sec     = try(auto_scaler_profile.value.max_graceful_termination_sec, null)
+      max_node_provisioning_time       = try(auto_scaler_profile.value.max_node_provisioning_time, null)
+      max_unready_nodes                = try(auto_scaler_profile.value.max_unready_nodes, null)
+      max_unready_percentage           = try(auto_scaler_profile.value.max_unready_percentage, null)
+      new_pod_scale_up_delay           = try(auto_scaler_profile.value.new_pod_scale_up_delay, null)
+      scale_down_delay_after_add       = try(auto_scaler_profile.value.scale_down_delay_after_add, null)
+      scale_down_delay_after_delete    = try(auto_scaler_profile.value.scale_down_delay_after_delete, null)
+      scale_down_delay_after_failure   = try(auto_scaler_profile.value.scale_down_delay_after_failure, null)
+      scan_interval                    = try(auto_scaler_profile.value.scan_interval, null)
+      scale_down_unneeded              = try(auto_scaler_profile.value.scale_down_unneeded, null)
+      scale_down_unready               = try(auto_scaler_profile.value.scale_down_unready, null)
+      scale_down_utilization_threshold = try(auto_scaler_profile.value.scale_down_utilization_threshold, null)
+      empty_bulk_delete_max            = try(auto_scaler_profile.value.empty_bulk_delete_max, null)
+      skip_nodes_with_local_storage    = try(auto_scaler_profile.value.skip_nodes_with_local_storage, null)
+      skip_nodes_with_system_pods      = try(auto_scaler_profile.value.skip_nodes_with_system_pods, null)
     }
   }
 
