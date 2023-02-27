@@ -25,7 +25,7 @@ resource "helm_release" "aad_pod_identity" {
     }
   }
 
-  # If `Aadpodidentity` is used within an Aks Cluster with Kubenet network Plugin, 
+  # If `Aadpodidentity` is used within an Aks Cluster with Kubenet network Plugin,
   # `nmi.allowNetworkPluginKubenet` parameter is set to `true`.
   # https://github.com/Azure/aad-pod-identity/issues/949
   set {

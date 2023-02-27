@@ -5,7 +5,7 @@ variable "aks_resource_group_name" {
 
 variable "aks_network_plugin" {
   description = <<EOD
-  AKS network plugin to use. Possible values are `azure` and `kubenet`. 
+  AKS network plugin to use. Possible values are `azure` and `kubenet`.
   Changing this forces a new resource to be created.
 EOD
   type        = string

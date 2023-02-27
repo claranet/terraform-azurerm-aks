@@ -41,7 +41,7 @@ module "azure-region" {
 module "agic" {
   source  = "claranet/aks/azurerm//modules/tools/agic"
   version = "x.x.x"
-  
+
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
