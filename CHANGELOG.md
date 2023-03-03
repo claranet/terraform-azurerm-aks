@@ -1,4 +1,4 @@
-# Unreleased
+# v7.5.0 - 2023-03-03
 
 Added
   * AZ-1000: Add an option to enable or disable UAI Private DNS Zone role assignment
