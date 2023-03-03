@@ -23,7 +23,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   default_node_pool {
     name                = local.default_node_pool.name
-    node_count          = local.default_node_pool.enable_auto_scaling == true ? null : local.default_node_pool.node_count
+    node_count          = local.default_node_pool.enable_auto_scaling ? null : local.default_node_pool.node_count
     vm_size             = local.default_node_pool.vm_size
     zones               = local.default_node_pool.zones
     enable_auto_scaling = local.default_node_pool.enable_auto_scaling
