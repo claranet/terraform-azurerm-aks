@@ -9,6 +9,7 @@ Added
 Fixed
   * [GH-10](https://github.com/claranet/terraform-azurerm-aks/pull/10): Auto scaler profile fixes
   * AZ-1011: Fix identities outputs
+  * [GH-11](https://github.com/claranet/terraform-azurerm-aks/pull/11): Fix node_count error when autoscaler is enabled
 
 # v7.4.0 - 2023-02-10
 
