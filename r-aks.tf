@@ -23,12 +23,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   default_node_pool {
     name                = local.default_node_pool.name
-    node_count          = local.default_node_pool.enable_auto_scaling ? null : local.default_node_pool.node_count
     vm_size             = local.default_node_pool.vm_size
     zones               = local.default_node_pool.zones
     enable_auto_scaling = local.default_node_pool.enable_auto_scaling
-    min_count           = local.default_node_pool.min_count
-    max_count           = local.default_node_pool.max_count
+    node_count          = local.default_node_pool.enable_auto_scaling ? null : local.default_node_pool.node_count
+    min_count           = local.default_node_pool.enable_auto_scaling ? local.default_node_pool.min_count : null
+    max_count           = local.default_node_pool.enable_auto_scaling ? local.default_node_pool.max_count : null
     max_pods            = local.default_node_pool.max_pods
     os_disk_type        = local.default_node_pool.os_disk_type
     os_disk_size_gb     = local.default_node_pool.os_disk_size_gb
@@ -126,12 +126,12 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   os_disk_size_gb        = local.nodes_pools[count.index].os_disk_size_gb
   priority               = local.nodes_pools[count.index].priority
   vnet_subnet_id         = local.nodes_pools[count.index].vnet_subnet_id
-  enable_auto_scaling    = local.nodes_pools[count.index].enable_auto_scaling
   enable_host_encryption = local.nodes_pools[count.index].enable_host_encryption
   eviction_policy        = local.nodes_pools[count.index].eviction_policy
-  node_count             = local.nodes_pools[count.index].node_count
-  min_count              = local.nodes_pools[count.index].min_count
-  max_count              = local.nodes_pools[count.index].max_count
+  enable_auto_scaling    = local.nodes_pools[count.index].enable_auto_scaling
+  node_count             = local.nodes_pools[count.index].enable_auto_scaling ? null : local.nodes_pools[count.index].node_count
+  min_count              = local.nodes_pools[count.index].enable_auto_scaling ? local.nodes_pools[count.index].min_count : null
+  max_count              = local.nodes_pools[count.index].enable_auto_scaling ? local.nodes_pools[count.index].max_count : null
   max_pods               = local.nodes_pools[count.index].max_pods
   node_labels            = local.nodes_pools[count.index].node_labels
   node_taints            = local.nodes_pools[count.index].node_taints
