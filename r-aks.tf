@@ -107,6 +107,14 @@ resource "azurerm_kubernetes_cluster" "aks" {
     pod_cidr           = var.aks_network_plugin == "kubenet" ? var.aks_pod_cidr : null
   }
 
+  dynamic "key_vault_secrets_provider" {
+    for_each = var.key_vault_secrets_provider[*]
+    content {
+      secret_rotation_enabled  = key_vault_secrets_provider.value.secret_rotation_enabled
+      secret_rotation_interval = key_vault_secrets_provider.value.secret_rotation_interval
+    }
+  }
+
   depends_on = [
     azurerm_role_assignment.aks_uai_private_dns_zone_contributor,
     azurerm_role_assignment.aks_uai_route_table_contributor,

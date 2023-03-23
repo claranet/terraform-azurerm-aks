@@ -332,6 +332,7 @@ module "acr" {
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
 | http\_application\_routing\_enabled | Whether HTTP Application Routing is enabled. | `bool` | `false` | no |
+| key\_vault\_secrets\_provider | Enable AKS built-in Key Vault secrets provider. If enabled, an identity is created by the AKS itself and exported from this module. | <pre>object({<br>    secret_rotation_enabled  = optional(bool)<br>    secret_rotation_interval = optional(string)<br>  })</pre> | `null` | no |
 | kubernetes\_version | Version of Kubernetes to deploy | `string` | `"1.17.9"` | no |
 | kured\_chart\_repository | Helm chart repository URL | `string` | `"https://kubereboot.github.io/charts"` | no |
 | kured\_chart\_version | Version of the Helm chart | `string` | `"2.2.0"` | no |
@@ -391,6 +392,7 @@ module "acr" {
 | application\_gateway\_identity\_principal\_id | Id of the managed service identity of the application gateway used by AKS |
 | application\_gateway\_name | Name of the application gateway used by AKS |
 | cert\_manager\_namespace | Namespace used for Cert Manager |
+| key\_vault\_secrets\_provider\_identity | The User Managed Identity used by the Key Vault secrets provider. |
 | kured\_namespace | Namespace used for Kured |
 | public\_ip\_id | Id of the public ip used by AKS application gateway |
 | public\_ip\_name | Name of the public ip used by AKS application gateway |

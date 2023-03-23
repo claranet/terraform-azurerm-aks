@@ -109,7 +109,6 @@ variable "aks_user_assigned_identity_resource_group_name" {
   default     = null
 }
 
-
 variable "aks_route_table_id" {
   description = "Provide an existing route table when `outbound_type variable` is set to `userdefinedrouting` with kubenet : https://docs.microsoft.com/fr-fr/azure/aks/configure-kubenet#bring-your-own-subnet-and-route-table-with-kubenet"
   type        = string
@@ -138,7 +137,6 @@ variable "aks_network_policy" {
   type        = string
   default     = "calico"
 }
-
 
 variable "aks_http_proxy_settings" {
   description = "AKS HTTP proxy settings. URLs must be in format `http(s)://fqdn:port/`. When setting the `no_proxy_url_list` parameter, the AKS Private Endpoint domain name and the AKS VNet CIDR must be added to the URLs list."
@@ -273,10 +271,18 @@ variable "container_registries_id" {
   default     = []
 }
 
+variable "key_vault_secrets_provider" {
+  description = "Enable AKS built-in Key Vault secrets provider. If enabled, an identity is created by the AKS itself and exported from this module."
+  type = object({
+    secret_rotation_enabled  = optional(bool)
+    secret_rotation_interval = optional(string)
+  })
+  default = null
+}
+
 ##########################
 # AGIC variables
 ##########################
-
 variable "agic_enabled" {
   description = "Enable Application gateway ingress controller"
   type        = bool
@@ -516,7 +522,6 @@ variable "velero_chart_repository" {
 ##########################
 # AAD Pod Identity variables
 ##########################
-
 variable "aadpodidentity_values" {
   description = <<EOD
 Settings for AAD Pod identity helm Chart:
@@ -542,8 +547,6 @@ variable "aadpodidentity_namespace" {
   type        = string
   default     = "system-aadpodid"
 }
-
-
 
 variable "aadpodidentity_chart_repository" {
   description = "AAD Pod Identity Helm chart repository URL"
