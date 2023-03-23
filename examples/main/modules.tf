@@ -154,6 +154,11 @@ module "aks" {
   velero_storage_settings         = { allowed_cidrs = local.allowed_cidrs }
 
   container_registries_id = [module.acr.acr_id]
+
+  key_vault_secrets_provider = {
+    secret_rotation_enabled  = true
+    secret_rotation_interval = "2m"
+  }
 }
 
 module "acr" {
