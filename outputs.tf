@@ -36,13 +36,18 @@ output "aks_kube_config" {
 }
 
 output "aks_user_managed_identity" {
-  value       = azurerm_user_assigned_identity.aks_user_assigned_identity
   description = "The User Managed Identity used by the AKS cluster."
+  value       = azurerm_user_assigned_identity.aks_user_assigned_identity
 }
 
 output "aks_kubelet_user_managed_identity" {
-  value       = azurerm_kubernetes_cluster.aks.kubelet_identity[0]
   description = "The Kubelet User Managed Identity used by the AKS cluster."
+  value       = azurerm_kubernetes_cluster.aks.kubelet_identity[0]
+}
+
+output "key_vault_secrets_provider_identity" {
+  description = "The User Managed Identity used by the Key Vault secrets provider."
+  value       = azurerm_kubernetes_cluster.aks.key_vault_secrets_provider[0].secret_identity[0]
 }
 
 ##########################

@@ -1,5 +1,8 @@
 # Unreleased
 
+Added
+  * AZ-1036: Add `key_vault_secrets_provider` parameter
+
 Fixed
   * AZ-1035: Fix permanent drift when `enable_auto_scaling` is set to `false`
 
