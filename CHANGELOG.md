@@ -1,4 +1,4 @@
-# Unreleased
+# v7.6.0 - 2023-03-31
 
 Added
   * AZ-1036: Add `key_vault_secrets_provider` parameter
