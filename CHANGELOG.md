@@ -1,3 +1,8 @@
+# Unreleased
+
+Fixed
+  * AZ-1035: Fix permanent drift when `enable_auto_scaling` is set to `false`
+
 # v7.5.0 - 2023-03-03
 
 Added
