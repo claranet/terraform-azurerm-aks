@@ -1,3 +1,8 @@
+# Unreleased
+
+Fixed
+  * AZ-1059: Fix `key_vault_secrets_provider_identity` output
+
 # v7.6.0 - 2023-03-31
 
 Added
