@@ -47,7 +47,7 @@ output "aks_kubelet_user_managed_identity" {
 
 output "key_vault_secrets_provider_identity" {
   description = "The User Managed Identity used by the Key Vault secrets provider."
-  value       = azurerm_kubernetes_cluster.aks.key_vault_secrets_provider[0].secret_identity[0]
+  value       = try(azurerm_kubernetes_cluster.aks.key_vault_secrets_provider[0].secret_identity[0], null)
 }
 
 ##########################
