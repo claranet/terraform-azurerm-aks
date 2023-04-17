@@ -400,6 +400,7 @@ module "acr" {
 | cert\_manager\_namespace | Namespace used for Cert Manager |
 | key\_vault\_secrets\_provider\_identity | The User Managed Identity used by the Key Vault secrets provider. |
 | kured\_namespace | Namespace used for Kured |
+| oidc\_issuer\_url | The URL of the OpenID Connect issuer. |
 | public\_ip\_id | Id of the public ip used by AKS application gateway |
 | public\_ip\_name | Name of the public ip used by AKS application gateway |
 | velero\_identity | Azure Identity used for Velero pods |
