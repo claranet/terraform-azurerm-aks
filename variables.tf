@@ -53,7 +53,7 @@ variable "enable_pod_security_policy" {
 }
 
 variable "oidc_issuer_enabled" {
-  description = "Enable oidc issuer or not. https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer"
+  description = "Whether to enable OpenID Connect issuer or not. https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer"
   type        = bool
   default     = false
 }

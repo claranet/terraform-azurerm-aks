@@ -136,10 +136,7 @@ output "velero_identity" {
   value       = module.velero.velero_identity
 }
 
-##########################
-# Oidc outputs
-##########################
 output "oidc_issuer_url" {
   description = "The URL of the OpenID Connect issuer."
-  value       = var.oidc_issuer_enabled ? azurerm_kubernetes_cluster.aks.oidc_issuer_url : null
+  value       = azurerm_kubernetes_cluster.aks.oidc_issuer_url
 }
