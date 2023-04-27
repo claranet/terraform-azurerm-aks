@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * [GH-12](https://github.com/claranet/terraform-azurerm-aks/pull/12): Expose `oidc_issuer_enabled` parameter, output `oidc_issuer_url`
+
 # v7.6.1 - 2023-04-14
 
 Fixed
