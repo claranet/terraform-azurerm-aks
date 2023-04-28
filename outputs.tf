@@ -135,3 +135,8 @@ output "velero_identity" {
   description = "Azure Identity used for Velero pods"
   value       = module.velero.velero_identity
 }
+
+output "oidc_issuer_url" {
+  description = "The URL of the OpenID Connect issuer."
+  value       = azurerm_kubernetes_cluster.aks.oidc_issuer_url
+}

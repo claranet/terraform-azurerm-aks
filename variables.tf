@@ -52,6 +52,12 @@ variable "enable_pod_security_policy" {
   default     = false
 }
 
+variable "oidc_issuer_enabled" {
+  description = "Whether to enable OpenID Connect issuer or not. https://learn.microsoft.com/en-us/azure/aks/use-oidc-issuer"
+  type        = bool
+  default     = false
+}
+
 variable "http_application_routing_enabled" {
   description = "Whether HTTP Application Routing is enabled."
   type        = bool
