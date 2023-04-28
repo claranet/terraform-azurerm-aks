@@ -1,6 +1,6 @@
 module "diagnostic_settings" {
   source  = "claranet/diagnostic-settings/azurerm"
-  version = "~> 6.3.0"
+  version = "~> 6.4.1"
 
   resource_id = azurerm_kubernetes_cluster.aks.id
 

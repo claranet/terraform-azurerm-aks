@@ -249,7 +249,7 @@ module "acr" {
 |------|--------|---------|
 | appgw | ./tools/agic | n/a |
 | certmanager | ./tools/cert-manager | n/a |
-| diagnostic\_settings | claranet/diagnostic-settings/azurerm | ~> 6.3.0 |
+| diagnostic\_settings | claranet/diagnostic-settings/azurerm | ~> 6.4.1 |
 | infra | ./modules/infra | n/a |
 | kured | ./tools/kured | n/a |
 | velero | ./tools/velero | n/a |
