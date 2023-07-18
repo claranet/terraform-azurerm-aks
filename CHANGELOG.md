@@ -1,3 +1,7 @@
+# Unreleased
+Fixed
+  * AZ-1120: Add workload_runtime on node_pool config
+
 # v7.7.1 - 2023-07-13
 
 Fixed

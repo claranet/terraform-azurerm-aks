@@ -168,6 +168,7 @@ variable "default_node_pool" {
     node_count             = optional(number, 1)
     vm_size                = optional(string, "Standard_D2_v3")
     os_type                = optional(string, "Linux")
+    workload_runtime       = optional(string, null)
     zones                  = optional(list(number), [1, 2, 3])
     enable_auto_scaling    = optional(bool, false)
     min_count              = optional(number, 1)
