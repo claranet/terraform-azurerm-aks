@@ -145,6 +145,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   node_labels            = local.nodes_pools[count.index].node_labels
   node_taints            = local.nodes_pools[count.index].node_taints
   enable_node_public_ip  = local.nodes_pools[count.index].enable_node_public_ip
+  workload_runtime       = local.nodes_pools[count.index].workload_runtime
   zones                  = local.nodes_pools[count.index].zones
   tags                   = merge(local.default_tags, var.node_pool_tags)
 }

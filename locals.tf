@@ -4,6 +4,7 @@ locals {
     node_count             = var.default_node_pool.node_count
     vm_size                = var.default_node_pool.vm_size
     os_type                = var.default_node_pool.os_type
+    workload_runtime       = var.default_node_pool.workload_runtime
     zones                  = var.default_node_pool.zones
     enable_auto_scaling    = var.default_node_pool.enable_auto_scaling
     min_count              = var.default_node_pool.min_count
