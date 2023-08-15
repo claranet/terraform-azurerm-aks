@@ -1,3 +1,7 @@
+# Unreleased
+Added
+ * Add scale_down_mode on node_pool and default_node_pool config
+
 # v7.8.0 - 2023-07-21
 
 Added
