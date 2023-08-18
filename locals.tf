@@ -21,6 +21,7 @@ locals {
     os_disk_type           = var.default_node_pool.os_disk_type
     os_disk_size_gb        = var.default_node_pool.os_disk_size_gb
     enable_node_public_ip  = var.default_node_pool.enable_node_public_ip
+    scale_down_mode        = var.default_node_pool.scale_down_mode
   }
 
   # Defaults for Linux profile

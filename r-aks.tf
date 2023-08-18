@@ -37,6 +37,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id      = local.default_node_pool.vnet_subnet_id
     node_taints         = local.default_node_pool.node_taints
     node_labels         = local.default_node_pool.node_labels
+    scale_down_mode     = local.default_node_pool.scale_down_mode
     tags                = merge(local.default_tags, var.default_node_pool_tags)
   }
 
@@ -147,6 +148,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   enable_node_public_ip  = local.nodes_pools[count.index].enable_node_public_ip
   workload_runtime       = local.nodes_pools[count.index].workload_runtime
   zones                  = local.nodes_pools[count.index].zones
+  scale_down_mode        = local.nodes_pools[count.index].scale_down_mode
   tags                   = merge(local.default_tags, var.node_pool_tags)
 }
 

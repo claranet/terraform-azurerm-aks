@@ -184,6 +184,7 @@ variable "default_node_pool" {
     os_disk_type           = optional(string, "Managed")
     os_disk_size_gb        = optional(number, 128)
     enable_node_public_ip  = optional(bool, false)
+    scale_down_mode        = optional(string, "Delete")
   })
   default = {}
 }
