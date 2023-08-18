@@ -1,4 +1,4 @@
-# Unreleased
+# v7.9.0 - 2023-08-18
 
 Added
   * [GH-13](https://github.com/claranet/terraform-azurerm-aks/pull/13): Add `scale_down_mode` on `node_pool` and `default_node_pool` config
