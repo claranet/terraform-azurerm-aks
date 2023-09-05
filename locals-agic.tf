@@ -61,6 +61,7 @@ locals {
       protocol                       = "Http"
       host_name                      = "dummy"
     }]
+    appgw_rewrite_rule_set = []
     frontend_port_settings = [{
       name = "dummy"
       port = 80

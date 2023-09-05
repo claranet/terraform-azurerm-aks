@@ -212,21 +212,35 @@ resource "azurerm_application_gateway" "app_gateway" {
     content {
       name = lookup(rewrite_rule_set.value, "name", null)
       dynamic "rewrite_rule" {
-        for_each = lookup(rewrite_rule_set.value, "rewrite_rule")
+        for_each = lookup(rewrite_rule_set.value, "rewrite_rule", {})
         content {
           name          = lookup(rewrite_rule.value, "name")
           rule_sequence = lookup(rewrite_rule.value, "rule_sequence")
 
-          condition {
-            ignore_case = lookup(rewrite_rule.value, "condition_ignore_case", null)
-            negate      = lookup(rewrite_rule.value, "condition_negate", null)
-            pattern     = lookup(rewrite_rule.value, "condition_pattern", null)
-            variable    = lookup(rewrite_rule.value, "condition_variable", null)
+          dynamic "request_header_configuration" {
+            for_each = lookup(rewrite_rule.value, "request_header_configurations", {})
+            content {
+              header_name  = lookup(request_header_configuration.value, "header_name", null)
+              header_value = lookup(request_header_configuration.value, "header_value", null)
+            }
           }
 
-          response_header_configuration {
-            header_name  = lookup(rewrite_rule.value, "response_header_name", null)
-            header_value = lookup(rewrite_rule.value, "response_header_value", null)
+          dynamic "response_header_configuration" {
+            for_each = lookup(rewrite_rule.value, "response_header_configurations", {})
+            content {
+              header_name  = lookup(response_header_configuration.value, "header_name", null)
+              header_value = lookup(response_header_configuration.value, "header_value", null)
+            }
+          }
+
+          dynamic "condition" {
+            for_each = lookup(rewrite_rule.value, "conditions", {})
+            content {
+              ignore_case = lookup(condition.value, "condition_ignore_case", null)
+              negate      = lookup(condition.value, "condition_negate", null)
+              pattern     = lookup(condition.value, "condition_pattern", null)
+              variable    = lookup(condition.value, "condition_variable", null)
+            }
           }
         }
       }

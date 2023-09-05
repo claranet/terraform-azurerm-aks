@@ -53,6 +53,7 @@ module "appgw" {
   appgw_backend_pools         = local.appgw_settings.appgw_backend_pools
   appgw_probes                = local.appgw_settings.appgw_probes
   appgw_routings              = local.appgw_settings.appgw_routings
+  appgw_rewrite_rule_set      = local.appgw_settings.appgw_rewrite_rule_set
   appgw_http_listeners        = local.appgw_settings.appgw_http_listeners
   frontend_port_settings      = local.appgw_settings.frontend_port_settings
 
