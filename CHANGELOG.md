@@ -1,3 +1,7 @@
+# Unreleased
+Fixed
+  * AZ-1157: Extends `appgw_rewrite_rule_set` in `appgw_settings` variable
+
 # v7.9.0 - 2023-08-18
 
 Added
