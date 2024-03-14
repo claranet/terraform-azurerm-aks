@@ -18,7 +18,6 @@ module "appgw" {
   custom_diagnostic_settings_name = var.custom_diagnostic_settings_name
 
   logs_destinations_ids   = var.logs_destinations_ids
-  logs_retention_days     = var.logs_retention_days
   logs_categories         = var.logs_categories
   logs_metrics_categories = var.logs_metrics_categories
 
@@ -117,5 +116,4 @@ module "velero" {
   velero_identity_custom_name = var.velero_identity_custom_name
 
   velero_identity_tags = merge(local.default_tags, var.velero_identity_extra_tags)
-
 }
