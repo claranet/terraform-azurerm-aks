@@ -82,7 +82,7 @@ module "agic" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 6.2.0 |
+| diagnostic\_settings\_appgw | claranet/diagnostic-settings/azurerm | 6.5.0 |
 
 ## Resources
 
