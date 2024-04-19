@@ -1,3 +1,23 @@
+## 7.9.1 (2024-04-19)
+
+
+### Documentation
+
+* **AZ-1394:** add deprecation notice in README 87767af
+
+
+### Continuous Integration
+
+* **AZ-1391:** enable semantic-release [skip ci] 87cc3c8
+
+
+### Miscellaneous Chores
+
+* **deps:** add renovate.json d509323
+* **deps:** update dependency claranet/diagnostic-settings/azurerm to v6.5.0 60e0a95
+* **deps:** update renovate.json 0d19178
+* **deps:** update terraform claranet/diagnostic-settings/azurerm to v6.5.0 8b09b70
+
 # v7.9.0 - 2023-08-18
 
 Added
